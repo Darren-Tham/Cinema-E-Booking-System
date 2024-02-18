@@ -1,0 +1,31 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ROOT_PASSWORD
+      MYSQL_USER: CINEMA_USERNAME
+      MYSQL_PASSWORD: CINEMA_USER_PASSWORD
+      MYSQL_DATABASE: CINEMA
+
+  backend:
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      ports:
+        - "8080:8080"
+      depends_on:
+        - mysql
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/CINEMA
+        SPRING_DATASOURCE_USERNAME: CINEMA_USER
+        SPRING_DATASOURCE_PASSWORD: CINEMA_USER_PASSWORD
+
+  frontend:
+      build:
+        context: ./frontend
+        dockerfile: Dockerfile
+      ports:
+        - "3000:80"
