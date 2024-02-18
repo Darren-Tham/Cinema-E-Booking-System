@@ -1,47 +1,31 @@
-version: "3.8"
+version: '3'
 services:
-  db:
-    image: mysql:5.7
-    container_name: db
-    restart: always
+  mysql:
+    image: mysql:8.0
     ports:
-      - "5432:5432"
+      - "3306:3306"
     environment:
-      - MYSQL_DB=transteven
-      - MYSQL_USER=mysql
-      - MYSQL_PASSWORD=mysql
-      - PGDATA=/data/mysql
-    volumes:
-      - db:/data/mysql
+      MYSQL_ROOT_PASSWORD: ROOT_PASSWORD
+      MYSQL_USER: CINEMA_USERNAME
+      MYSQL_PASSWORD: CINEMA_USER_PASSWORD
+      MYSQL_DATABASE: CINEMA
 
-  cinema-backend:
-    container_name: cinema-backend
-    image: transteven/cinema-backend
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:5432/user
-    ports:
-      - 8443:8443
-    depends_on:
-      - db
-    networks:
-      - db
-    restart: always
-  cinema-frontend:
-    container_name: cinema-frontend
-    image: transteven/cinema-frontend
-    build:
-      context: cinema/client
-    args:
-      api_base_url: http://localhost:8088
-    ports:
-      - "3000:5173"
-    depends_on:
-      - cinema-backend
-    restart: always
+  backend:
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      ports:
+        - "8080:8080"
+      depends_on:
+        - mysql
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/CINEMA
+        SPRING_DATASOURCE_USERNAME: CINEMA_USER
+        SPRING_DATASOURCE_PASSWORD: CINEMA_USER_PASSWORD
 
-  networks:
-    db:
-      driver: bridge
-
-  volumes:
-    db:
+  frontend:
+      build:
+        context: ./frontend
+        dockerfile: Dockerfile
+      ports:
+        - "3000:80"
