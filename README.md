@@ -8,7 +8,7 @@
 
 docker stop $(docker ps -a -q)
 
-2. To delete unused/dangling processes when finished
+3. To delete unused/dangling processes when finished
 
    docker system prune -a --volumes
 
@@ -45,6 +45,25 @@ database = 3306
 3. Server will be hosted at http://localhost:3000/
 
    Currently since there's no implementation, the container closes instantly after running. Might not work, will see once there's actual endpoints and implementation added.
+
+# Database
+
+1. Run docker-compose as shown above
+
+   `docker compose -f "docker-compose.yml" up -d --build`
+
+2. Start instance of MySQL
+
+   `docker exec -it db bash`
+
+3. Connect to Database
+
+   `mysql -u root -p`
+
+4. Put in password
+
+   `PASSWORD`
+
 
 ## Getting Started
 

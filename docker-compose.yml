@@ -29,7 +29,7 @@ services:
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ROOT_PASSWORD
+      MYSQL_ROOT_PASSWORD: PASSWORD
       MYSQL_USER: CINEMA_USERNAME
       MYSQL_PASSWORD: CINEMA_USER_PASSWORD
       MYSQL_DATABASE: CINEMA
