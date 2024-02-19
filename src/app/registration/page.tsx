@@ -2,8 +2,12 @@
 
 import Link from "next/link"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import HomeNavbar from "@/components/HomeNavbar"
+import PhoneInput from "react-phone-number-input/input"
 
-export default function SignUp() {
+export default function Registration() {
+  const router = useRouter()
   const [showPersonalInformationForm, setShowPersonalInformationForm] =
     useState(true)
   const [showPaymentInformationForm, setShowPaymentInformationForm] =
@@ -40,14 +44,7 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      <nav className="bg-dark-jade w-full p-4">
-        <Link
-          href="/"
-          className="font-bold text-white text-2xl inline-block hover:scale-[1.025] transition-transform duration-300"
-        >
-          Cinema E-Booking System
-        </Link>
-      </nav>
+      <HomeNavbar />
       <div className="grow grid place-items-center">
         <div className="flex bg-dark-jade w-max rounded-sm h-max">
           <div className="flex flex-col border-r-2">
@@ -102,16 +99,34 @@ export default function SignUp() {
               <label htmlFor="phone-number" className={labelStyles}>
                 Phone Number *
               </label>
-              <input id="phone-number" type="tel" className={inputStyles} />
+              <PhoneInput
+                id="phone-number"
+                country="US"
+                maxLength={14}
+                onChange={e => console.log(e)}
+                className={inputStyles}
+              />
             </div>
-            <p className="text-white font-semibold text-sm">* Required Field</p>
+            <div className="flex items-center gap-2 mt-2 mb-1">
+              <input
+                id="promotions"
+                type="checkbox"
+                className="w-6 aspect-square"
+              />
+              <label
+                htmlFor="promotions"
+                className={`${labelStyles} select-none`}
+              >
+                Subscribe For Promotions
+              </label>
+            </div>
             <div className="flex justify-center">
               <p className="inline text-white font-semibold mr-3">
                 Already Have An Account?
               </p>
               <Link
                 href="/login"
-                className="inline-block font-semibold text-bright-jade hover:scale-110 transition-transform duration-300"
+                className="inline-block font-semibold text-bright-jade hover:scale-[1.075] transition-transform duration-300"
               >
                 Log In
               </Link>
@@ -123,6 +138,7 @@ export default function SignUp() {
             >
               Next
             </button>
+            <p className="text-white font-semibold text-sm">* Required Field</p>
           </form>
           <form className={getFormStyles(showPaymentInformationForm)}>
             <h1 className={h1Styles}>(Optional) Payment Information</h1>
@@ -290,7 +306,10 @@ export default function SignUp() {
               <button
                 type="submit"
                 className={nextButtonStyles}
-                onClick={e => e.preventDefault()}
+                onClick={e => {
+                  e.preventDefault()
+                  router.push("/registration-verification-code")
+                }}
               >
                 Submit
               </button>
