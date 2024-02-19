@@ -1,6 +1,6 @@
 # Running Frontend & Backend & MySQL container with docker-compose
 
-1. Build front & Backend images
+1. Build Front, Database, Backend images
 
    ```docker compose -f "docker-compose.yml" up -d --build```
 
