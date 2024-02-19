@@ -1,31 +1,42 @@
-version: '3'
+version: "3.9"
+
 services:
-  mysql:
-    image: mysql:8.0
+  frontend:
+    container_name: frontend
+    image: frontend
+    build:
+      context: .
+      dockerfile: frontend.dockerfile
     ports:
-      - "3306:3306"
+      - 3000:3000
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+    restart: always
+    depends_on:
+      - server
+  server:
+    container_name: server
+    image: server
+    build:
+      context: ./src/server
+      dockerfile: server.dockerfile
+    ports:
+      - 4000:4000
+    environment:
+      - DATABASE_URL=jdbc:mysql://5432:4000/CINEMA
+  db:
+    container_name: db
+    image: mysql:8.0
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ROOT_PASSWORD
       MYSQL_USER: CINEMA_USERNAME
       MYSQL_PASSWORD: CINEMA_USER_PASSWORD
       MYSQL_DATABASE: CINEMA
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/mysqlql/data
 
-  backend:
-      build:
-        context: ./backend
-        dockerfile: Dockerfile
-      ports:
-        - "8080:8080"
-      depends_on:
-        - mysql
-      environment:
-        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/CINEMA
-        SPRING_DATASOURCE_USERNAME: CINEMA_USER
-        SPRING_DATASOURCE_PASSWORD: CINEMA_USER_PASSWORD
-
-  frontend:
-      build:
-        context: ./frontend
-        dockerfile: Dockerfile
-      ports:
-        - "3000:80"
+volumes:
+  pgdata: {}
