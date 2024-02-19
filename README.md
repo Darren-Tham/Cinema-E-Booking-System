@@ -1,13 +1,14 @@
 # Running the frontend container
 
 1. Build the image
+
    docker build --pull --rm -f "frontend.dockerfile" -t cinemaebookingsystem:latest "."
 
 2. Create and run container
+
    docker run -p 3000:3000 cinemaebookingsystem:latest
 
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+3. Website will be hosted at http://localhost:3000/
 
 ## Getting Started
 
@@ -43,3 +44,5 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
