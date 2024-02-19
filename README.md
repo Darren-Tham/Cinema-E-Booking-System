@@ -1,6 +1,6 @@
-# Running front & backend container with compose
+# Running Frontend & Backend & MySQL container with docker-compose
 
-1. Build front & backend images
+1. Build front & Backend images
 
    ```docker compose -f "docker-compose.yml" up -d --build```
 
@@ -20,7 +20,7 @@ Backend: `8080`
 
 Database: `3306`
 
-# Running the frontend container
+# Running the Frontend container
 
 1. Build the image
 
@@ -32,7 +32,7 @@ Database: `3306`
 
 3. Client will be hosted at http://localhost:3000/
 
-# Running the backend container
+# Running the Backend container
 
 1. Build the image
 
