@@ -1,3 +1,8 @@
+# Running front & backend container with compose
+
+1. WIP
+
+
 # Running the frontend container
 
 1. Build the image
@@ -8,7 +13,26 @@
 
    docker run -p 3000:3000 cinemaebookingsystem:latest
 
-3. Website will be hosted at http://localhost:3000/
+3. Client will be hosted at http://localhost:3000/
+
+
+
+# Running the backend container
+
+
+1. Build the image
+
+    docker build --pull --rm -f "backend.dockerfile" -t cinemaebookingsystem:latest "."
+
+
+2. Create and run container
+
+    docker run -p 8080:8080 cinemaebookingsystem:latest
+
+3. Server will be hosted at http://localhost:3000/ 
+
+    Currently since there's no implementation, the container closes instantly after running. Might not work, will see once there's actual endpoints and implementation added.
+
 
 ## Getting Started
 
