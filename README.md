@@ -1,3 +1,12 @@
+# Running the frontend container
+
+1. Build the image
+   docker build --pull --rm -f "frontend.dockerfile" -t cinemaebookingsystem:latest "."
+
+2. Create and run container
+   docker run -p 3000:3000 cinemaebookingsystem:latest
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
