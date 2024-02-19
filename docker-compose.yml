@@ -19,11 +19,11 @@ services:
     image: server
     build:
       context: ./src/server
-      dockerfile: server.dockerfile
+      dockerfile: backend.dockerfile
     ports:
       - 4000:4000
     environment:
-      - DATABASE_URL=jdbc:mysql://5432:4000/CINEMA
+      - DATABASE_URL=jdbc:mysql://3306:4000/CINEMA
   db:
     container_name: db
     image: mysql:8.0
@@ -34,7 +34,7 @@ services:
       MYSQL_PASSWORD: CINEMA_USER_PASSWORD
       MYSQL_DATABASE: CINEMA
     ports:
-      - 5432:5432
+      - 3306:3306
     volumes:
       - pgdata:/var/lib/mysqlql/data
 

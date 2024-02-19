@@ -1,11 +1,23 @@
 # Running front & backend container with compose
 
-1. WIP
+1. Build front & backend images
+
+    docker compose -f "docker-compose.yml" up -d --build 
 
 
-2. To delete unused/dangling processes
+2. To delete unused/dangling processes when finished
 
-    docker system prune
+    docker system prune -a --volumes
+
+
+## Exposed Ports
+frontend = 3000
+
+
+backend = 8080
+
+
+database = 3306
 
 # Running the frontend container
 
