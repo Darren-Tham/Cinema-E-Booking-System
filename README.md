@@ -2,20 +2,21 @@
 
 1. Build front & backend images
 
-    docker compose -f "docker-compose.yml" up -d --build 
+   docker compose -f "docker-compose.yml" up -d --build
 
+2. Stop and remove all containers
+
+docker stop $(docker ps -a -q)
 
 2. To delete unused/dangling processes when finished
 
-    docker system prune -a --volumes
-
+   docker system prune -a --volumes
 
 ## Exposed Ports
+
 frontend = 3000
 
-
 backend = 8080
-
 
 database = 3306
 
