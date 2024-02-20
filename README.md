@@ -12,6 +12,9 @@
 
      ```docker system prune -a --volumes```
 
+4.  To rerun all stopped containers
+
+   ```docker start $(docker ps -a -q -f "status=exited")```
 
 # Database
 
