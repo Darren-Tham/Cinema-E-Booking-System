@@ -66,3 +66,10 @@ Frontend: `3000`
 Backend: `8080`
 
 Database: `3306`
+
+## Initialize Dummy Data
+
+1. Install dependencies for Python using the following commands
+   ```pip3 install mysql-connector-python```
+   ```pip3 install pandas```
+2. Make sure your DB Container is running and execute the `initializer.py` file, which is located in `src/data`
