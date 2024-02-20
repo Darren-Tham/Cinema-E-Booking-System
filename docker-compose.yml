@@ -24,12 +24,10 @@ services:
       - 4000:4000
     environment:
       - DATABASE_URL=jdbc:mysql://db:3306/CINEMA
-    restart: always
     links:
       - db
   db:
     image: mysql:8.0
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_PASSWORD: password

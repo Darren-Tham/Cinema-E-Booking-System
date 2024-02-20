@@ -10,6 +10,7 @@ COPY src ./src
 
 # Package the application
 RUN mvn clean package -DskipTests
+# RUN mvn package
 
 # Stage 2: Setup the runtime environment
 FROM amazoncorretto:17
