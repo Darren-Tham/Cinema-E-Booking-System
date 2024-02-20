@@ -24,17 +24,16 @@ services:
       - 4000:4000
     environment:
       - DATABASE_URL=jdbc:mysql://db:3306/CINEMA
-    depends_on:
-      - db
     restart: always
+    links:
+      - db
   db:
-    container_name: db
     image: mysql:8.0
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER: swe
       MYSQL_PASSWORD: password
+      MYSQL_USER: swe
       MYSQL_DATABASE: CINEMA
     ports:
       - 3306:3306
