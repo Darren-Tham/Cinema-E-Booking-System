@@ -22,6 +22,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "movie")
 public class Movie {
 
+  public Movie() {}
+
   @Id
   @SequenceGenerator(
     name = "movie_id_seq",

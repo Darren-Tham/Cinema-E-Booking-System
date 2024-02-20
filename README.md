@@ -2,19 +2,19 @@
 
 1. Build Front, Database, Backend images
 
-   ```docker compose -f "docker-compose.yml" up -d --build```
+   `docker compose -f "docker-compose.yml" up -d --build`
 
 2. Stop and remove all containers
 
-   ```docker stop $(docker ps -a -q)```
+   `docker stop $(docker ps -a -q)`
 
 3. To delete unused/dangling processes when finished
 
-     ```docker system prune -a --volumes```
+   `docker system prune -a --volumes`
 
-4.  To rerun all stopped containers
+4. To rerun all stopped containers
 
-   ```docker start $(docker ps -a -q -f "status=exited")```
+`docker start $(docker ps -a -q -f "status=exited")`
 
 # Database
 
@@ -28,22 +28,21 @@
 
 3. Connect to Database
 
-   `mysql -u root -p`
+   `mysql -u swe -p`
 
 4. Put in password
 
-   `PASSWORD`
-
+   `password`
 
 # Running the Frontend container
 
 1. Build the image
 
-   ```docker build --pull --rm -f "frontend.dockerfile" -t cinemaebookingsystem:latest "."```
+   `docker build --pull --rm -f "frontend.dockerfile" -t cinemaebookingsystem:latest "."`
 
 2. Create and run container
 
-   ```docker run -p 3000:3000 cinemaebookingsystem:latest```
+   `docker run -p 3000:3000 cinemaebookingsystem:latest`
 
 3. Client will be hosted at http://localhost:3000/
 
@@ -51,16 +50,15 @@
 
 1. Build the image
 
-   ```docker build --pull --rm -f "backend.dockerfile" -t cinemaebookingsystem:latest "."```
+   `docker build --pull --rm -f "backend.dockerfile" -t cinemaebookingsystem:latest "."`
 
 2. Create and run container
 
-   ```docker run -p 8080:8080 cinemaebookingsystem:latest```
+   `docker run -p 8080:8080 cinemaebookingsystem:latest`
 
 3. Server will be hosted at http://localhost:3000/
 
-   *Currently since there's no implementation, the container closes instantly after running. Might not work, we will see once there's actual endpoints and implementation added.*
-
+   _Currently since there's no implementation, the container closes instantly after running. Might not work, we will see once there's actual endpoints and implementation added._
 
 ## Exposed Ports
 
