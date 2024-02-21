@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/movie")
+@RequestMapping("/movies")
 public class MovieController {
 
-    @PostMapping("/add")
-    public ResponseEntity<String> addMovie(@RequestBody Movie movie) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return ResponseEntity.ok().headers(headers).body("Movie added successfully");
-    }
+  @PostMapping("/add")
+  public ResponseEntity<String> addMovie(@RequestBody Movie movie) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Content-Type", "application/json");
+    return ResponseEntity
+      .ok()
+      .headers(headers)
+      .body("Movie added successfully");
+  }
 }

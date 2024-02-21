@@ -9,24 +9,27 @@ services:
       dockerfile: frontend.dockerfile
     ports:
       - 3000:3000
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:4000
     restart: always
     depends_on:
       - server
   server:
+    restart: always
     container_name: server
     image: server
     build:
       context: ./src/server
       dockerfile: backend.dockerfile
     ports:
-      - 4000:4000
+      - 8080:8080
     environment:
-      - DATABASE_URL=jdbc:mysql://db:3306/CINEMA
+      MYSQL_HOST: db
+      MYSQL_USER: swe
+      MYSQL_PASSWORD: password
+      MYSQL_PORT: 3306
     links:
       - db
   db:
+    container_name: db
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: password
