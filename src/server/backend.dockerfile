@@ -18,8 +18,6 @@ FROM amazoncorretto:17
 # Create a volume point
 VOLUME /tmp
 
-# Expose port 8080 for the application
-EXPOSE 4000
 
 # Copy the JAR file from the build stage
 COPY --from=builder /app/target/cinema-0.0.1-SNAPSHOT.jar app.jar

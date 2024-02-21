@@ -19,7 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name = "movie")
+@Table(name = "movies")
 public class Movie {
 
   public Movie() {}
@@ -34,19 +34,19 @@ public class Movie {
     strategy = GenerationType.SEQUENCE,
     generator = "movie_id_sequence"
   )
-  @Column(nullable = false)
+  @Column(name="movie_id",nullable = false)
   private Integer id;
 
-  @Column(nullable = false)
+  @Column(name="movie_name",nullable = false)
   private String name;
 
-  @Column(nullable = false)
+  @Column(name="trailer_link",nullable = false)
   private String trailerLink;
 
-  @Column(nullable = false)
+  @Column(name="image_link" ,nullable = false)
   private String imageLink;
 
-  @Column(nullable = false)
+  @Column(name = "movie_desc",nullable = false)
   private String description;
 
   public Movie(

@@ -4,7 +4,12 @@ setup:
 	pip3 install pandas
 
 stop:
-	docker stop $(docker ps -a -q)
+	docker compose down
+rerun:
+	docker compose up
+clean:
+	docker stop $$(docker ps -a -q)
+	docker system prune -a --volumes
 
-clean: stop
-	docker system prune -a -f --volumes
+re: clean
+	make setup
