@@ -1,5 +1,7 @@
 package com.server.cinema.movie;
 
+import com.server.cinema.movie.MovieAddRequest;
+import com.server.cinema.movie.MovieService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/movies")
 public class MovieController {
 
+  private final MovieService movieService;
+
+  public MovieController(MovieService movieService) {
+    this.movieService = movieService;
+  }
+
   @PostMapping("/add")
-  public ResponseEntity<String> addMovie(@RequestBody Movie movie) {
+  public ResponseEntity<?> addMovie(@RequestBody MovieAddRequest request) {
+    movieService.addMovie(request);
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-Type", "application/json");
-    return ResponseEntity
-      .ok()
-      .headers(headers)
-      .body("Movie added successfully");
+    return ResponseEntity.ok().headers(headers).build();
   }
 }
