@@ -25,38 +25,28 @@ public class Movie {
   public Movie() {}
 
   @Id
-  @SequenceGenerator(
-    name = "movie_id_seq",
-    sequenceName = "movie_id_seq",
-    allocationSize = 1
-  )
-  @GeneratedValue(
-    strategy = GenerationType.SEQUENCE,
-    generator = "movie_id_sequence"
-  )
-  @Column(name = "movie_id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
   private Integer id;
 
-  @Column(name = "movie_name", nullable = false)
+  @Column(name = "movie_name", nullable = false, length = 255)
   private String name;
 
-  @Column(name = "trailer_link", nullable = false)
+  @Column(name = "trailer_link", nullable = false, columnDefinition = "TEXT")
   private String trailerLink;
 
-  @Column(name = "image_link", nullable = false)
+  @Column(name = "image_link", nullable = false, columnDefinition = "TEXT")
   private String imageLink;
 
-  @Column(name = "movie_desc", nullable = false)
+  @Column(name = "movie_desc", nullable = false, columnDefinition = "TEXT")
   private String description;
 
   public Movie(
-    Integer id,
     String name,
     String trailerLink,
     String imageLink,
     String description
   ) {
-    this.id = id;
     this.name = name;
     this.trailerLink = trailerLink;
     this.imageLink = imageLink;

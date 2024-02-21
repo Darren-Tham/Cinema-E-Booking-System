@@ -1,3 +1,3 @@
 export default function Home() {
-    return <div>Steven is gay</div>
+  return <div>Steven is gay</div>;
 }

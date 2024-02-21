@@ -21,7 +21,6 @@ public class MovieService {
 
   public void addMovie(MovieAddRequest movieAddRequest) {
     Movie newMovie = new Movie(
-      movieAddRequest.id(),
       movieAddRequest.name(),
       movieAddRequest.trailerLink(),
       movieAddRequest.imageLink(),
