@@ -1,76 +1,43 @@
-# Running Frontend & Backend & MySQL container with docker-compose
+# How To Run The Application With Makefile
 
-1. Build Front, Database, Backend images
+## make
 
-   `docker compose -f "docker-compose.yml" up -d --build`
+`Build the Application: Setup frontend, database, backend & initializes the database.`
 
-2. Stop and remove all containers
+## make stop
 
-   `docker stop $(docker ps -a -q)`
+`Stop All Containers: To stop all containers defined in your docker-compose.yml file without removing them`
 
-3. To delete unused/dangling processes when finished
+## make start
 
-   `docker system prune -a --volumes`
+`Start All Containers Again: When you want to start developing again and need to bring up all the containers without rebuilding them`
 
-4. To rerun all stopped containers
+## make re
 
-`docker start $(docker ps -a -q -f "status=exited")`
+`Restart All Containers: If you need to restart all containers (for example, after making changes to your configuration files that don't require rebuilding the images).`
 
-# Database
+## make clean
 
-1. Run docker-compose as shown above
+`stops & removes all the containers`
 
-   `docker compose -f "docker-compose.yml" up -d --build`
+# Database (only works when you have the containers running)
 
-2. Start instance of MySQL
+1. Start instance of MySQL in your terminal
 
    `docker exec -it db bash`
 
-3. Connect to Database
+2. Connect to Database
 
    `mysql -u swe -p`
 
-4. Put in password
+3. Put in the password
 
    `password`
 
-# Running the Frontend container
-
-1. Build the image
-
-   `docker build --pull --rm -f "frontend.dockerfile" -t cinemaebookingsystem:latest "."`
-
-2. Create and run container
-
-   `docker run -p 3000:3000 cinemaebookingsystem:latest`
-
-3. Client will be hosted at http://localhost:3000/
-
-# Running the Backend container
-
-1. Build the image
-
-   `docker build --pull --rm -f "backend.dockerfile" -t cinemaebookingsystem:latest "."`
-
-2. Create and run container
-
-   `docker run -p 8080:8080 cinemaebookingsystem:latest`
-
-3. Server will be hosted at http://localhost:3000/
-
-   _Currently since there's no implementation, the container closes instantly after running. Might not work, we will see once there's actual endpoints and implementation added._
-
-## Exposed Ports
+# Exposed Ports
 
 Frontend: `3000`
 
 Backend: `8080`
 
 Database: `3306`
-
-## Initialize Dummy Data
-
-1. Install dependencies for Python using the following commands
-   ```pip3 install mysql-connector-python```
-   ```pip3 install pandas```
-2. Make sure your DB Container is running and execute the `initializer.py` file, which is located in `src/data`

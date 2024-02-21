@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+@Repository("jdbc")
 public class MovieJDBCDataAccessService implements MovieDAO {
 
   private final JdbcTemplate jdbcTemplate;
