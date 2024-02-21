@@ -18,11 +18,24 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-// @Table(name = "movies")
 @Entity
+@Table(name = "movies")
 public class Movie {
 
   public Movie() {}
+
+  @Id
+  @SequenceGenerator(
+    name = "movie_id_seq",
+    sequenceName = "movie_id_seq",
+    allocationSize = 1
+  )
+  @GeneratedValue(
+    strategy = GenerationType.SEQUENCE,
+    generator = "movie_id_sequence"
+  )
+  @Column(name = "movie_id", nullable = false)
+  private Integer id;
 
   @Column(name = "movie_name", nullable = false)
   private String name;
@@ -37,15 +50,21 @@ public class Movie {
   private String description;
 
   public Movie(
+    Integer id,
     String name,
     String trailerLink,
     String imageLink,
     String description
   ) {
+    this.id = id;
     this.name = name;
     this.trailerLink = trailerLink;
     this.imageLink = imageLink;
     this.description = description;
+  }
+
+  public Integer getId() {
+    return id;
   }
 
   public String getName() {
@@ -84,7 +103,9 @@ public class Movie {
   public String toString() {
     return (
       "Movie{" +
-      "name='" +
+      "id=" +
+      id +
+      ", name='" +
       name +
       '\'' +
       ", trailer_link='" +
