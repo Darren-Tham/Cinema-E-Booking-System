@@ -8,9 +8,6 @@ try:
     )
     print("Successfully connected to DB")
     cursor = conn.cursor()
-    cursor.execute(
-        "CREATE TABLE movies (id INT NOT NULL PRIMARY KEY, movie_name VARCHAR(255) NOT NULL, trailer_link TEXT NOT NULL, image_link TEXT NOT NULL, movie_desc TEXT)"
-    )
     data = pd.read_csv("./Cinema-E-Booking-System/src/data/movies_data.csv")
     for i, row in data.iterrows():
         cursor.execute(
