@@ -10,6 +10,11 @@ start:
 
 re:
 	docker compose restart
+start:
+	docker compose start
+
+re:
+	docker compose restart
 clean:
 	docker stop $$(docker ps -a -q)
 	docker system prune -a --volumes

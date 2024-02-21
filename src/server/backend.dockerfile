@@ -18,6 +18,8 @@ FROM amazoncorretto:17
 # Create a volume point
 VOLUME /tmp
 
+# set hostname to localhost
+ENV HOSTNAME "0.0.0.0"
 
 # Copy the JAR file from the build stage
 COPY --from=builder /app/target/cinema-0.0.1-SNAPSHOT.jar app.jar
