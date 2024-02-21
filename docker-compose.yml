@@ -26,7 +26,7 @@ services:
       MYSQL_USER: swe
       MYSQL_PASSWORD: password
       MYSQL_PORT: 3306
-    links:
+    depends_on:
       - db
   db:
     container_name: db
