@@ -52,7 +52,19 @@ public class Movie {
     this.imageLink = imageLink;
     this.description = description;
   }
-
+  public Movie(
+    Integer id,
+    String name,
+    String trailerLink,
+    String imageLink,
+    String description
+  ) {
+    this.id = id;
+    this.name = name;
+    this.trailerLink = trailerLink;
+    this.imageLink = imageLink;
+    this.description = description;
+  }
   public Integer getId() {
     return id;
   }
