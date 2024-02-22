@@ -11,9 +11,8 @@ try:
     data = pd.read_csv("src/data/movies_data.csv")
     for i, row in data.iterrows():
         cursor.execute(
-            "INSERT INTO movies VALUES (%s, %s, %s, %s, %s)",
+            "INSERT INTO movies (movie_name, trailer_link, image_link, movie_desc) VALUES (%s, %s, %s, %s)",
             (
-                row["movie_id"],
                 row["movie_name"],
                 row["trailer_link"],
                 row["image_link"],
