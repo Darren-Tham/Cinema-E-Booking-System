@@ -32,15 +32,7 @@ export default function Registration() {
     setShowHomeAddressForm(true)
   }
 
-  const labelStyles = "font-semibold text-white"
-  const inputStyles =
-    "rounded-sm font-semibold outline-none p-[0.375rem] w-full"
   const selectStyles = "rounded-sm font-semibold p-[0.375rem] w-full"
-  const h1Styles = "font-bold text-xl text-white text-center"
-  const buttonStyles =
-    "text-white w-max font-bold px-4 py-2 rounded-sm hover:scale-105 transition-transform duration-300 mt-2"
-  const backButtonStyles = `${buttonStyles} border-[3px] border-white`
-  const nextButtonStyles = `${buttonStyles} bg-jade`
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -68,43 +60,43 @@ export default function Registration() {
             </button>
           </div>
           <form className={getFormStyles(showPersonalInformationForm)}>
-            <h1 className={h1Styles}>Personal Information</h1>
+            <h1 className="h1">Personal Information</h1>
             <div className="flex gap-3">
               <div className="flex flex-col w-1/2">
-                <label htmlFor="first-name" className={labelStyles}>
+                <label htmlFor="first-name" className="label">
                   First Name *
                 </label>
-                <input id="first-name" type="text" className={inputStyles} />
+                <input id="first-name" type="text" className="input" />
               </div>
               <div className="flex flex-col w-1/2">
-                <label htmlFor="last-name" className={labelStyles}>
+                <label htmlFor="last-name" className="label">
                   Last Name *
                 </label>
-                <input id="last-name" type="text" className={inputStyles} />
+                <input id="last-name" type="text" className="input" />
               </div>
             </div>
             <div className="flex flex-col">
-              <label htmlFor="email" className={labelStyles}>
+              <label htmlFor="email" className="label">
                 Email *
               </label>
-              <input id="email" type="text" className={inputStyles} />
+              <input id="email" type="text" className="input" />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="password" className={labelStyles}>
+              <label htmlFor="password" className="label">
                 Password *
               </label>
-              <input id="password" type="password" className={inputStyles} />
+              <input id="password" type="password" className="input" />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="phone-number" className={labelStyles}>
+              <label htmlFor="phone-number" className="label">
                 Phone Number *
               </label>
               <PhoneInput
                 id="phone-number"
                 country="US"
                 maxLength={14}
-                onChange={e => console.log(e)}
-                className={inputStyles}
+                onChange={e => e}
+                className="input"
               />
             </div>
             <div className="flex items-center gap-2 mt-2 mb-1">
@@ -113,13 +105,17 @@ export default function Registration() {
                 type="checkbox"
                 className="w-6 aspect-square"
               />
-              <label
-                htmlFor="promotions"
-                className={`${labelStyles} select-none`}
-              >
+              <label htmlFor="promotions" className="label select-none">
                 Subscribe For Promotions
               </label>
             </div>
+            <button
+              type="button"
+              className="action-button w-full mt-0"
+              onClick={goToPaymentInformationForm}
+            >
+              Next
+            </button>
             <div className="flex justify-center">
               <p className="inline text-white font-semibold mr-3">
                 Already Have An Account?
@@ -131,24 +127,17 @@ export default function Registration() {
                 Log In
               </Link>
             </div>
-            <button
-              type="button"
-              className={`${nextButtonStyles} self-end`}
-              onClick={goToPaymentInformationForm}
-            >
-              Next
-            </button>
             <p className="text-white font-semibold text-sm">* Required Field</p>
           </form>
           <form className={getFormStyles(showPaymentInformationForm)}>
-            <h1 className={h1Styles}>(Optional) Payment Information</h1>
+            <h1 className="h1">(Optional) Payment Information</h1>
             <div
               className="grid gap-3 items-center"
               style={{
                 gridTemplateColumns: "max-content auto"
               }}
             >
-              <h2 className={labelStyles}>Credit Card Type</h2>
+              <h2 className="label">Credit Card Type</h2>
               <select className={selectStyles}>
                 <option />
                 <option>Visa</option>
@@ -158,51 +147,47 @@ export default function Registration() {
               </select>
             </div>
             <div className="flex flex-col">
-              <label htmlFor="credit-card-number" className={labelStyles}>
+              <label htmlFor="credit-card-number" className="label">
                 Credit Card Number
               </label>
-              <input
-                id="credit-card-number"
-                type="text"
-                className={inputStyles}
-              />
+              <input id="credit-card-number" type="text" className="input" />
             </div>
             <div className="flex gap-3">
               <div className="flex flex-col">
-                <label htmlFor="expiration-date" className={labelStyles}>
+                <label htmlFor="expiration-date" className="label">
                   Expiration Date
                 </label>
                 <input
                   id="expiration-date"
                   type="text"
                   placeholder="MM/YYYY"
-                  className={inputStyles}
+                  className="input"
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="cvv" className={labelStyles}>
+                <label htmlFor="cvv" className="label">
                   CVV
                 </label>
-                <input id="cvv" type="password" className={inputStyles} />
+                <input id="cvv" type="password" className="input" />
               </div>
             </div>
             <div className="flex flex-col">
-              <label htmlFor="billing-address" className={labelStyles}>
+              <label htmlFor="billing-address" className="label">
                 Billing Address
               </label>
-              <input id="billing-address" type="text" className={inputStyles} />
+              <input id="billing-address" type="text" className="input" />
             </div>
             <div className="flex justify-between">
               <button
                 type="button"
-                className={backButtonStyles}
+                className="back-button"
                 onClick={goToPersonalInformationForm}
               >
                 Back
               </button>
               <button
                 type="button"
-                className={nextButtonStyles}
+                className="action-button"
                 onClick={goToHomeAddressForm}
               >
                 Next
@@ -210,21 +195,21 @@ export default function Registration() {
             </div>
           </form>
           <form className={getFormStyles(showHomeAddressForm)}>
-            <h1 className={h1Styles}>(Optional) Home Address Information</h1>
+            <h1 className="h1">(Optional) Home Address Information</h1>
             <div className="flex flex-col">
-              <label htmlFor="home-address" className={labelStyles}>
+              <label htmlFor="home-address" className="label">
                 Home Address
               </label>
-              <input id="home-address" type="text" className={inputStyles} />
+              <input id="home-address" type="text" className="input" />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="city" className={labelStyles}>
+              <label htmlFor="city" className="label">
                 City
               </label>
-              <input id="city" type="text" className={inputStyles} />
+              <input id="city" type="text" className="input" />
             </div>
             <div>
-              <h2 className={labelStyles}>State</h2>
+              <h2 className="label">State</h2>
               <select className={selectStyles}>
                 <option />
                 <option>Alabama</option>
@@ -290,22 +275,22 @@ export default function Registration() {
               </select>
             </div>
             <div className="flex flex-col">
-              <label htmlFor="zip-code" className={labelStyles}>
+              <label htmlFor="zip-code" className="label">
                 Zip Code
               </label>
-              <input id="zip-code" type="text" className={inputStyles} />
+              <input id="zip-code" type="text" className="input" />
             </div>
             <div className="flex justify-between">
               <button
                 type="button"
-                className={backButtonStyles}
+                className="back-button"
                 onClick={goToPaymentInformationForm}
               >
                 Back
               </button>
               <button
                 type="submit"
-                className={nextButtonStyles}
+                className="action-button"
                 onClick={e => {
                   e.preventDefault()
                   router.push("/registration-verification-code")
