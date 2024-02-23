@@ -24,7 +24,7 @@ export default function Login() {
             </label>
             <input type="password" id="password" className="input" />
             <Link
-              href="/forgot-password"
+              href="./forgot-password"
               className="text-bright-jade font-semibold w-max hover:scale-105 transition-transform duration-300"
             >
               Forgot Password?
@@ -38,7 +38,7 @@ export default function Login() {
           </button>
           <div className="flex justify-center">
             <p className="p-redirection">Don&apos;t Have An Account?</p>
-            <Link href="/registration" className="link-redirection">
+            <Link href="/registration/registration-page" className="link-redirection">
               Register Here
             </Link>
           </div>
