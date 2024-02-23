@@ -12,7 +12,7 @@ export default function RegistrationConfirmation() {
             and sign in.
           </p>
           <Link
-            href="/login"
+            href="/login/login-page"
             className="bg-jade block text-lg rounded-sm font-bold text-white w-full p-2 hover:scale-105 transition-transform duration-300"
           >
             Login

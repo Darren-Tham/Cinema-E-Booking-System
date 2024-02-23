@@ -16,7 +16,7 @@ export default function RegistrationVerificationCode() {
             className="rounded-sm font-semibold outline-none p-[0.375rem] w-full"
           />
           <Link
-            href="/registration-confirmation"
+            href="./registration-confirmation"
             className="bg-jade text-white w-full font-bold px-4 py-2 rounded-sm hover:scale-[1.025] transition-transform duration-300 mt-2"
           >
             Submit

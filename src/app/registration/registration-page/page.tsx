@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import HomeNavbar from "@/components/HomeNavbar"
 import PhoneInput from "react-phone-number-input/input"
 
-export default function Registration() {
+export default function RegistrationPage() {
   const router = useRouter()
   const [showPersonalInformationForm, setShowPersonalInformationForm] =
     useState(true)
@@ -121,7 +121,7 @@ export default function Registration() {
                 Already Have An Account?
               </p>
               <Link
-                href="/login"
+                href="/login/login-page"
                 className="inline-block font-semibold text-bright-jade hover:scale-[1.075] transition-transform duration-300"
               >
                 Log In
@@ -293,7 +293,7 @@ export default function Registration() {
                 className="action-button"
                 onClick={e => {
                   e.preventDefault()
-                  router.push("/registration-verification-code")
+                  router.push("./registration-verification-code")
                 }}
               >
                 Submit
