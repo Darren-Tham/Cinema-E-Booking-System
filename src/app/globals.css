@@ -16,7 +16,7 @@
     @apply text-white w-max font-bold px-4 py-2 rounded-sm hover:scale-105 transition-transform duration-300 mt-2;
   }
   .back-button {
-    @apply button border-[3px]
+    @apply button border-[3px];
   }
   .action-button {
     @apply button bg-jade;
