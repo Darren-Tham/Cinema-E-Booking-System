@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .label {
+    @apply font-semibold text-white;
+  }
+  .input {
+    @apply rounded-sm font-semibold outline-none p-[0.375rem] w-full;
+  }
+  .h1 {
+    @apply font-bold text-xl text-white text-center;
+  }
+  .button {
+    @apply text-white w-max font-bold px-4 py-2 rounded-sm hover:scale-105 transition-transform duration-300 mt-2;
+  }
+  .back-button {
+    @apply button border-[3px]
+  }
+  .action-button {
+    @apply button bg-jade;
+  }
+  .p-redirection {
+    @apply inline text-white font-semibold mr-2;
+  }
+  .link-redirection {
+    @apply inline-block font-semibold text-bright-jade hover:scale-105 transition-transform duration-300;
+  }
+}
