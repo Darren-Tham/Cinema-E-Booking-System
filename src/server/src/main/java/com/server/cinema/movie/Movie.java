@@ -2,21 +2,10 @@ package com.server.cinema.movie;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "movies")
@@ -52,6 +41,7 @@ public class Movie {
     this.imageLink = imageLink;
     this.description = description;
   }
+
   public Movie(
     Integer id,
     String name,
@@ -65,6 +55,7 @@ public class Movie {
     this.imageLink = imageLink;
     this.description = description;
   }
+
   public Integer getId() {
     return id;
   }
