@@ -18,4 +18,15 @@ public class MovieJPADataAccessService implements MovieDAO {
   public void addMovie(Movie movie) {
     movieRepository.save(movie);
   }
+
+  @Override
+  public Optional<Movie> selectMovieById(Integer movieId) {
+    return movieRepository.findById(movieId);
+  }
+
+  @Override
+  public List<Movie> selectAllMovies() {
+    Page<Movie> page = movieRepository.findAll(Pageable.unpaged());
+    return page.getContent();
+  }
 }

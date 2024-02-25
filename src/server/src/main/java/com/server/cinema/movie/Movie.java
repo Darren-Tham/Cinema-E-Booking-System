@@ -18,16 +18,16 @@ public class Movie {
   @Column(name = "id", nullable = false)
   private Integer id;
 
-  @Column(name = "movie_name", nullable = false, length = 255)
+  @Column(name = "movie_name")
   private String name;
 
-  @Column(name = "trailer_link", nullable = false, columnDefinition = "TEXT")
+  @Column(name = "trailer_link", columnDefinition = "TEXT")
   private String trailerLink;
 
-  @Column(name = "image_link", nullable = false, columnDefinition = "TEXT")
+  @Column(name = "image_link", columnDefinition = "TEXT")
   private String imageLink;
 
-  @Column(name = "movie_desc", nullable = false, columnDefinition = "TEXT")
+  @Column(name = "movie_desc", columnDefinition = "TEXT")
   private String description;
 
   public Movie(
