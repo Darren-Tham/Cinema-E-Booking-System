@@ -44,7 +44,13 @@ public class MovieJDBCDataAccessService implements MovieDAO {
 
   @Override
   public Optional<Movie> selectMovieById(Integer id) {
-    final String sql = "SELECT ID FROM movies WHERE ID = ?";
-    return jdbcTemplate.query(sql, movieRowMapper, id).stream().findFirst();
+    final String sql =
+      "SELECT id, movie_name, trailer_link, image_link, movie_desc FROM movies WHERE id = ?";
+    List<Movie> movies = jdbcTemplate.query(
+      sql,
+      new Object[] { id },
+      movieRowMapper
+    );
+    return movies.stream().findFirst();
   }
 }

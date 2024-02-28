@@ -5,6 +5,8 @@ import com.server.cinema.movie.MovieDTO;
 import com.server.cinema.movie.MovieService;
 import java.util.List;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,12 +30,10 @@ public class MovieController {
   @PostMapping("/add")
   public ResponseEntity<?> addMovie(@RequestBody MovieAddRequest request) {
     movieService.addMovie(request);
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Content-Type", "application/json");
-    return ResponseEntity.ok().headers(headers).build();
+    return ResponseEntity.ok().build();
   }
 
-  @GetMapping("{id}")
+  @GetMapping("/{id}")
   public MovieDTO getMovie(@PathVariable("id") Integer movieId) {
     return movieService.getMovie(movieId);
   }

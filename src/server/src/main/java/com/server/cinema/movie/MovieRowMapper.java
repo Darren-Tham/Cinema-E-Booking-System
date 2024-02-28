@@ -1,6 +1,8 @@
 package com.server.cinema.movie;
 
+import com.server.cinema.movie.Movie;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;

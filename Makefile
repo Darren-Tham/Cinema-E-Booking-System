@@ -2,7 +2,7 @@ setup:
 	docker compose -f "docker-compose.yml" up -d --build
 	pip3 install mysql-connector-python
 	pip3 install pandas
-	sleep 10
+	sleep 15
 	python3 src/data/initializer.py	
 stop:
 	docker compose stop
