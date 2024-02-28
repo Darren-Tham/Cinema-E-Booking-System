@@ -1,4 +1,4 @@
-export default function AddMovie() {
+export default function EditMovie() {
     const buttonStyles =
       "text-white w-max font-bold px-4 py-2 rounded-md hover:scale-105 transition-transform duration-300 mt-2 bg-dark-jade  min-w-[200px] min-h-[50px]";
     const textBox = "mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-full";
@@ -55,7 +55,7 @@ export default function AddMovie() {
                 
         </div>
         <div className="flex justify-center mt-4 bg-light-jade">
-            <button className={buttonStyles}>Confirm and Add Movie</button>
+            <button className={buttonStyles}>Confirm Movie Changes</button>
         </div>
       </div>
       
