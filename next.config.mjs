@@ -1,13 +1,34 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
-  webpackDevMiddleware: (config) => {
-    config.watchOptions = {
-      poll: 1000,
-      aggregateTimeout: 300,
-    };
-    return config;
-  },
-};
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "i0.wp.com"
+      },
+      {
+        protocol: "https",
+        hostname: "movies.universalpictures.com"
+      },
+      {
+        protocol: "https",
+        hostname: "assets-prd.ignimgs.com"
+      },
+      {
+        protocol: "https",
+        hostname: "m.media-amazon.com"
+      },
+      {
+        protocol: "https",
+        hostname: "plcw.tmsimg.com"
+      },
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org"
+      }
+    ]
+  }
+}
 
-export default nextConfig;
+export default nextConfig
