@@ -54,7 +54,7 @@ export default function SeatsPage() {
           <div />
         </div>
         <Link
-          href="/gay"
+          href="/checkout-info"
           className="bg-jade text-white font-semibold w-max py-3 px-20 text-xl rounded-md self-end scale-transition"
         >
           Next
