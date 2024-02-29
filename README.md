@@ -1,28 +1,32 @@
 # How To Run The Application With Makefile
 
-### make
+## make
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 `Build the Application: Setup frontend, database, backend & initializes the database`
 =======
 Build the Application: Setup frontend, database, backend & initializes the database.
 >>>>>>> 71aaeae (Update README.md)
+=======
+`Build the Application: Setup frontend, database, backend & initializes the database`
+>>>>>>> ac080af (fix setup makefile, removed id because it will auto generate)
 
-### make stop
+## make stop
 
-Stop All Containers: To stop all containers defined in your docker-compose.yml file without removing them
+`Stop All Containers: To stop all containers defined in your docker-compose.yml file without removing them`
 
-### make start
+## make start
 
-Reruns All Containers Again: When you want to start developing again and need to bring up all the containers without rebuilding them
+`Start All Containers Again: When you want to start developing again and need to bring up all the containers without rebuilding them`
 
-### make re
+## make re
 
-Restart All Containers: If you need to restart all containers (for example, after making changes to your configuration files that don't require rebuilding the images).
+`Restart All Containers: If you need to restart all containers (for example, after making changes to your configuration files that don't require rebuilding the images).`
 
-### make clean
+## make clean
 
-Removes Images & Containers: When you're done with the application or if you need to rebuild the images, it'll delete everything to free up space.
+`stops & removes all the containers`
 
 # Database (only works when you have the containers running)
 

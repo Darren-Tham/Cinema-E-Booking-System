@@ -42,6 +42,7 @@ public class Movie {
   private String description;
 
   public Movie(
+<<<<<<< HEAD
     String name,
     String trailerLink,
     String imageLink,
@@ -54,12 +55,13 @@ public class Movie {
   }
   public Movie(
     Integer id,
+=======
+>>>>>>> ac080af (fix setup makefile, removed id because it will auto generate)
     String name,
     String trailerLink,
     String imageLink,
     String description
   ) {
-    this.id = id;
     this.name = name;
     this.trailerLink = trailerLink;
     this.imageLink = imageLink;
