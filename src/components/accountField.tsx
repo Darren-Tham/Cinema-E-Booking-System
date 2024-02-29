@@ -1,19 +1,30 @@
-interface accountFieldProps {
-    email: string;
-    color: string;
+"use client"
+
+import ProfileIcon from "@public/profile-icon.svg"
+import Image from "next/image"
+import { useState } from "react"
+
+interface Props {
+  email: string
 }
 
-const AccountField: React.FC<accountFieldProps> = ({ email, color}) => {
-    return (
-        <div className="flex items-center space-x-4"> 
-            <span className="material-symbols-outlined text-8xl flex"> account_circle </span>
-            <div className={`flex ${color} items-center justify-between rounded h-10 w-full max-w-md overflow-hidden px-4 py-2`}>
-            <div>{email}</div>
-        </div>            
-        <button className="bg-red-600 px-4 py-2 rounded text-white">Suspend</button>
-        </div>
-        
-    );
-}
+export default function AccountField({ email }: Readonly<Props>) {
+  const [isSuspended, setIsSuspended] = useState(false)
 
-export default AccountField
+  return (
+    <div className="flex items-center gap-4">
+      <Image src={ProfileIcon} alt="Profile Icon" width={75} />
+      <div className="flex bg-light-jade items-center justify-between rounded h-10 w-full max-w-md overflow-hidden px-4 py-2">
+        <p className="font-semibold">{email}</p>
+      </div>
+      <button
+        className={`${
+          isSuspended ? "bg-gray-500" : "bg-red-600"
+        } py-2 w-60 rounded-md text-white font-semibold`}
+        onClick={() => setIsSuspended(!isSuspended)}
+      >
+        {isSuspended ? "Unsuspend" : "Suspend"}
+      </button>
+    </div>
+  )
+}

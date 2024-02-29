@@ -1,25 +1,27 @@
-import AccountField from "@/components/accountField"
+import AccountField from "@/components/AccountField"
 
 export default function suspendUser() {
-    return (
-        <div className="flex flex-col bg-black h-screen items-center justify-center">
-        <div className="flex flex-col h-5/6 w-5/12 bg-dark-jade items-center rounded space-y-4">
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
-            <input className="bg-light-jade outline-none flex-grow" />
-            <AccountField email="firstname12345@gmail.com" color="bg-light-jade"/>
-            <AccountField email="firstname12345@gmail.com" color="bg-light-jade"/>
-            <AccountField email="firstname12345@gmail.com" color="bg-light-jade"/>
-            <AccountField email="firstname12345@gmail.com" color="bg-light-jade"/>
-            <AccountField email="firstname12345@gmail.com" color="bg-light-jade"/>
-            <AccountField email="firstname12345@gmail.com" color="bg-light-jade"/>
-            <AccountField email="firstname12345@gmail.com" color="bg-light-jade"/>
-            <AccountField email="firstname12345@gmail.com" color="bg-light-jade"/>
-            <AccountField email="firstname12345@gmail.com" color="bg-light-jade"/>
-            <AccountField email="firstname12345@gmail.com" color="bg-light-jade"/>
-            <AccountField email="firstname12345@gmail.com" color="bg-light-jade"/>
+  return (
+    <div className="flex flex-col bg-black h-screen items-center justify-center">
+      <div className="flex flex-col  p-10 bg-dark-jade items-center rounded space-y-4">
+        <div className="flex items-center gap-3">
+          <label htmlFor="search" className="text-white font-semibold text-lg">
+            Search User
+          </label>
+          <input id="search" className="input w-max" />
         </div>
+        <AccountField email="firstname12345@gmail.com" />
+        <AccountField email="firstname12345@gmail.com" />
+        <AccountField email="firstname12345@gmail.com" />
+        <AccountField email="firstname12345@gmail.com" />
+        <AccountField email="firstname12345@gmail.com" />
+        <AccountField email="firstname12345@gmail.com" />
+        <AccountField email="firstname12345@gmail.com" />
+        <AccountField email="firstname12345@gmail.com" />
+        <AccountField email="firstname12345@gmail.com" />
+        <AccountField email="firstname12345@gmail.com" />
+        <AccountField email="firstname12345@gmail.com" />
+      </div>
     </div>
-    )
+  )
 }
-
-
