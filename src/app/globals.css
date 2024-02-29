@@ -27,4 +27,7 @@
   .link-redirection {
     @apply inline-block font-semibold text-bright-jade hover:scale-105 transition-transform duration-300;
   }
+  .scale-transition {
+    @apply hover:scale-105 transition-transform duration-300;
+  }
 }
