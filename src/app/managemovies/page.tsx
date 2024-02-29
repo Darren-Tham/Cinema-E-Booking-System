@@ -1,6 +1,9 @@
 "use client"
 import {useState} from "react"
 import Image from "next/image"
+import arrowleft from "./arrowleft.png"
+import arrowright from "./arrowright.png"
+
 export default function Manage() {
     const [index, setIndex] = useState(0)
     let movies = [
@@ -72,12 +75,13 @@ export default function Manage() {
                 <input type="text" placeholder="Search Movie to Edit" className="rounded mt-5 w-4/12 h-8 bg-white placeholder:italic placeholder:text-slate-400" />
                 <h1 className="self-start text-white font-sans font-semibold ml-6 text-xl">Movies Currently Showing and Coming Soon</h1>
                 <div className="flex flex-row w-full h-3/5 bg-teal-950 space-x-10 rounded">
-                    <button>Previous</button>
-                    {/* <Image src="https://cdn-icons-png.flaticon.com/256/60/60775.png" alt="arrow" width={15} height={15}/> */} 
+                    <div className="flex items-center">
+                    <Image src={arrowleft} alt="arrow" width={50} height={10}/>
+                    </div>
                     <div className="flex flex-row w-full justify-center space-x-10">
                     {movies.map((movie) => {
                         return (
-                        <div key={movie.movie_name} className="flex flex-col items-center justify-center"> 
+                        <div key={movie.movie_name} className="flex flex-col items-center justify-center "> 
                             <h2 className="font-bold text-sm text-white mb-4">{movie.movie_name}</h2>
                             <div className="flex bg-dark-jade p-3 gap-3 h-3/6 w-full overflow-hidden rounded">
                             <div className="flex flex-col aspect-auto justify-center">
@@ -88,7 +92,9 @@ export default function Manage() {
                         )
                     })}
                     </div>
-                    <button>Next</button>
+                    <div className="flex items-center">
+                      <Image src={arrowright} alt="arrowright" width={75} height={10}/>
+                    </div>
                 </div>
             </div>
         </div>
