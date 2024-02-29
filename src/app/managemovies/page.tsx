@@ -3,7 +3,7 @@ import {useState} from "react"
 import Image from "next/image"
 export default function Manage() {
     const [index, setIndex] = useState(0)
-    const movies = [
+    let movies = [
         {
           "movie_name": "Madame Web",
           "trailer_link": "https://www.youtube.com/watch?v=s_76M4c4LTo",
@@ -13,19 +13,19 @@ export default function Manage() {
         {
           "movie_name": "Oppenheimer",
           "trailer_link": "https://www.youtube.com/watch?v=uYPbbksJxIg",
-          "image_link": "https://movies.universalpictures.com/media/06-opp-dm-mobile-banner-1080x745-now-pl-f01-071223-64bab982784c7-1.jpg",
+          "image_link": "https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_.jpg",
           "movie_desc": "During World War II, Lt. Gen. Leslie Groves Jr. appoints physicist J. Robert Oppenheimer to work on the top-secret Manhattan Project. Oppenheimer and a team of scientists spend years developing and designing the atomic bomb. Their work comes to fruition on July 16, 1945, as they witness the world's first nuclear explosion, forever changing the course of history."
         },
         {
           "movie_name": "The Beekeeper",
           "trailer_link": "https://www.youtube.com/watch?v=CHKn-yDCE2w",
-          "image_link": "https://i0.wp.com/cedars.cedarville.edu/wp/wp-content/uploads/2024/01/The-Beekeeper-Season-2-release-date.jpg?fit=1200%2C630&ssl=1",
+          "image_link": "https://m.media-amazon.com/images/M/MV5BZDkwOTIyZGQtYWNkOS00YzAxLTkwZWUtMzU3YjU4ZDIyYzdlXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
           "movie_desc": "One man's brutal campaign for vengeance takes on national stakes after he is revealed to be a former operative of a powerful and clandestine organization known as \"Beekeepers\"."
         },
         {
           "movie_name": "Wonka",
           "trailer_link": "https://www.youtube.com/watch?v=otNh9bTjXWg",
-          "image_link": "https://assets-prd.ignimgs.com/2023/11/06/wonka-ver18-xlg-button-1699310816628.jpg",
+          "image_link": "https://m.media-amazon.com/images/M/MV5BNDM4NTk0NjktZDJhMi00MmFmLTliMzEtN2RkZDY2OTNiMDgzXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_.jpg",
           "movie_desc": "Armed with nothing but a hatful of dreams, young chocolatier Willy Wonka manages to change the world, one delectable bite at a time."
         },
         {
@@ -65,21 +65,30 @@ export default function Manage() {
           "movie_desc": "Young Asha makes a wish so powerful that it's answered by a cosmic force, a little ball of boundless energy called Star. With Star's help, Asha must save her kingdom from King Magnifico and prove that when the will of one courageous human connects with the magic of the stars, wondrous things can happen."
         }
       ]
+      movies = movies.filter((_, i) => i <= 5)
     return (
         <div className="flex flex-col bg-black h-screen items-center justify-center ">
             <div className="flex flex-col h-5/6 w-10/12 bg-dark-jade items-center space-y-10 rounded-lg">
                 <input type="text" placeholder="Search Movie to Edit" className="rounded mt-5 w-4/12 h-8 bg-white placeholder:italic placeholder:text-slate-400" />
                 <h1 className="self-start text-white font-sans font-semibold ml-6 text-xl">Movies Currently Showing and Coming Soon</h1>
-                <div className="flex flex-row w-10/12 h-3/5 bg-teal-950 rounded">
+                <div className="flex flex-row w-full h-3/5 bg-teal-950 space-x-10 rounded">
                     <button>Previous</button>
+                    {/* <Image src="https://cdn-icons-png.flaticon.com/256/60/60775.png" alt="arrow" width={15} height={15}/> */} 
+                    <div className="flex flex-row w-full justify-center space-x-10">
                     {movies.map((movie) => {
                         return (
-                        <div key={movie.movie_name}> 
-                            <Image src={movie.image_link} alt="movie" width={50} height={50}/>
+                        <div key={movie.movie_name} className="flex flex-col items-center justify-center"> 
+                            <h2 className="font-bold text-sm text-white mb-4">{movie.movie_name}</h2>
+                            <div className="flex bg-dark-jade p-3 gap-3 h-3/6 w-full overflow-hidden rounded">
+                            <div className="flex flex-col aspect-auto justify-center">
+                             <Image src={movie.image_link} alt="movie" width={105} height={100} className="aspect-auto"/>
+                            </div>
+                            </div>
                         </div>
                         )
                     })}
-                    <button>Nexts</button>
+                    </div>
+                    <button>Next</button>
                 </div>
             </div>
         </div>
