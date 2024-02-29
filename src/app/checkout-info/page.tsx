@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default function checkoutInfo() {
   const h1Styles = "font-bold text-4xl text-white text-center p-10"
   const h2Styles = "text-lg text-white font-semibold"
@@ -76,7 +78,12 @@ export default function checkoutInfo() {
             <input className="input" />
             <button className="back-button w-full">Apply Promotions</button>
           </div>
-          <button className="action-button w-full">Checkout</button>
+          <Link
+            href="/order-confirmation"
+            className="action-button w-full text-center"
+          >
+            Checkout
+          </Link>
         </div>
       </div>
     </div>
