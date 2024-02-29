@@ -67,6 +67,22 @@ public class Movie {
     this.imageLink = imageLink;
     this.description = description;
   }
+<<<<<<< HEAD
+=======
+  public Movie(
+    Integer id,
+    String name,
+    String trailerLink,
+    String imageLink,
+    String description
+  ) {
+    this.id = id;
+    this.name = name;
+    this.trailerLink = trailerLink;
+    this.imageLink = imageLink;
+    this.description = description;
+  }
+>>>>>>> 50da65c (AutoId finish imp + fix script)
   public Integer getId() {
     return id;
   }
