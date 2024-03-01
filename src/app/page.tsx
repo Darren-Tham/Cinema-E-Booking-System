@@ -6,27 +6,29 @@ import Link from "next/link"
 import MovieBanner from "@public/movie-banner.png"
 import MovieData from "@/data/movies_data.json"
 import MoviesContainer from "@/components/MoviesContainer"
-import { MovieType } from "@/components/Movie"
 import ReactPlayer from "react-player"
-import { useEffect, useRef, useState } from "react"
 import Cancel from "@public/cancel-icon.svg"
+import ProfileIcon from "@public/profile-icon.svg"
+import { MovieType } from "@/components/Movie"
+import { useEffect, useRef, useState } from "react"
 
 export default function Home() {
+  const [movies, setMovies] = useState<MovieType[]>([])
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [load, setLoad] = useState(false)
   const [playMovie, setPlayMovie] = useState(false)
   const [movieURL, setMovieURL] = useState("")
   const dialogRef = useRef<HTMLDialogElement | null>(null)
 
   useEffect(() => {
+    async function getMovies() {
+      const response = await fetch("http://localhost:8080/movies")
+      const data = await response.json()
+      setMovies(data)
+    }
+    getMovies()
     setLoad(true)
   }, [])
-
-  const movies: MovieType[] = MovieData.map(movie => ({
-    movieName: movie.movie_name,
-    trailerLink: movie.trailer_link,
-    imageLink: movie.image_link,
-    movieDesc: movie.movie_desc
-  }))
 
   function handleTrailerClick(trailerLink: string) {
     dialogRef.current?.showModal()
@@ -53,16 +55,35 @@ export default function Home() {
               />
             </div>
           </div>
-          <div className="flex gap-3">
-            <Link href="/login/login-page" className="action-button">
-              Login
-            </Link>
-            <Link
-              href="/registration/registration-page"
-              className="back-button"
-            >
-              Register
-            </Link>
+          <div className="flex gap-3 items-center">
+            {isLoggedIn ? (
+              <>
+                <Link href="/edit-profile" className="scale-transition">
+                  <Image src={ProfileIcon} alt="Profile" width={45} />
+                </Link>
+                <p className="text-white font-semibold text-lg mr-4">
+                  Hello, User!
+                </p>
+                <button
+                  className="back-button"
+                  onClick={() => setIsLoggedIn(false)}
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/login/login-page" className="action-button">
+                  Login
+                </Link>
+                <Link
+                  href="/registration/registration-page"
+                  className="back-button"
+                >
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </nav>
         <div className="bg-dark-jade p-2">

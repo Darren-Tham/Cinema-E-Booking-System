@@ -1,4 +1,4 @@
-import AccountField from "@/components/accountField";
+import AccountField from "@/components/AccountField"
 
 export default function SuspendUser() {
   return (
@@ -23,5 +23,5 @@ export default function SuspendUser() {
         <AccountField email="firstname12345@gmail.com" />
       </div>
     </div>
-  );
+  )
 }
