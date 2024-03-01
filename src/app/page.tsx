@@ -1,20 +1,17 @@
 "use client"
 
 import Image from "next/image"
-import SearchIcon from "@public/search-icon.svg"
 import Link from "next/link"
-import MovieBanner from "@public/movie-banner.png"
-import MovieData from "@/data/movies_data.json"
 import MoviesContainer from "@/components/MoviesContainer"
 import ReactPlayer from "react-player"
 import Cancel from "@public/cancel-icon.svg"
-import ProfileIcon from "@public/profile-icon.svg"
 import { MovieType } from "@/components/Movie"
 import { useEffect, useRef, useState } from "react"
+import UserNavbar from "@/components/UserNavbar"
+import MainMovieBanner from "@/components/MainMovieBanner"
 
 export default function Home() {
   const [movies, setMovies] = useState<MovieType[]>([])
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [load, setLoad] = useState(false)
   const [playMovie, setPlayMovie] = useState(false)
   const [movieURL, setMovieURL] = useState("")
@@ -39,56 +36,8 @@ export default function Home() {
   return (
     <>
       <div className="min-h-screen bg-black flex flex-col">
-        <nav className="w-full p-4 flex justify-between px-10">
-          <div className="flex gap-5 items-center">
-            <h1 className="font-bold text-white text-2xl">
-              Cinema E-Booking System
-            </h1>
-            <div className="flex items-center bg-jade rounded-full p-2">
-              <label htmlFor="search">
-                <Image src={SearchIcon} alt="Search Icon" width={30} />
-              </label>
-              <input
-                id="search"
-                placeholder="Search..."
-                className="input rounded-full w-96 bg-transparent text-white placeholder:text-neutral-200"
-              />
-            </div>
-          </div>
-          <div className="flex gap-3 items-center">
-            {isLoggedIn ? (
-              <>
-                <Link href="/edit-profile" className="scale-transition">
-                  <Image src={ProfileIcon} alt="Profile" width={45} />
-                </Link>
-                <p className="text-white font-semibold text-lg mr-4">
-                  Hello, User!
-                </p>
-                <button
-                  className="back-button"
-                  onClick={() => setIsLoggedIn(false)}
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login/login-page" className="action-button">
-                  Login
-                </Link>
-                <Link
-                  href="/registration/registration-page"
-                  className="back-button"
-                >
-                  Register
-                </Link>
-              </>
-            )}
-          </div>
-        </nav>
-        <div className="bg-dark-jade p-2">
-          <Image src={MovieBanner} alt="Movie Banner" />
-        </div>
+        <UserNavbar />
+        <MainMovieBanner />
         <div className="w-screen flex items-center my-10 flex-col gap-8">
           <MoviesContainer
             heading="Now Playing"
