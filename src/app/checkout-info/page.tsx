@@ -10,6 +10,9 @@ export default function checkoutInfo() {
     <div className="grid place-items-center bg-black min-h-screen">
       <div className="flex gap-10">
         <div className="flex flex-col bg-dark-jade rounded-md pb-10 h-max">
+          <button className="action-button mt-11 ml-11">
+            Use Existing Card
+          </button>
           <h1 className={h1Styles}>Billing Information</h1>
           <div className="flex flex-col gap-4">
             <div className="flex items-center space-x-20 px-10 ">
