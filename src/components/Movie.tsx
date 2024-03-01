@@ -6,7 +6,6 @@ export type MovieType = {
   movieName: string
   trailerLink: string
   imageLink: string
-  movieDesc: string
 }
 
 type Props = {
