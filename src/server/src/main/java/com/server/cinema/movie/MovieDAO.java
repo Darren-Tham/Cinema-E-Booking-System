@@ -7,4 +7,5 @@ public interface MovieDAO {
   void addMovie(Movie movie);
   Optional<Movie> selectMovieById(Integer movieId);
   List<Movie> selectAllMovies();
+  List<Movie> searchMovies(String searchQuery);
 }
