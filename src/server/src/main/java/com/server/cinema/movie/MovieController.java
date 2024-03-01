@@ -42,4 +42,11 @@ public class MovieController {
   public List<MovieDTO> getMovies() {
     return movieService.getAllMovies();
   }
+
+  @GetMapping("/search")
+  public List<MovieDTO> searchMovies(
+    @RequestParam("query") String searchQuery
+  ) {
+    return movieService.searchMovies(searchQuery);
+  }
 }

@@ -46,4 +46,12 @@ public class MovieService {
       .map(movieDTOMapper)
       .collect(Collectors.toList());
   }
+
+  public List<MovieDTO> searchMovies(String searchQuery) {
+    return movieDAO
+      .searchMovies(searchQuery)
+      .stream()
+      .map(movieDTOMapper)
+      .collect(Collectors.toList());
+  }
 }
