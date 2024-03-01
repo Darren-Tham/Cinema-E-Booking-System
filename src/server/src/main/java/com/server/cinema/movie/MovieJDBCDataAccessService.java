@@ -25,14 +25,22 @@ public class MovieJDBCDataAccessService implements MovieDAO {
   @Override
   public void addMovie(Movie movie) {
     final String sql =
-      "INSERT INTO movies (movie_name, trailer_link, image_link, movie_desc) VALUES (?, ?, ?, ?)";
-
+      "INSERT INTO movies (movie_name, trailer_link, image_link, movie_desc, movie_rating_code, movie_category, movie_producer, movie_director, movie_cast, movie_times, movie_date, review, synopsis) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     jdbcTemplate.update(
       sql,
       movie.getName(),
       movie.getTrailerLink(),
       movie.getImageLink(),
-      movie.getDescription()
+      movie.getDescription(),
+      movie.getRatingCode(),
+      movie.getCategory(),
+      movie.getProducer(),
+      movie.getDirector(),
+      movie.getCast(),
+      movie.getTimes(),
+      movie.getDate(),
+      movie.getReview(),
+      movie.getSynopsis()
     );
   }
 
