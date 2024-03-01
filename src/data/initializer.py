@@ -31,8 +31,8 @@ try:
     data = pd.read_csv("src/data/movies_data_updated.csv")
     for i, row in data.iterrows():
         cursor.execute(
-            "INSERT INTO movies (movie_name, trailer_link, image_link, movie_desc, movie_rating_code, movie_producer,movie_category,movie_director,movie_cast,movie_times,movie_date, review, sypnosis)" + 
-            "VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s,%s)",
+            "INSERT INTO movies (movie_name, trailer_link, image_link, movie_desc, movie_rating_code, movie_producer,movie_category,movie_director,movie_cast,movie_times,movie_date, review, synopsis)"
+            + "VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s,%s)",
             (
                 row["movie_name"],
                 row["trailer_link"],
@@ -46,7 +46,7 @@ try:
                 row["movie_times"],
                 row["movie_date"],
                 row["review"],
-                row["sypnosis"]
+                row["synopsis"],
             ),
         )
     conn.commit()  # IMPORTANT! Always commit the transaction to update the values in the database
