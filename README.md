@@ -41,3 +41,9 @@ Frontend: `3000`
 Backend: `8080`
 
 Database: `3306`
+
+# Test Case
+
+INSERT INTO movies(movie_name, trailer_link, image_link, movie_category) VALUES ('Parasite', 'https://www.youtube.com/watch?v=SEUXfv87Wpk', 'https://m.media-amazon.com/images/I/91KArYP03YL._AC_UF894,1000_QL80*.jpg', 'Now Playing');
+
+INSERT INTO movies(movie_name, trailer_link, image_link, movie_category) VALUES ('Parasite', 'https://www.youtube.com/watch?v=SEUXfv87Wpk', 'https://m.media-amazon.com/images/I/91KArYP03YL._AC_UF894,1000_QL80*.jpg', 'Coming Soon');
