@@ -23,13 +23,20 @@ export default function SearchQuery({ params: { query } }: Readonly<Props>) {
       const data = await response.json()
       setMovies(data)
     }
+    getMovies()
   }, [query])
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
       <UserNavbar />
       <MainMovieBanner />
-      <MoviesContainer heading="Search" movies={movies} />
+      <div className="w-screen flex justify-center my-10">
+        {movies.length === 0 ? (
+          <p className="text-white font-bold text-3xl">No Movies Found</p>
+        ) : (
+          <MoviesContainer heading="Search" movies={movies} />
+        )}
+      </div>
     </div>
   )
 }
