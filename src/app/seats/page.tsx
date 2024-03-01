@@ -53,12 +53,20 @@ export default function SeatsPage() {
           <div />
           <div />
         </div>
-        <Link
-          href="/checkout-info"
-          className="bg-jade text-white font-semibold w-max py-3 px-20 text-xl rounded-md self-end scale-transition"
-        >
-          Next
-        </Link>
+        <div className="flex justify-between w-full">
+          <Link
+            href="/ticket-summary"
+            className="border-[3px] text-white font-semibold w-max py-3 px-20 text-xl rounded-md scale-transition"
+          >
+            Back
+          </Link>
+          <Link
+            href="/checkout-info"
+            className="bg-jade text-white font-semibold w-max py-3 px-20 text-xl rounded-md scale-transition"
+          >
+            Next
+          </Link>
+        </div>
       </div>
     </div>
   )
