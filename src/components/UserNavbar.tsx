@@ -1,13 +1,14 @@
 "use client"
 
 import SearchIcon from "@public/search-icon.svg"
-import MovieData from "@/data/movies_data.json"
 import ProfileIcon from "@public/profile-icon.svg"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function UserNavbar() {
+  const router = useRouter()
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   return (
     <nav className="w-full p-4 flex justify-between px-10">
@@ -23,6 +24,12 @@ export default function UserNavbar() {
             id="search"
             placeholder="Search..."
             className="input rounded-full w-96 bg-transparent text-white placeholder:text-neutral-200"
+            onKeyDown={e => {
+              if (e.key !== "Enter") {
+                return
+              }
+              router.push(`/search/${e.currentTarget.value}`)
+            }}
           />
         </div>
       </div>

@@ -29,6 +29,7 @@ export default function SearchQuery({ params: { query } }: Readonly<Props>) {
     <div className="min-h-screen bg-black flex flex-col">
       <UserNavbar />
       <MainMovieBanner />
+      <MoviesContainer heading="Search" movies={movies} />
     </div>
   )
 }
