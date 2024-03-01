@@ -1,18 +1,18 @@
 export default function EditMovie() {
     const buttonStyles =
-      "text-white w-max font-bold px-4 py-2 rounded-md hover:scale-105 transition-transform duration-300 mt-2 bg-dark-jade  min-w-[200px] min-h-[50px]";
+    "text-white w-max font-bold px-4 py-2 rounded-md hover:scale-105 transition-transform duration-300 mt-2 bg-teal-950 border-2 min-w-[200px] min-h-[50px]";
     const textBox = "mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-full";
     const textBoxNumbers = "mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-24";
 
     return (
-      <div className="flex justify-center items-center flex-col h-screen bg-light-jade">
+      <div className="flex justify-center items-center flex-col h-screen bg-dark-jade">
         <div className="flex flex-row gap-2 justify-center items-center">
-            <div className="bg-dark-jade p-16 rounded-lg flex flex-col items-center mt-2"></div>
+            <div className="bg-teal-950 p-16 rounded-lg flex flex-col items-center mt-2"></div>
             <div className="w-10 h-10 rounded-full bg-white hover:scale-105 transition-transform duration-300">
                             <img src="https://static.thenounproject.com/png/187803-200.png"></img>
             </div>
         </div>
-        <div className="bg-dark-jade p-16 rounded-lg flex flex-col gap-5 items-center mt-2">
+        <div className="bg-teal-950 p-16 rounded-lg flex flex-col gap-5 items-center mt-2">
             <div className="flex flex-row items-center gap-12">
                 <label htmlFor="title" className="block font-large text-white">Title:</label>
                 <input type="text" id="title" name="title" className={textBox}placeholder="Enter title..." />
@@ -54,7 +54,7 @@ export default function EditMovie() {
             </div>
                 
         </div>
-        <div className="flex justify-center mt-4 bg-light-jade">
+        <div className="flex justify-center mt-4 bg-dark-jade">
             <button className={buttonStyles}>Confirm Movie Changes</button>
         </div>
       </div>
