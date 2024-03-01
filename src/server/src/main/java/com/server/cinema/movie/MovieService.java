@@ -26,7 +26,16 @@ public class MovieService {
       movieAddRequest.name(),
       movieAddRequest.trailerLink(),
       movieAddRequest.imageLink(),
-      movieAddRequest.description()
+      movieAddRequest.description(),
+      movieAddRequest.ratingCode(),
+      movieAddRequest.category(),
+      movieAddRequest.producer(),
+      movieAddRequest.director(),
+      movieAddRequest.cast(),
+      movieAddRequest.times(),
+      movieAddRequest.date(),
+      movieAddRequest.review(),
+      movieAddRequest.synopsis()
     );
 
     movieDAO.addMovie(newMovie);
