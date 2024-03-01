@@ -28,7 +28,7 @@ try:
     );
     """
     cursor.execute(create_table_query)
-    data = pd.read_csv("src/data/movies_data.csv")
+    data = pd.read_csv("src/data/movies_data_updated.csv")
     for i, row in data.iterrows():
         cursor.execute(
             "INSERT INTO movies (movie_name, trailer_link, image_link, movie_desc, movie_rating_code, movie_producer,movie_category,movie_director,movie_cast,movie_times,movie_date, review, sypnosis)" + 
