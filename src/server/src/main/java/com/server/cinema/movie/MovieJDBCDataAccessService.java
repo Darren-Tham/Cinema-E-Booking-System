@@ -53,4 +53,14 @@ public class MovieJDBCDataAccessService implements MovieDAO {
     );
     return movies.stream().findFirst();
   }
+
+  @Override
+  public List<Movie> searchMovies(String searchQuery) {
+    final String sql = "SELECT * FROM movies WHERE movie_name LIKE ?";
+    return jdbcTemplate.query(
+      sql,
+      new Object[] { "%" + searchQuery + "%" },
+      movieRowMapper
+    );
+  }
 }

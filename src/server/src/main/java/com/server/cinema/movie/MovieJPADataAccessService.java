@@ -29,4 +29,9 @@ public class MovieJPADataAccessService implements MovieDAO {
     Page<Movie> page = movieRepository.findAll(Pageable.unpaged());
     return page.getContent();
   }
+
+  @Override
+  public List<Movie> searchMovies(String searchQuery) {
+    return movieRepository.findByNameLike(searchQuery);
+  }
 }
