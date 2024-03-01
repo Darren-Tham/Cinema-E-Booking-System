@@ -17,7 +17,16 @@ public class MovieRowMapper implements RowMapper<Movie> {
       rs.getString("movie_name"),
       rs.getString("trailer_link"),
       rs.getString("image_link"),
-      rs.getString("movie_desc")
+      rs.getString("movie_desc"),
+      rs.getString("movie_rating_code"),
+      rs.getString("movie_category"),
+      rs.getString("movie_producer"),
+      rs.getString("movie_director"),
+      rs.getString("movie_cast"),
+      rs.getString("movie_times"),
+      rs.getString("movie_date"),
+      rs.getString("review"),
+      rs.getString("synopsis")
     );
   }
 }
