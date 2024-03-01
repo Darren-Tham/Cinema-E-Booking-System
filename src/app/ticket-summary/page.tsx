@@ -55,12 +55,20 @@ export default function Checkout() {
             <p className={pStyles}>Total</p>
             <p className={pStyles}>${(subtotal + taxes).toFixed(2)}</p>
           </div>
-          <Link
-            href="/seats"
-            className="bg-jade text-white font-semibold w-max py-3 px-20 text-xl rounded-md self-end scale-transition"
-          >
-            Pick Seats
-          </Link>
+          <div className="flex gap-10">
+            <Link
+              href="/theaters-and-times"
+              className="border-[3px] text-white py-3 px-20 font-semibold text-xl scale-transition"
+            >
+              Back
+            </Link>
+            <Link
+              href="/seats"
+              className="bg-jade text-white font-semibold w-max py-3 px-20 text-xl rounded-md scale-transition"
+            >
+              Pick Seats
+            </Link>
+          </div>
         </div>
       </div>
     </div>
