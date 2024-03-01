@@ -52,6 +52,26 @@ export default function EditMovie() {
                 <label htmlFor="genre" className="block font-large text-white">Genre:</label>
                 <input type="text" id="genre" name="genre" className={textBox}placeholder="Enter genre of movie..." />
             </div>
+            <div className="flex items-center min-w-0 gap-4">
+              <label htmlFor="end-date" className="text-gray-100">
+                Date:
+              </label>
+              <input
+                id="end-date"
+                type="date"
+                className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex items-center min-w-0 gap-4">
+              <label htmlFor="end-date" className="text-gray-100">
+                Time:
+              </label>
+              <input
+                id="end-date"
+                type="time"
+                className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
                 
         </div>
         <div className="flex justify-center mt-4 bg-dark-jade">
