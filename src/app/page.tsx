@@ -13,6 +13,7 @@ import { MovieType } from "@/components/Movie"
 import { useEffect, useRef, useState } from "react"
 
 export default function Home() {
+  const [movies, setMovies] = useState<MovieType[]>([])
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [load, setLoad] = useState(false)
   const [playMovie, setPlayMovie] = useState(false)
@@ -20,15 +21,14 @@ export default function Home() {
   const dialogRef = useRef<HTMLDialogElement | null>(null)
 
   useEffect(() => {
+    async function getMovies() {
+      const response = await fetch("http://localhost:8080/movies")
+      const data = await response.json()
+      setMovies(data)
+    }
+    getMovies()
     setLoad(true)
   }, [])
-
-  const movies: MovieType[] = MovieData.map(movie => ({
-    movieName: movie.movie_name,
-    trailerLink: movie.trailer_link,
-    imageLink: movie.image_link,
-    movieDesc: movie.movie_desc
-  }))
 
   function handleTrailerClick(trailerLink: string) {
     dialogRef.current?.showModal()
