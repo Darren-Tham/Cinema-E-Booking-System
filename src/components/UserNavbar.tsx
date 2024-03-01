@@ -13,9 +13,12 @@ export default function UserNavbar() {
   return (
     <nav className="w-full p-4 flex justify-between px-10">
       <div className="flex gap-5 items-center">
-        <h1 className="font-bold text-white text-2xl">
+        <Link
+          href="/"
+          className="font-bold text-white text-2xl scale-transition"
+        >
           Cinema E-Booking System
-        </h1>
+        </Link>
         <div className="flex items-center bg-jade rounded-full p-2">
           <label htmlFor="search">
             <Image src={SearchIcon} alt="Search Icon" width={30} />
