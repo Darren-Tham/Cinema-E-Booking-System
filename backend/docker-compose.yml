@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: db
+    image: mysql:8.3.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_USER: swe
+      MYSQL_PASSWORD: pass
+      MYSQL_DATABASE: cinema
+    ports:
+      - 3306:3306
+  server:
+    container_name: server
+    image: server
+    build:
+      context: .
+      dockerfile: server.dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
