@@ -16,45 +16,45 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private int id;
+    private int movieId;
 
     @Column(nullable = false)
-    private String name;
+    private String movieName;
 
     @Column()
-    private String trailerLink;
+    private String movieTrailerLink;
 
     @Column()
-    private String imageLink;
+    private String movieImageLink;
 
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String movieDescription;
 
     @Column()
-    private String ratingCode;
+    private String movieRatingCode;
 
     @Column()
-    private String category;
+    private String movieCategory;
 
     @Column()
-    private String producer;
+    private String movieProducer;
 
     @Column()
-    private String director;
+    private String movieDirector;
 
     @Column()
-    private String cast;
+    private String movieCast;
 
     @Column()
-    private String times;
+    private String movieTimes;
 
     @Column(columnDefinition = "DATE")
-    private String date;
+    private String movieDates;
 
     @Column(columnDefinition = "TEXT")
-    private String review;
+    private String movieReviews;
 
     @Column(columnDefinition = "TEXT")
-    private String synopsis;
+    private String movieSynopsis;
 
 }
