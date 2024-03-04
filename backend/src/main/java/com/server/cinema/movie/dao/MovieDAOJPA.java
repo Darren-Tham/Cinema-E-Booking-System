@@ -4,18 +4,18 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.server.cinema.movie.entity.Movie;
 import com.server.cinema.movie.repository.MovieRepository;
 
-@Service
-class MovieDataAccessService implements MovieDAO {
+@Repository
+class MovieDAOJPA implements MovieDAO {
 
     private final MovieRepository movieRepository;
 
     @Autowired
-    MovieDataAccessService(final MovieRepository movieRepository) {
+    MovieDAOJPA(final MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
 
