@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
@@ -10,14 +10,19 @@ services:
       MYSQL_PASSWORD: pass
       MYSQL_DATABASE: cinema
     ports:
-      - 3306:3306
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+
   server:
     container_name: server
     image: server
+    restart: always
     build:
       context: .
       dockerfile: server.dockerfile
     ports:
-      - 8080:8080
+      - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
