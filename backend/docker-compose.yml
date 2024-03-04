@@ -17,7 +17,6 @@ services:
   server:
     container_name: server
     image: server
-    restart: always
     build:
       context: .
       dockerfile: server.dockerfile
