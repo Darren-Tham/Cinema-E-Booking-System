@@ -5,11 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public final class Movie {
 
@@ -34,10 +36,10 @@ public final class Movie {
     private String movieRatingCode;
 
     @Column()
-    private String movieCategory;
+    private String movieProducer;
 
     @Column()
-    private String movieProducer;
+    private String movieCategory;
 
     @Column()
     private String movieDirector;
