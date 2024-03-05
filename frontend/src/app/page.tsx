@@ -25,11 +25,11 @@ export default function Home() {
       <div className="w-screen flex items-center my-10 flex-col gap-8">
         <MoviesContainer
           heading="Now Playing"
-          movies={movies.filter(movie => movie.category === "Now Playing")}
+          movies={movies.filter(movie => movie.movieCategory === "Now Playing")}
         />
         <MoviesContainer
           heading="Coming Soon"
-          movies={movies.filter(movie => movie.category === "Coming Soon")}
+          movies={movies.filter(movie => movie.movieCategory === "Coming Soon")}
         />
       </div>
     </div>

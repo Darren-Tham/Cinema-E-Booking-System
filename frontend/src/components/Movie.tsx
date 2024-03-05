@@ -3,21 +3,22 @@ import PlayCircle from "@public/play-circle-icon.svg"
 import Link from "next/link"
 
 export type MovieType = {
-  name: string
-  trailerLink: string
-  imageLink: string
-  category: string
+  movieId: number
+  movieName: string
+  movieTrailerLink: string
+  movieImageLink: string
+  movieCategory: string
 }
 
 type Props = {
-  name: string
-  imageLink: string
+  movieName: string
+  movieImageLink: string
   handleTrailerClick: () => void
 }
 
 export default function Movie({
-  name,
-  imageLink,
+  movieName,
+  movieImageLink,
   handleTrailerClick
 }: Readonly<Props>) {
   return (
@@ -27,10 +28,16 @@ export default function Movie({
           <Image src={PlayCircle} alt="Play Circle" />
         </button>
         <Link href="/theaters-and-times">
-          <Image src={imageLink} alt={name} width={175} height={0} priority />
+          <Image
+            src={movieImageLink}
+            alt={movieName}
+            width={175}
+            height={0}
+            priority
+          />
         </Link>
       </div>
-      <h2 className="text-white text-center font-semibold mt-1">{name}</h2>
+      <h2 className="text-white text-center font-semibold mt-1">{movieName}</h2>
     </div>
   )
 }
