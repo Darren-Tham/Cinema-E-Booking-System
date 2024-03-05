@@ -18,7 +18,7 @@ services:
     container_name: server
     image: server
     build:
-      context: .
+      context: 
       dockerfile: server.dockerfile
     ports:
       - "8080:8080"
