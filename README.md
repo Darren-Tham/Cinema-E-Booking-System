@@ -2,7 +2,7 @@
 
 ## make
 
-`Build the Application: Setup frontend, database, backend & initializes the database`
+`Build the Application by setting up the database, server and backend. Database is also initialized.`
 
 ## make stop
 
@@ -18,7 +18,7 @@
 
 ## make clean
 
-`stops & removes all the containers`
+`Stops and removes all containers, including images.`
 
 # Database (only works when you have the containers running)
 
@@ -28,11 +28,7 @@
 
 2. Connect to Database
 
-   `mysql -u swe -p`
-
-3. Put in the password
-
-   `password`
+   `mysql -uswe -ppass`
 
 ## Exposed Ports
 
