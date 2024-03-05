@@ -31,17 +31,10 @@ class MovieConfig {
         return (final String... args) -> movieRepository.saveAll(getMovies());
     }
 
-    private final InputStream getDataInputStream() {
-        try {
-            return resourceLoader.getResource("classpath:data/movie_data.json").getInputStream();
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
     private final List<Movie> getMovies() {
         try {
-            return OBJECT_MAPPER.readValue(getDataInputStream(), new TypeReference<List<Movie>>() {
+            InputStream inputStream = resourceLoader.getResource("classpath:data/movie_data.json").getInputStream();
+            return OBJECT_MAPPER.readValue(inputStream, new TypeReference<List<Movie>>() {
             });
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
