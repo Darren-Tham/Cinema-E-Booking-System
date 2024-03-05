@@ -15,7 +15,7 @@ public final class MovieService {
     private final MovieDAO movieDAO;
 
     @Autowired
-    private MovieService(final MovieDAO movieDAO) {
+    public MovieService(final MovieDAO movieDAO) {
         this.movieDAO = movieDAO;
     }
 
@@ -23,7 +23,7 @@ public final class MovieService {
         movieDAO.addMovie(movie);
     }
 
-    public Movie getMovie(final int id) {
+    public Movie getMovieById(final int id) {
         return movieDAO
                 .selectMovieById(id)
                 .orElseThrow(() -> new MovieNotFoundException(String.format("Movie with id %d does not exist.", id)));
