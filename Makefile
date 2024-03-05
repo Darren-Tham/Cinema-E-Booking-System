@@ -1,17 +1,14 @@
-setup:
-	docker compose -f "docker-compose.yml" up -d --build
-	pip3 install mysql-connector-python
-	pip3 install pandas
-	sleep 15
-	python3 src/data/initializer.py	
+setup: clean
+	mvn -f server clean package
+	docker compose up --build
 stop:
 	docker compose stop
 start:
 	docker compose start
-data:
-	python3 src/data/initializer.py
 re:
 	docker compose restart
 clean:
-	docker stop $$(docker ps -a -q)
-	docker system prune -a --volumes
+	docker compose down
+	docker rmi cinema-server || echo cinema-server already removed!
+	docker rmi cinema-frontend || echo cinema-frontend already removed!
+	docker rmi mysql:8.3.0 || echo mysql:8.3.0 already removed!
