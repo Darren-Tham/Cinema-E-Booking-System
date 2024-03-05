@@ -7,6 +7,8 @@ start:
 	docker compose start
 re:
 	docker compose restart
+test:
+	mvn -f server test
 clean:
 	docker compose down
 	docker rmi cinema-server || echo cinema-server already removed!
