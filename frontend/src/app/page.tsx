@@ -11,7 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     async function getMovies() {
-      const response = await fetch("http://localhost:8080/movies")
+      const response = await fetch("http://localhost:8080/api/movie")
       const data = await response.json()
       setMovies(data)
     }

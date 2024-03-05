@@ -1,8 +1,8 @@
 version: "3.8"
 
 services:
-  db:
-    container_name: db
+  cinema-db:
+    container_name: cinema-db
     image: mysql:8.3.0
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
@@ -14,24 +14,24 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
 
-  server:
-    container_name: server
-    image: server
+  cinema-server:
+    container_name: cinema-server
+    image: cinema-server
     build: server
     ports:
       - "8080:8080"
     depends_on:
-      db:
+      cinema-db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", http://localhost:8080/api/health""]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
 
-  frontend:
-    container_name: frontend
-    image: frontend
+  cinema-frontend:
+    container_name: cinema-frontend
+    image: cinema-frontend
     build: frontend
     ports:
       - "3000:3000"
     depends_on:
-      server:
+      cinema-server:
         condition: service_healthy
