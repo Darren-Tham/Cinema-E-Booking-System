@@ -1,4 +1,4 @@
-package com.server.cinema.movie;
+package com.server.cinema.movie.repository;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.server.cinema.movie.entity.Movie;
-import com.server.cinema.movie.repository.MovieRepository;
 
 @DataJpaTest
 final class MovieRepositoryTest {
