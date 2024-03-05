@@ -36,8 +36,8 @@ final class MovieController {
     }
 
     @GetMapping("/{movieId}")
-    Movie getMovie(@PathVariable final int movieId) {
-        return movieService.getMovie(movieId);
+    Movie getMovieById(@PathVariable final int movieId) {
+        return movieService.getMovieById(movieId);
     }
 
     @GetMapping
