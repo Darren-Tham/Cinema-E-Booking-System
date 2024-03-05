@@ -1,4 +1,4 @@
 frontend/node_modules
 frontend/.next
 **/.DS_Store
-backend/target
+server/target
