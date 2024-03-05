@@ -25,7 +25,7 @@ final class MovieController {
     private final MovieService movieService;
 
     @Autowired
-    private MovieController(final MovieService movieService) {
+    public MovieController(final MovieService movieService) {
         this.movieService = movieService;
     }
 
