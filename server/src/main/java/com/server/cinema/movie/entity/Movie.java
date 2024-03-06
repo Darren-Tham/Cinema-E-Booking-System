@@ -23,31 +23,31 @@ public final class Movie {
     @Column(nullable = false)
     private String name;
 
-    @Column()
+    @Column
     private String trailerLink;
 
-    @Column()
+    @Column
     private String imageLink;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column()
+    @Column
     private String ratingCode;
 
-    @Column()
+    @Column
     private String producer;
 
-    @Column()
+    @Column
     private String category;
 
-    @Column()
+    @Column
     private String director;
 
-    @Column()
-    private String cast;
+    @Column
+    private String castMembers;
 
-    @Column()
+    @Column
     private String times;
 
     @Column(columnDefinition = "DATE")
