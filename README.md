@@ -28,7 +28,7 @@
 
 2. Connect to Database
 
-   `mysql -uroot`
+   `mysql`
 
 ## Exposed Ports
 
