@@ -1,4 +1,4 @@
-package com.server.cinema.movie.exception;
+package com.server.cinema.database.movie.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

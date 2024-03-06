@@ -9,8 +9,11 @@ import org.mockito.Mockito;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.server.cinema.movie.entity.Movie;
-import com.server.cinema.movie.repository.MovieRepository;
+
+import com.server.cinema.database.movie.dao.MovieDAO;
+import com.server.cinema.database.movie.dao.MovieDAOJPA;
+import com.server.cinema.database.movie.entity.Movie;
+import com.server.cinema.database.movie.repository.MovieRepository;
 
 @ExtendWith(MockitoExtension.class)
 final class MovieDAOJPATest {

@@ -1,10 +1,15 @@
-package com.server.cinema.movie.entity;
+package com.server.cinema.database.movie.entity;
+
+import java.util.Set;
+
+import com.server.cinema.database.movie_producer.entity.MovieProducer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +22,6 @@ public final class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private int id;
 
     @Column(nullable = false)
@@ -35,8 +39,8 @@ public final class Movie {
     @Column
     private String ratingCode;
 
-    @Column
-    private String producer;
+    @OneToMany(mappedBy = "movie")
+    private Set<MovieProducer> producers;
 
     @Column
     private String category;

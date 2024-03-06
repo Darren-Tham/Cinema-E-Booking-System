@@ -1,4 +1,4 @@
-package com.server.cinema.movie.dao;
+package com.server.cinema.database.movie.dao;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,16 +6,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.server.cinema.movie.entity.Movie;
-import com.server.cinema.movie.repository.MovieRepository;
+import com.server.cinema.database.movie.entity.Movie;
+import com.server.cinema.database.movie.repository.MovieRepository;
 
 @Repository
-class MovieDAOJPA implements MovieDAO {
+public class MovieDAOJPA implements MovieDAO {
 
     private final MovieRepository movieRepository;
 
     @Autowired
-    MovieDAOJPA(final MovieRepository movieRepository) {
+    public MovieDAOJPA(final MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
 

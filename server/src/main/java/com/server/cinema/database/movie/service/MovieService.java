@@ -1,13 +1,13 @@
-package com.server.cinema.movie.service;
+package com.server.cinema.database.movie.service;
 
 import java.util.List;
 
-import com.server.cinema.movie.dao.MovieDAO;
-import com.server.cinema.movie.entity.Movie;
-import com.server.cinema.movie.exception.MovieNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.server.cinema.database.movie.dao.MovieDAO;
+import com.server.cinema.database.movie.entity.Movie;
+import com.server.cinema.database.movie.exception.MovieNotFoundException;
 
 @Service
 public final class MovieService {

@@ -11,8 +11,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import com.server.cinema.movie.entity.Movie;
-import com.server.cinema.movie.service.MovieService;
+
+import com.server.cinema.database.movie.controller.MovieController;
+import com.server.cinema.database.movie.entity.Movie;
+import com.server.cinema.database.movie.service.MovieService;
 
 @ExtendWith(MockitoExtension.class)
 final class MovieControllerTest {
