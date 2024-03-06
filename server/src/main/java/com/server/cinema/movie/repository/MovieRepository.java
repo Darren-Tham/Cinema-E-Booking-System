@@ -9,7 +9,7 @@ import com.server.cinema.movie.entity.Movie;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
-    @Query("SELECT m FROM Movie m WHERE m.movieName LIKE %?1%")
-    List<Movie> findByMovieNameLike(final String movieName);
+    @Query("SELECT m FROM Movie m WHERE m.name LIKE %?1%")
+    List<Movie> findByMovieNameLike(final String name);
 
 }
