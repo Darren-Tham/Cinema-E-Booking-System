@@ -51,7 +51,7 @@ final class MovieControllerTest {
 
     @Test
     void testGetAllMovies() {
-        movieController.getMovies();
+        movieController.getAllMovies();
         Mockito.verify(movieService).getAllMovies();
     }
 
