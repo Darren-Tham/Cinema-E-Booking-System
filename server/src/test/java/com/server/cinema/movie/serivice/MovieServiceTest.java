@@ -1,10 +1,8 @@
 package com.server.cinema.movie.serivice;
 
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
-
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +10,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import com.server.cinema.movie.dao.MovieDAO;
 import com.server.cinema.movie.entity.Movie;
 import com.server.cinema.movie.exception.MovieNotFoundException;
