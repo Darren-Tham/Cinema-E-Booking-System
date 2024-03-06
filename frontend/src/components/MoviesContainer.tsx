@@ -35,11 +35,9 @@ export default function MoviesContainer({ heading, movies }: Readonly<Props>) {
         <div className="flex bg-dark-jade p-3 gap-3">
           {movies.map(movie => (
             <Movie
-              key={movie.movieId}
-              {...movie}
-              handleTrailerClick={() =>
-                handleTrailerClick(movie.movieTrailerLink)
-              }
+              key={movie.id}
+              movie={movie}
+              handleTrailerClick={() => handleTrailerClick(movie.trailerLink)}
             />
           ))}
         </div>
