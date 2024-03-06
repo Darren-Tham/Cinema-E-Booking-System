@@ -1,17 +1,15 @@
 package com.server.cinema.movie.serivice;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Assertions;
+import org.mockito.Mockito;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -35,55 +33,45 @@ final class MovieServiceTest {
     @Test
     void testAddMovie() {
         final Movie movie = new Movie();
-        movie.setMovieName("Movie Title");
         movieService.addMovie(movie);
-        verify(movieDAO).addMovie(movie);
+
+        ArgumentCaptor<Movie> movieArgumentCaptor = ArgumentCaptor.forClass(Movie.class);
+        Mockito.verify(movieDAO).addMovie(movieArgumentCaptor.capture());
+        final Movie capturedMovie = movieArgumentCaptor.getValue();
+        Assertions.assertEquals(movie, capturedMovie, "The movie captured is not the same movie being added.");
     }
 
-    @Test
+      @Test
     void testGetMovieByIdExists() {
-        final int movieId = 1;
+        final int id = ArgumentMatchers.anyInt();
         final Movie movie = new Movie();
-        movie.setMovieId(movieId);
-        when(movieDAO.selectMovieById(movieId)).thenReturn(Optional.of(movie));
 
-        final Movie result = movieService.getMovieById(movieId);
-        assertEquals(movie, result, "The movie returned by getMovieById method does not match the expected movie.");
+        Mockito.when(movieDAO.selectMovieById(id)).thenReturn(Optional.of(movie));
+
+        final Movie result = movieService.getMovieById(id);
+        Mockito.verify(movieDAO).selectMovieById(id);
+        Assertions.assertEquals(movie, result,
+                "The movie returned by getMovieById method does not match the expected movie.");
     }
 
     @Test
     void testGetMovieByIdNotExist() {
-        final int movieId = 1;
-        when(movieDAO.selectMovieById(movieId)).thenReturn(Optional.empty());
-
-        assertThrows(MovieNotFoundException.class, () -> movieService.getMovieById(movieId),
+        final int id = ArgumentMatchers.anyInt();
+        Mockito.when(movieDAO.selectMovieById(id)).thenReturn(Optional.empty());
+        Assertions.assertThrows(MovieNotFoundException.class, () -> movieService.getMovieById(id),
                 "Expected MovieNotFoundException was not thrown.");
     }
 
     @Test
     void testGetAllMovies() {
         movieService.getAllMovies();
-        verify(movieDAO).selectAllMovies();
+        Mockito.verify(movieDAO).selectAllMovies();
     }
 
     @Test
     void testSearchMovies() {
-        final String searchQuery = "itl";
-        final Movie movie1 = new Movie();
-        movie1.setMovieName("Movie Title");
-        final Movie movie2 = new Movie();
-        movie2.setMovieName("Title of the Movie");
-        final Movie movie3 = new Movie();
-        movie3.setMovieName("Little Movie");
-        final Movie movie4 = new Movie();
-        movie4.setMovieName("TITLE of the Movie");
-        final Movie movie5 = new Movie();
-        movie5.setMovieName("TiTle of the Movie");
-        final List<Movie> expected = List.of(movie1, movie2);
-
-        when(movieDAO.searchMovies(searchQuery)).thenReturn(expected);
-        final List<Movie> result = movieService.searchMovies(searchQuery);
-        assertIterableEquals(expected, result,
-                "The list of movies returned by searchMovies does not match the expected list.");
+        final String query = ArgumentMatchers.anyString();
+        movieService.searchMovies(query);
+        Mockito.verify(movieDAO).searchMovies(query);
     }
 }

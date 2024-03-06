@@ -1,13 +1,12 @@
 package com.server.cinema.movie.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
@@ -31,35 +30,37 @@ final class MovieControllerTest {
     @Test
     void testAddMovie() {
         final Movie movie = new Movie();
-        movie.setMovieName(anyString());
+        ResponseEntity<String> resultResponseEntity = movieController.addMovie(movie);
 
-        ResponseEntity<String> result = movieController.addMovie(movie);
+        ArgumentCaptor<Movie> movieArgumentCaptor = ArgumentCaptor.forClass(Movie.class);
+        Mockito.verify(movieService).addMovie(movieArgumentCaptor.capture());
+        final Movie capturedMovie = movieArgumentCaptor.getValue();
+        Assertions.assertEquals(movie, capturedMovie, "The movie captured is not the same movie being added.");
 
-        verify(movieService).addMovie(movie);
-        ResponseEntity<String> expected = new ResponseEntity<>("Movie has been successfully added.",
+        ResponseEntity<String> expectedResponseEntity = new ResponseEntity<>("Movie has been successfully added.",
                 HttpStatus.CREATED);
-        assertEquals(expected, result,
+        Assertions.assertEquals(expectedResponseEntity, resultResponseEntity,
                 "The response entity returned by the addMovie method does not equal the expected response entity.");
     }
 
     @Test
     void testGetMovieById() {
-        final int id = anyInt();
+        final int id = ArgumentMatchers.anyInt();
         movieController.getMovieById(id);
-        verify(movieService).getMovieById(id);
+        Mockito.verify(movieService).getMovieById(id);
     }
 
     @Test
     void testGetAllMovies() {
         movieController.getMovies();
-        verify(movieService).getAllMovies();
+        Mockito.verify(movieService).getAllMovies();
     }
 
     @Test
     void testSearchMovies() {
-        final String query = anyString();
+        final String query = ArgumentMatchers.anyString();
         movieController.searchMovies(query);
-        verify(movieService).searchMovies(query);
+        Mockito.verify(movieService).searchMovies(query);
     }
 
 }

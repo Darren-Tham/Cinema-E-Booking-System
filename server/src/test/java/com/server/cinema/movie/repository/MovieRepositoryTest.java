@@ -1,7 +1,6 @@
 package com.server.cinema.movie.repository;
 
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ final class MovieRepositoryTest {
         movieRepository.save(movie);
 
         List<Movie> result = movieRepository.findByMovieNameLike("itl");
-        assertIterableEquals(List.of(movie), result,
+        Assertions.assertIterableEquals(List.of(movie), result,
                 "Failed finding a movie with its name containing \"itl\".");
     }
 
@@ -53,7 +52,7 @@ final class MovieRepositoryTest {
         movieRepository.saveAll(List.of(movie1, movie2, movie3, movie4, movie5));
 
         List<Movie> result = movieRepository.findByMovieNameLike("itl");
-        assertIterableEquals(List.of(movie1, movie2), result,
+        Assertions.assertIterableEquals(List.of(movie1, movie2), result,
                 "Failed finding two movies with their names containing \"itl\".");
     }
 
@@ -68,7 +67,7 @@ final class MovieRepositoryTest {
         movieRepository.saveAll(List.of(movie1, movie2, movie3));
 
         List<Movie> result = movieRepository.findByMovieNameLike("move");
-        assertTrue(result.isEmpty(), "Expected no movies to contain \"move\" in their names.");
+        Assertions.assertTrue(result.isEmpty(), "Expected no movies to contain \"move\" in their names.");
     }
 
 }
