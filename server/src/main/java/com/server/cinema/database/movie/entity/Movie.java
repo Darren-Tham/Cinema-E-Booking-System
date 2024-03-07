@@ -34,7 +34,7 @@ public final class Movie {
     private String imageLink;
 
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String synopsis;
 
     @Column
     private String ratingCode;
@@ -59,8 +59,5 @@ public final class Movie {
 
     @Column(columnDefinition = "TEXT")
     private String reviews;
-
-    @Column(columnDefinition = "TEXT")
-    private String synopsis;
 
 }
