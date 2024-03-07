@@ -74,8 +74,8 @@ public final class DataCollectors {
     }
 
     private static MovieProducer getMovieProducer(final MovieProducerRecord movieProducerRecord,
-            Map<Integer, Movie> movieMap,
-            Map<Integer, Producer> producerMap) {
+            final Map<Integer, Movie> movieMap,
+            final Map<Integer, Producer> producerMap) {
         final int movieId = movieProducerRecord.movieId();
         final int producerId = movieProducerRecord.producerId();
         final MovieProducerId movieProducerId = new MovieProducerId(movieId, producerId);
