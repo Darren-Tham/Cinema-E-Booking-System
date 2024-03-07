@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
@@ -47,15 +49,11 @@ public final class DataCollectors {
     }
 
     private Map<Integer, Movie> getMovieMap() {
-        final Map<Integer, Movie> movieMap = new HashMap<>();
-        getMovies().forEach((final Movie movie) -> movieMap.put(movie.getId(), movie));
-        return movieMap;
+        return getMovies().stream().collect(Collectors.toMap(Movie::getId, Function.identity()));
     }
 
     private Map<Integer, Producer> getProducerMap() {
-        final Map<Integer, Producer> producerMap = new HashMap<>();
-        getProducers().forEach((final Producer producer) -> producerMap.put(producer.getId(), producer));
-        return producerMap;
+        return getProducers().stream().collect(Collectors.toMap(Producer::getId, Function.identity()));
     }
 
     public List<Producer> getProducers() {
@@ -63,14 +61,12 @@ public final class DataCollectors {
     }
 
     public List<MovieProducer> getMovieProducers() {
-        final List<MovieProducer> movieProducers = new ArrayList<>();
         final Map<Integer, Movie> movieMap = getMovieMap();
         final Map<Integer, Producer> producerMap = getProducerMap();
-        getMovieProducerRecords().forEach((final MovieProducerRecord movieProducerRecord) -> {
-            final MovieProducer movieProducer = getMovieProducer(movieProducerRecord, movieMap, producerMap);
-            movieProducers.add(movieProducer);
-        });
-        return movieProducers;
+        return getMovieProducerRecords().stream()
+                .map((final MovieProducerRecord movieProducerRecord) -> getMovieProducer(movieProducerRecord, movieMap,
+                        producerMap))
+                .collect(Collectors.toList());
     }
 
     private List<MovieProducerRecord> getMovieProducerRecords() {
