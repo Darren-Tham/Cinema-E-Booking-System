@@ -44,7 +44,7 @@ public final class DataCollectors {
     }
 
     public List<Movie> getMovies() {
-        return getData("movie_data.json", Movie.class);
+        return getData("movie.json", Movie.class);
     }
 
     private Map<Integer, Movie> getMovieMap() {
@@ -56,7 +56,7 @@ public final class DataCollectors {
     }
 
     public List<Producer> getProducers() {
-        return getData("producer_data.json", Producer.class);
+        return getData("producer.json", Producer.class);
     }
 
     public List<MovieProducer> getMovieProducers() {
@@ -69,7 +69,7 @@ public final class DataCollectors {
     }
 
     private List<MovieProducerRecord> getMovieProducerRecords() {
-        return getData("movie_producer_data.json", MovieProducerRecord.class);
+        return getData("movie_producer.json", MovieProducerRecord.class);
     }
 
     private static MovieProducer getMovieProducer(final MovieProducerRecord movieProducerRecord,
