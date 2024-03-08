@@ -31,16 +31,11 @@ public final class MovieDataManager extends DataManager
 
     @Override
     public Map<Integer, Movie> getMap() {
-        return DataManager.map(this::getMovies, Movie::getId);
+        return map(this::getMovies, Movie::getId);
     }
 
     private List<Movie> getMovies() {
         return data("movie", Movie.class);
-    }
-
-    @Override
-    public String toString() {
-        return "MOVIE_DATA_MANAGER";
     }
 
 }

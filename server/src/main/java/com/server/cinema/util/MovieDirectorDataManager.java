@@ -52,8 +52,10 @@ public final class MovieDirectorDataManager extends DataManager implements InitR
         return data("movie_director", MovieDirectorRecord.class);
     }
 
-    private static MovieDirector getMovieDirector(final MovieDirectorRecord movieDirectorRecord,
-            final Map<Integer, Movie> movieMap, final Map<Integer, Director> directorMap) {
+    private static MovieDirector getMovieDirector(
+            final MovieDirectorRecord movieDirectorRecord,
+            final Map<Integer, Movie> movieMap,
+            final Map<Integer, Director> directorMap) {
         final int movieId = movieDirectorRecord.movieId();
         final int directorId = movieDirectorRecord.directorId();
         final MovieDirectorId movieDirectorId = new MovieDirectorId(movieId, directorId);
