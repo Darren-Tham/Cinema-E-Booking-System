@@ -1,8 +1,7 @@
-package com.server.cinema.database.movie_director.entity;
+package com.server.cinema.database.movie_producer;
 
-import com.server.cinema.database.director.entity.Director;
-import com.server.cinema.database.movie.entity.Movie;
-import com.server.cinema.database.movie_director.id.MovieDirectorId;
+import com.server.cinema.database.movie.Movie;
+import com.server.cinema.database.producer.Producer;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -17,10 +16,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public final class MovieDirector {
+public class MovieProducer {
 
     @EmbeddedId
-    private MovieDirectorId id;
+    private MovieProducerId id;
 
     @ManyToOne
     @MapsId("movieId")
@@ -28,8 +27,8 @@ public final class MovieDirector {
     private Movie movie;
 
     @ManyToOne
-    @MapsId("directorId")
-    @JoinColumn(name = "director_id")
-    private Director director;
+    @MapsId("producerId")
+    @JoinColumn(name = "producer_id")
+    private Producer producer;
 
 }

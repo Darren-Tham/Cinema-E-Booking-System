@@ -1,4 +1,4 @@
-package com.server.cinema.database.movie.controller;
+package com.server.cinema.database.movie;
 
 import java.util.List;
 
@@ -14,13 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.server.cinema.database.movie.entity.Movie;
-import com.server.cinema.database.movie.service.MovieService;
-
 @CrossOrigin
 @RestController
 @RequestMapping("api/movie")
-public final class MovieController {
+public class MovieController {
 
     private final MovieService movieService;
 

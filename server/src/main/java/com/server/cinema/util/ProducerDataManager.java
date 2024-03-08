@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
-import com.server.cinema.database.producer.entity.Producer;
-import com.server.cinema.database.producer.repository.ProducerRepository;
+import com.server.cinema.database.producer.Producer;
+import com.server.cinema.database.producer.ProducerRepository;
 import com.server.cinema.util.interfaces.InitRunnable;
 import com.server.cinema.util.interfaces.MapSupplier;
 
 @Component
-public final class ProducerDataManager extends DataManager implements MapSupplier<Producer>, InitRunnable {
+public class ProducerDataManager extends DataManager implements MapSupplier<Producer>, InitRunnable {
 
     private final ProducerRepository producerRepository;
 

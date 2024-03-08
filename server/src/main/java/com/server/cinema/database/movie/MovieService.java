@@ -1,4 +1,4 @@
-package com.server.cinema.database.movie.service;
+package com.server.cinema.database.movie;
 
 import java.util.List;
 
@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.server.cinema.database.movie.dao.MovieDAO;
-import com.server.cinema.database.movie.entity.Movie;
 import com.server.cinema.database.movie.exception.MovieNotFoundException;
 
 @Service
-public final class MovieService {
+public class MovieService {
 
     private final MovieDAO movieDAO;
 

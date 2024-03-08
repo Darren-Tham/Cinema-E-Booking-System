@@ -1,4 +1,4 @@
-package com.server.cinema.database.movie_cast_member.id;
+package com.server.cinema.database.movie_cast_member;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public final class MovieCastMemberId implements Serializable {
+public class MovieCastMemberId implements Serializable {
     private int movieId;
     private int castMemberId;
 }

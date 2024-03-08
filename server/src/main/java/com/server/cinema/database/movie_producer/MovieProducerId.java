@@ -1,4 +1,4 @@
-package com.server.cinema.database.movie_producer.id;
+package com.server.cinema.database.movie_producer;
 
 import java.io.Serializable;
 
@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public final class MovieProducerId implements Serializable {
+public class MovieProducerId implements Serializable {
+
     private int movieId;
     private int producerId;
+
 }

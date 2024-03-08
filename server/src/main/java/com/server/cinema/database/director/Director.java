@@ -1,8 +1,8 @@
-package com.server.cinema.database.director.entity;
+package com.server.cinema.database.director;
 
 import java.util.Set;
 
-import com.server.cinema.database.movie_director.entity.MovieDirector;
+import com.server.cinema.database.movie_director.MovieDirector;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

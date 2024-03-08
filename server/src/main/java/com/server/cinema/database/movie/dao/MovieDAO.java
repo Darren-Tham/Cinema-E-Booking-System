@@ -3,7 +3,7 @@ package com.server.cinema.database.movie.dao;
 import java.util.List;
 import java.util.Optional;
 
-import com.server.cinema.database.movie.entity.Movie;
+import com.server.cinema.database.movie.Movie;
 
 public interface MovieDAO {
 

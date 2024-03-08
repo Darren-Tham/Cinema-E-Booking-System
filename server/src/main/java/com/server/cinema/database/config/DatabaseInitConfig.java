@@ -36,7 +36,7 @@ class DatabaseInitConfig {
         return (final String... args) -> initDatabase();
     }
 
-    private final void initDatabase() {
+    private void initDatabase() {
         movieRunnable.init();
         producerRunnable.init();
         directorRunnable.init();

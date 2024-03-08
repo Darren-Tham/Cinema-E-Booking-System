@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.server.cinema.database.movie.entity.Movie;
-import com.server.cinema.database.movie.repository.MovieRepository;
+import com.server.cinema.database.movie.Movie;
+import com.server.cinema.database.movie.MovieRepository;
 
 @Repository
 public class MovieDAOJPA implements MovieDAO {

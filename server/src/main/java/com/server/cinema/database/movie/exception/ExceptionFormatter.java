@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import lombok.Getter;
 
 @Getter
-final class ExceptionFormatter {
+class ExceptionFormatter {
     private final String message;
     private final int statusCode;
     private final HttpStatus httpStatus;

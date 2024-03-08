@@ -1,8 +1,8 @@
-package com.server.cinema.database.cast_member.entity;
+package com.server.cinema.database.producer;
 
 import java.util.Set;
 
-import com.server.cinema.database.movie_cast_member.entity.MovieCastMember;
+import com.server.cinema.database.movie_producer.MovieProducer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-public final class CastMember {
+public class Producer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,6 @@ public final class CastMember {
     @Column
     private String name;
 
-    @OneToMany(mappedBy = "castMember")
-    private Set<MovieCastMember> movies;
-
+    @OneToMany(mappedBy = "producer")
+    private Set<MovieProducer> movies;
 }

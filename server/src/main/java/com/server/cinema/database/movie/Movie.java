@@ -1,10 +1,10 @@
-package com.server.cinema.database.movie.entity;
+package com.server.cinema.database.movie;
 
 import java.util.Set;
 
-import com.server.cinema.database.movie_cast_member.entity.MovieCastMember;
-import com.server.cinema.database.movie_director.entity.MovieDirector;
-import com.server.cinema.database.movie_producer.entity.MovieProducer;
+import com.server.cinema.database.movie_cast_member.MovieCastMember;
+import com.server.cinema.database.movie_director.MovieDirector;
+import com.server.cinema.database.movie_producer.MovieProducer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public final class Movie {
+public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,11 +1,9 @@
-package com.server.cinema.database.movie.repository;
+package com.server.cinema.database.movie;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import com.server.cinema.database.movie.entity.Movie;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {

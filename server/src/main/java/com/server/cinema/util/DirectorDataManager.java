@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
-import com.server.cinema.database.director.entity.Director;
-import com.server.cinema.database.director.repository.DirectorRepository;
+import com.server.cinema.database.director.Director;
+import com.server.cinema.database.director.DirectorRepository;
 import com.server.cinema.util.interfaces.InitRunnable;
 import com.server.cinema.util.interfaces.MapSupplier;
 
 @Component
-public final class DirectorDataManager extends DataManager
+public class DirectorDataManager extends DataManager
         implements MapSupplier<Director>, InitRunnable {
 
     private final DirectorRepository directorRepository;

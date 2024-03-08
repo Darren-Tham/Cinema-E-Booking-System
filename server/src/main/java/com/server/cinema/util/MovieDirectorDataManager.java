@@ -7,17 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
-import com.server.cinema.database.director.entity.Director;
-import com.server.cinema.database.movie.entity.Movie;
-import com.server.cinema.database.movie_director.entity.MovieDirector;
-import com.server.cinema.database.movie_director.id.MovieDirectorId;
-import com.server.cinema.database.movie_director.record.MovieDirectorRecord;
-import com.server.cinema.database.movie_director.repository.MovieDirectorRepository;
+import com.server.cinema.database.director.Director;
+import com.server.cinema.database.movie.Movie;
+import com.server.cinema.database.movie_director.MovieDirector;
+import com.server.cinema.database.movie_director.MovieDirectorId;
+import com.server.cinema.database.movie_director.MovieDirectorRecord;
+import com.server.cinema.database.movie_director.MovieDirectorRepository;
 import com.server.cinema.util.interfaces.InitRunnable;
 import com.server.cinema.util.interfaces.MapSupplier;
 
 @Component
-public final class MovieDirectorDataManager extends DataManager implements InitRunnable {
+public class MovieDirectorDataManager extends DataManager implements InitRunnable {
 
     private final MapSupplier<Movie> movieMapSupplier;
     private final MapSupplier<Director> directorMapSupplier;

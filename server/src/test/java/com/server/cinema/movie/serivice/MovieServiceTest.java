@@ -11,10 +11,10 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.server.cinema.database.movie.Movie;
+import com.server.cinema.database.movie.MovieService;
 import com.server.cinema.database.movie.dao.MovieDAO;
-import com.server.cinema.database.movie.entity.Movie;
 import com.server.cinema.database.movie.exception.MovieNotFoundException;
-import com.server.cinema.database.movie.service.MovieService;
 
 @ExtendWith(MockitoExtension.class)
 final class MovieServiceTest {
