@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public final class MovieProducerId implements Serializable {
-
     private int movieId;
     private int producerId;
-
 }
