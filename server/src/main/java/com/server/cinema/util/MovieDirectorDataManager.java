@@ -17,7 +17,7 @@ import com.server.cinema.util.interfaces.InitRunnable;
 import com.server.cinema.util.interfaces.MapSupplier;
 
 @Component
-public class MovieDirectorDataManager extends DataManager implements InitRunnable {
+public final class MovieDirectorDataManager extends DataManager implements InitRunnable {
 
     private final MapSupplier<Movie> movieMapSupplier;
     private final MapSupplier<Director> directorMapSupplier;

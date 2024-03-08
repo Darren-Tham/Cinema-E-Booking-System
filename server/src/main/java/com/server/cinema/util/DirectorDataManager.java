@@ -13,7 +13,7 @@ import com.server.cinema.util.interfaces.InitRunnable;
 import com.server.cinema.util.interfaces.MapSupplier;
 
 @Component
-public class DirectorDataManager extends DataManager
+public final class DirectorDataManager extends DataManager
         implements MapSupplier<Director>, InitRunnable {
 
     private final DirectorRepository directorRepository;
