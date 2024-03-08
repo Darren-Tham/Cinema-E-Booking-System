@@ -2,6 +2,7 @@ package com.server.cinema.database.movie.entity;
 
 import java.util.Set;
 
+import com.server.cinema.database.movie_cast_member.entity.MovieCastMember;
 import com.server.cinema.database.movie_director.entity.MovieDirector;
 import com.server.cinema.database.movie_producer.entity.MovieProducer;
 
@@ -49,8 +50,8 @@ public final class Movie {
     @OneToMany(mappedBy = "movie")
     private Set<MovieDirector> directors;
 
-    @Column
-    private String castMembers;
+    @OneToMany(mappedBy = "movie")
+    private Set<MovieCastMember> castMembers;
 
     @Column
     private String times;
