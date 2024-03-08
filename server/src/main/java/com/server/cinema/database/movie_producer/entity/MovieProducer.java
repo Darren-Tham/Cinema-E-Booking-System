@@ -21,7 +21,7 @@ public final class MovieProducer {
 
     @EmbeddedId
     private MovieProducerId id;
-    
+
     @ManyToOne
     @MapsId("movieId")
     @JoinColumn(name = "movie_id")
