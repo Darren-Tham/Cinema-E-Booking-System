@@ -2,15 +2,22 @@ package com.server.cinema.database.movie;
 
 import java.util.Set;
 
+import com.server.cinema.database.movie.enums.MovieCategory;
+import com.server.cinema.database.movie.enums.MovieRatingCode;
 import com.server.cinema.database.movie_cast_member.MovieCastMember;
 import com.server.cinema.database.movie_director.MovieDirector;
 import com.server.cinema.database.movie_producer.MovieProducer;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +34,7 @@ public class Movie {
     private int id;
 
     @Column(nullable = false)
-    private String name;
+    private String title;
 
     @Column
     private String trailerLink;
@@ -38,14 +45,17 @@ public class Movie {
     @Column(columnDefinition = "TEXT")
     private String synopsis;
 
-    @Column
-    private String ratingCode;
+    @Enumerated(EnumType.STRING)
+    private MovieRatingCode ratingCode;
 
     @OneToMany(mappedBy = "movie")
     private Set<MovieProducer> producers;
 
-    @Column
-    private String category;
+    @ElementCollection(targetClass = MovieCategory.class)
+    @CollectionTable(name = "movie_category", joinColumns = @JoinColumn(name = "movie_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category")
+    private Set<MovieCategory> categories;
 
     @OneToMany(mappedBy = "movie")
     private Set<MovieDirector> directors;

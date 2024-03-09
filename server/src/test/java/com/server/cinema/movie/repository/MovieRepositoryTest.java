@@ -28,7 +28,7 @@ final class MovieRepositoryTest {
     @Test
     void testFindByMovieNameLikeExists() {
         final Movie movie = new Movie();
-        movie.setName("Movie Title");
+        movie.setTitle("Movie Title");
         movieRepository.save(movie);
 
         List<Movie> result = movieRepository.findByMovieNameLike("itl");
@@ -39,15 +39,15 @@ final class MovieRepositoryTest {
     @Test
     void testMultipleFindByMovieNameLikeExists() {
         final Movie movie1 = new Movie();
-        movie1.setName("Movie Title");
+        movie1.setTitle("Movie Title");
         final Movie movie2 = new Movie();
-        movie2.setName("Title of the Movie");
+        movie2.setTitle("Title of the Movie");
         final Movie movie3 = new Movie();
-        movie3.setName("Little Movie");
+        movie3.setTitle("Little Movie");
         final Movie movie4 = new Movie();
-        movie4.setName("TITLE of the Movie");
+        movie4.setTitle("TITLE of the Movie");
         final Movie movie5 = new Movie();
-        movie5.setName("TiTle of the Movie");
+        movie5.setTitle("TiTle of the Movie");
         movieRepository.saveAll(List.of(movie1, movie2, movie3, movie4, movie5));
 
         List<Movie> result = movieRepository.findByMovieNameLike("itl");
@@ -58,11 +58,11 @@ final class MovieRepositoryTest {
     @Test
     void testFindByMovieNameLikeNotExist() {
         final Movie movie1 = new Movie();
-        movie1.setName("Movie Title");
+        movie1.setTitle("Movie Title");
         final Movie movie2 = new Movie();
-        movie2.setName("Title of the Movie");
+        movie2.setTitle("Title of the Movie");
         final Movie movie3 = new Movie();
-        movie3.setName("Little Movie");
+        movie3.setTitle("Little Movie");
         movieRepository.saveAll(List.of(movie1, movie2, movie3));
 
         List<Movie> result = movieRepository.findByMovieNameLike("move");

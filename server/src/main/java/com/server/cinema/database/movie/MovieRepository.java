@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
-    @Query("SELECT m FROM Movie m WHERE m.name LIKE %?1%")
-    List<Movie> findByMovieNameLike(final String name);
+    @Query("SELECT m FROM Movie m WHERE m.title LIKE %?1%")
+    List<Movie> findByMovieNameLike(final String title);
 
 }
