@@ -1,6 +1,7 @@
 package com.server.cinema.database.movie;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,17 +23,26 @@ public class MovieService {
         movieDAO.addMovie(movie);
     }
 
-    public Movie getMovieById(final int id) {
+    public MovieDTO getMovieById(final int id) {
         return movieDAO
                 .selectMovieById(id)
+                .map(Movie::toDTO)
                 .orElseThrow(() -> new MovieNotFoundException(String.format("Movie with id %d does not exist.", id)));
     }
 
-    public List<Movie> getAllMovies() {
-        return movieDAO.selectAllMovies();
+    public List<MovieDTO> getAllMovies() {
+        return movieDAO
+                .selectAllMovies()
+                .stream()
+                .map(Movie::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public List<Movie> searchMovies(final String searchQuery) {
-        return movieDAO.searchMovies(searchQuery);
+    public List<MovieDTO> searchMovies(final String searchQuery) {
+        return movieDAO
+                .searchMovies(searchQuery)
+                .stream()
+                .map(Movie::toDTO)
+                .collect(Collectors.toList());
     }
 }

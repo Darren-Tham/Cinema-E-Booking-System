@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.server.cinema.database.movie.Movie;
+import com.server.cinema.database.movie.MovieDTO;
 import com.server.cinema.database.movie.MovieService;
 import com.server.cinema.database.movie.dao.MovieDAO;
 import com.server.cinema.database.movie.exception.MovieNotFoundException;
@@ -39,16 +40,16 @@ final class MovieServiceTest {
         Assertions.assertEquals(movie, capturedMovie, "The movie captured is not the same movie being added.");
     }
 
-      @Test
+    @Test
     void testGetMovieByIdExists() {
         final int id = ArgumentMatchers.anyInt();
         final Movie movie = new Movie();
 
         Mockito.when(movieDAO.selectMovieById(id)).thenReturn(Optional.of(movie));
 
-        final Movie result = movieService.getMovieById(id);
+        final MovieDTO result = movieService.getMovieById(id);
         Mockito.verify(movieDAO).selectMovieById(id);
-        Assertions.assertEquals(movie, result,
+        Assertions.assertEquals(movie.toDTO(), result,
                 "The movie returned by getMovieById method does not match the expected movie.");
     }
 

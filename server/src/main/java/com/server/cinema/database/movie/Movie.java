@@ -1,5 +1,6 @@
 package com.server.cinema.database.movie;
 
+import java.util.Objects;
 import java.util.Set;
 
 import com.server.cinema.database.movie.enums.MovieCategory;
@@ -75,5 +76,22 @@ public class Movie {
 
     @Enumerated(EnumType.STRING)
     private MovieStatus status;
+
+    public MovieDTO toDTO() {
+        final String ratingCodeStr = ratingCode == null
+                ? "NULL"
+                : ratingCode.toString();
+        final String statusStr = status == null
+                ? "NULL"
+                : status.toString();
+
+        return new MovieDTO(id,
+                title,
+                trailerLink,
+                imageLink,
+                synopsis,
+                ratingCodeStr,
+                statusStr);
+    }
 
 }

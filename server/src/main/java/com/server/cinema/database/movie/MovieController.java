@@ -33,17 +33,17 @@ public class MovieController {
     }
 
     @GetMapping("/{movieId}")
-    public Movie getMovieById(@PathVariable final int movieId) {
+    public MovieDTO getMovieById(@PathVariable final int movieId) {
         return movieService.getMovieById(movieId);
     }
 
     @GetMapping
-    public List<Movie> getAllMovies() {
+    public List<MovieDTO> getAllMovies() {
         return movieService.getAllMovies();
     }
 
     @GetMapping("/search")
-    public List<Movie> searchMovies(
+    public List<MovieDTO> searchMovies(
             @RequestParam("query") final String searchQuery) {
         return movieService.searchMovies(searchQuery);
     }
