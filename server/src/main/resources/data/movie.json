@@ -8,8 +8,7 @@
     "ratingCode": "PG_13",
     "categories": ["ACTION", "ADVENTURE", "SCI_FI"],
     "times": "10:00 PM",
-    "dates": "2024-02-28",
-    "reviews": "A review for this movie"
+    "dates": "2024-02-28"
   },
   {
     "id": 2,
@@ -20,8 +19,7 @@
     "ratingCode": "R",
     "categories": ["BIOGRAPHY", "DRAMA", "HISTORY"],
     "times": "11:00 PM",
-    "dates": "2024-02-28",
-    "reviews": "A review for this movie"
+    "dates": "2024-02-28"
   },
   {
     "id": 3,
@@ -32,8 +30,7 @@
     "ratingCode": "R",
     "categories": ["ACTION", "THRILLER"],
     "times": "12:00 AM",
-    "dates": "2024-02-28",
-    "reviews": "A review for this movie"
+    "dates": "2024-02-28"
   },
   {
     "id": 4,
@@ -44,8 +41,7 @@
     "ratingCode": "PG",
     "categories": ["ADVENTURE", "COMEDY", "FAMILY"],
     "times": "1:00 AM",
-    "dates": "2024-02-28",
-    "reviews": "A review for this movie"
+    "dates": "2024-02-28"
   },
   {
     "id": 5,
@@ -56,8 +52,7 @@
     "ratingCode": "R",
     "categories": ["ACTION", "DRAMA", "THRILLER"],
     "times": "2:00 AM",
-    "dates": "2024-02-28",
-    "reviews": "A review for this movie"
+    "dates": "2024-02-28"
   },
   {
     "id": 6,
@@ -68,8 +63,7 @@
     "ratingCode": "PG_13",
     "categories": ["HORROR", "THRILLER"],
     "times": "3:00 AM",
-    "dates": "2024-02-28",
-    "reviews": "A review for this movie"
+    "dates": "2024-02-28"
   },
   {
     "id": 7,
@@ -80,8 +74,7 @@
     "ratingCode": "UNRATED",
     "categories": ["HORROR", "MYSTERY", "THRILLER"],
     "times": "4:00 AM",
-    "dates": "2024-02-28",
-    "reviews": "A review for this movie"
+    "dates": "2024-02-28"
   },
   {
     "id": 8,
@@ -92,8 +85,7 @@
     "ratingCode": "R",
     "categories": ["ACTION", "THRILLER"],
     "times": "5:00 AM",
-    "dates": "2024-02-28",
-    "reviews": "A review for this movie"
+    "dates": "2024-02-28"
   },
   {
     "id": 9,
@@ -104,8 +96,7 @@
     "ratingCode": "PG",
     "categories": ["ANIMATION", "ADVENTURE", "COMEDY"],
     "times": "6:00 AM",
-    "dates": "2024-02-28",
-    "reviews": "A review for this movie"
+    "dates": "2024-02-28"
   },
   {
     "id": 10,
@@ -116,7 +107,6 @@
     "ratingCode": "PG",
     "categories": ["ANIMATION", "ADVENTURE", "COMEDY"],
     "times": "7:00 AM",
-    "dates": "2024-02-28",
-    "reviews": "A review for this movie"
+    "dates": "2024-02-28"
   }
 ]
