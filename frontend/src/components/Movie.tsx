@@ -4,10 +4,10 @@ import Link from "next/link"
 
 export type MovieType = {
   id: number
-  name: string
+  title: string
   trailerLink: string
   imageLink: string
-  category: string
+  status: string
 }
 
 type Props = {
@@ -25,7 +25,7 @@ export default function Movie({ movie, handleTrailerClick }: Readonly<Props>) {
         <Link href="/theaters-and-times">
           <Image
             src={movie.imageLink}
-            alt={movie.name}
+            alt={movie.title}
             width={175}
             height={0}
             priority
@@ -33,7 +33,7 @@ export default function Movie({ movie, handleTrailerClick }: Readonly<Props>) {
         </Link>
       </div>
       <h2 className="text-white text-center font-semibold mt-1">
-        {movie.name}
+        {movie.title}
       </h2>
     </div>
   )
