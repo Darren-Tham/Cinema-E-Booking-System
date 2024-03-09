@@ -22,6 +22,7 @@ class DatabaseInitConfig {
             @Qualifier("directorDataManager") final InitRunnable directorRunnable,
             @Qualifier("castMemberDataManager") final InitRunnable castMemberRunnable,
             @Qualifier("reviewDataManager") final InitRunnable reviewRunnable,
+            @Qualifier("showTimeDataManager") final InitRunnable showTimeRunnable,
             @Qualifier("movieProducerDataManager") final InitRunnable movieProducerRunnable,
             @Qualifier("movieDirectorDataManager") final InitRunnable movieDirectorRunnable,
             @Qualifier("movieCastMemberDataManager") final InitRunnable movieCastMemberRunnable) {
@@ -31,6 +32,7 @@ class DatabaseInitConfig {
                 directorRunnable,
                 castMemberRunnable,
                 reviewRunnable,
+                showTimeRunnable,
                 movieProducerRunnable, movieDirectorRunnable, movieCastMemberRunnable);
     }
 

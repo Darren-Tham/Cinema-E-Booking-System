@@ -8,6 +8,7 @@ import com.server.cinema.database.movie_cast_member.MovieCastMember;
 import com.server.cinema.database.movie_director.MovieDirector;
 import com.server.cinema.database.movie_producer.MovieProducer;
 import com.server.cinema.database.review.Review;
+import com.server.cinema.database.showtime.ShowTime;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -65,11 +66,8 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     private Set<MovieCastMember> castMembers;
 
-    @Column
-    private String times;
-
-    @Column(columnDefinition = "DATE")
-    private String dates;
+    @OneToMany(mappedBy = "movie")
+    private Set<ShowTime> showTimes;
 
     @OneToMany(mappedBy = "movie")
     private Set<Review> reviews;
