@@ -23,7 +23,7 @@ public class Director {
     @Column(insertable = false, updatable = false)
     private int id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "director")

@@ -28,7 +28,7 @@ public class ShowTime {
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
-    @Column(columnDefinition = "DATETIME")
+    @Column(columnDefinition = "DATETIME", nullable = false)
     private String dateTime;
 
 }

@@ -28,16 +28,16 @@ public class Review {
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
-    @Column(name = "rating_out_of_10")
+    @Column(name = "rating_out_of_10", nullable = false)
     private int ratingOutOf10;
 
-    @Column(columnDefinition = "DATE")
+    @Column(columnDefinition = "DATE", nullable = false)
     private String date;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
 }

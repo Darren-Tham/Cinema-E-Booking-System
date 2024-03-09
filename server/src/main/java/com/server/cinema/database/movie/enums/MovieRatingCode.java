@@ -5,6 +5,5 @@ public enum MovieRatingCode {
     PG,
     PG_13,
     R,
-    NC_17,
-    UNRATED
+    NC_17
 }
