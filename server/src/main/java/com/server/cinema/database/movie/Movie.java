@@ -7,6 +7,7 @@ import com.server.cinema.database.movie.enums.MovieRatingCode;
 import com.server.cinema.database.movie_cast_member.MovieCastMember;
 import com.server.cinema.database.movie_director.MovieDirector;
 import com.server.cinema.database.movie_producer.MovieProducer;
+import com.server.cinema.database.review.Review;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -31,6 +32,7 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(insertable = false, updatable = false)
     private int id;
 
     @Column(nullable = false)
@@ -69,7 +71,7 @@ public class Movie {
     @Column(columnDefinition = "DATE")
     private String dates;
 
-    @Column(columnDefinition = "TEXT")
-    private String reviews;
+    @OneToMany(mappedBy = "movie")
+    private Set<Review> reviews;
 
 }

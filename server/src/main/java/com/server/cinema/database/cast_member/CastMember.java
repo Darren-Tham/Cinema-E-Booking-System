@@ -20,6 +20,7 @@ public class CastMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(insertable = false, updatable = false)
     private int id;
 
     @Column
