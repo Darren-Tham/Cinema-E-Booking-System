@@ -28,7 +28,7 @@
 
 2. Connect to Database
 
-   `mysql -uswe -ppass`
+   `mysql`
 
 ## Exposed Ports
 
