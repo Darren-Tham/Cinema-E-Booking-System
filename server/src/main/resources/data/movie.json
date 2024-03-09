@@ -6,7 +6,8 @@
     "imageLink": "https://i0.wp.com/plexmx.info/wp-content/uploads/2023/12/madame_web_xlg.jpg?ssl=1",
     "synopsis": "Cassandra Webb is a New York City paramedic who starts to show signs of clairvoyance. Forced to confront revelations about her past, she must protect three young women from a mysterious adversary who wants them dead.",
     "ratingCode": "PG_13",
-    "categories": ["ACTION", "ADVENTURE", "SCI_FI"]
+    "categories": ["ACTION", "ADVENTURE", "SCI_FI"],
+    "status": "NOW_PLAYING"
   },
   {
     "id": 2,
@@ -15,7 +16,8 @@
     "imageLink": "https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_.jpg",
     "synopsis": "During World War II, Lt. Gen. Leslie Groves Jr. appoints physicist J. Robert Oppenheimer to work on the top-secret Manhattan Project. Oppenheimer and a team of scientists spend years developing and designing the atomic bomb. Their work comes to fruition on July 16, 1945, as they witness the world's first nuclear explosion, forever changing the course of history.",
     "ratingCode": "R",
-    "categories": ["BIOGRAPHY", "DRAMA", "HISTORY"]
+    "categories": ["BIOGRAPHY", "DRAMA", "HISTORY"],
+    "status": "NOW_PLAYING"
   },
   {
     "id": 3,
@@ -24,7 +26,8 @@
     "imageLink": "https://m.media-amazon.com/images/M/MV5BZDkwOTIyZGQtYWNkOS00YzAxLTkwZWUtMzU3YjU4ZDIyYzdlXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
     "synopsis": "One man's brutal campaign for vengeance takes on national stakes after he is revealed to be a former operative of a powerful and clandestine organization known as \"Beekeepers\".",
     "ratingCode": "R",
-    "categories": ["ACTION", "THRILLER"]
+    "categories": ["ACTION", "THRILLER"],
+    "status": "NOW_PLAYING"
   },
   {
     "id": 4,
@@ -33,7 +36,8 @@
     "imageLink": "https://m.media-amazon.com/images/M/MV5BNDM4NTk0NjktZDJhMi00MmFmLTliMzEtN2RkZDY2OTNiMDgzXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_.jpg",
     "synopsis": "Armed with nothing but a hatful of dreams, young chocolatier Willy Wonka manages to change the world, one delectable bite at a time.",
     "ratingCode": "PG",
-    "categories": ["ADVENTURE", "COMEDY", "FAMILY"]
+    "categories": ["ADVENTURE", "COMEDY", "FAMILY"],
+    "status": "NOW_PLAYING"
   },
   {
     "id": 5,
@@ -42,7 +46,8 @@
     "imageLink": "https://m.media-amazon.com/images/M/MV5BYWFjZjRkZjQtZDJmZS00ZDgwLThiNGYtYTU5NmQ0ZjExYTRhXkEyXkFqcGdeQXVyMTY1NDQ5ODA@._V1_FMjpg_UX1000_.jpg",
     "synopsis": "As the Swedish town of Kiruna sinks, Frigga finds herself torn between her family and her job as security at the world's largest underground mine.",
     "ratingCode": "R",
-    "categories": ["ACTION", "DRAMA", "THRILLER"]
+    "categories": ["ACTION", "DRAMA", "THRILLER"],
+    "status": "NOW_PLAYING"
   },
   {
     "id": 6,
@@ -51,7 +56,8 @@
     "imageLink": "https://plcw.tmsimg.com/assets/p24952036_v_v12_aa.jpg",
     "synopsis": "Forced into early retirement by a degenerative illness, former baseball player Ray Waller moves into a new house with his wife and two children. He hopes that the backyard swimming pool will be fun for the kids and provide physical therapy for himself. However, a dark secret from the home's past soon unleashes a malevolent force that drags the family into the depths of inescapable terror.",
     "ratingCode": "PG_13",
-    "categories": ["HORROR", "THRILLER"]
+    "categories": ["HORROR", "THRILLER"],
+    "status": "COMING_SOON"
   },
   {
     "id": 7,
@@ -59,7 +65,8 @@
     "trailerLink": "https://www.youtube.com/watch?v=2zaf7AeZzdE",
     "imageLink": "https://m.media-amazon.com/images/M/MV5BZDcyYzRiZmItMTliMS00M2JkLWE0MGMtOWFkMDJmOTAzY2IzXkEyXkFqcGdeQXVyOTMzOTMzMTg@._V1_FMjpg_UX1000_.jpg",
     "synopsis": "A malevolent being known as the Jester terrorizes the inhabitants of a small town on Halloween night, including two estranged sisters who must come together to find a way to defeat the evil entity.",
-    "categories": ["HORROR", "MYSTERY", "THRILLER"]
+    "categories": ["HORROR", "MYSTERY", "THRILLER"],
+    "status": "COMING_SOON"
   },
   {
     "id": 8,
@@ -68,7 +75,8 @@
     "imageLink": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e3/Land_of_Bad_Poster.jpg/220px-Land_of_Bad_Poster.jpg",
     "synopsis": "When a Delta Force team is ambushed in enemy territory, a rookie officer refuses to abandon them. Their only hope lies with an Air Force drone pilot as the eyes in the sky during a brutal 48-hour battle for survival.",
     "ratingCode": "R",
-    "categories": ["ACTION", "THRILLER"]
+    "categories": ["ACTION", "THRILLER"],
+    "status": "COMING_SOON"
   },
   {
     "id": 9,
@@ -77,7 +85,8 @@
     "imageLink": "https://m.media-amazon.com/images/M/MV5BYTIxZDM5YWItM2Y1My00ODg5LTkzNjAtMWFlZTNlODg0MzEyXkEyXkFqcGdeQXVyMTA5ODEyNTc5._V1_.jpg",
     "synopsis": "A family of ducks decides to leave the safety of a New England pond for an adventurous trip to Jamaica. However, their well-laid plans quickly go awry when they get lost and wind up in New York City. The experience soon inspires them to expand their horizons, open themselves up to new friends, and accomplish more than they ever thought possible.",
     "ratingCode": "PG",
-    "categories": ["ANIMATION", "ADVENTURE", "COMEDY"]
+    "categories": ["ANIMATION", "ADVENTURE", "COMEDY"],
+    "status": "COMING_SOON"
   },
   {
     "id": 10,
@@ -86,6 +95,7 @@
     "imageLink": "https://upload.wikimedia.org/wikipedia/en/d/de/WishMoviePoster.jpg",
     "synopsis": "Young Asha makes a wish so powerful that it's answered by a cosmic force, a little ball of boundless energy called Star. With Star's help, Asha must save her kingdom from King Magnifico and prove that when the will of one courageous human connects with the magic of the stars, wondrous things can happen.",
     "ratingCode": "PG",
-    "categories": ["ANIMATION", "ADVENTURE", "COMEDY"]
+    "categories": ["ANIMATION", "ADVENTURE", "COMEDY"],
+    "status": "COMING_SOON"
   }
 ]

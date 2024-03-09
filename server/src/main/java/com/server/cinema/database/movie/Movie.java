@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.server.cinema.database.movie.enums.MovieCategory;
 import com.server.cinema.database.movie.enums.MovieRatingCode;
+import com.server.cinema.database.movie.enums.MovieStatus;
 import com.server.cinema.database.movie_cast_member.MovieCastMember;
 import com.server.cinema.database.movie_director.MovieDirector;
 import com.server.cinema.database.movie_producer.MovieProducer;
@@ -71,5 +72,8 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie")
     private Set<Review> reviews;
+
+    @Enumerated(EnumType.STRING)
+    private MovieStatus status;
 
 }
