@@ -9,9 +9,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import com.server.cinema.database.movie.Movie;
-import com.server.cinema.database.showtime.ShowTime;
-import com.server.cinema.database.showtime.ShowTimeRecord;
-import com.server.cinema.database.showtime.ShowTimeRepository;
+import com.server.cinema.database.show_time.ShowTime;
+import com.server.cinema.database.show_time.ShowTimeRecord;
+import com.server.cinema.database.show_time.ShowTimeRepository;
 import com.server.cinema.util.interfaces.InitRunnable;
 import com.server.cinema.util.interfaces.MapSupplier;
 

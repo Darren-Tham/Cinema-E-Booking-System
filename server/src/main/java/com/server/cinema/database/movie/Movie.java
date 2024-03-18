@@ -9,7 +9,7 @@ import com.server.cinema.database.movie_cast_member.MovieCastMember;
 import com.server.cinema.database.movie_director.MovieDirector;
 import com.server.cinema.database.movie_producer.MovieProducer;
 import com.server.cinema.database.review.Review;
-import com.server.cinema.database.showtime.ShowTime;
+import com.server.cinema.database.show_time.ShowTime;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;

@@ -3,7 +3,7 @@ package com.server.cinema.database.booking;
 import java.util.Set;
 
 import com.server.cinema.database.promotion.Promotion;
-import com.server.cinema.database.showtime.ShowTime;
+import com.server.cinema.database.show_time.ShowTime;
 import com.server.cinema.database.ticket.Ticket;
 
 import jakarta.persistence.Column;

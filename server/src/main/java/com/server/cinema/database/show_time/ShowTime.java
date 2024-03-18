@@ -1,4 +1,4 @@
-package com.server.cinema.database.showtime;
+package com.server.cinema.database.show_time;
 
 import java.util.Set;
 

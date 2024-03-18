@@ -1,4 +1,4 @@
-package com.server.cinema.database.showtime;
+package com.server.cinema.database.show_time;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
