@@ -3,6 +3,7 @@ package com.server.cinema.database.booking;
 import java.util.Set;
 
 import com.server.cinema.database.promotion.Promotion;
+import com.server.cinema.database.ticket.Ticket;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -36,5 +38,8 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
+
+    @OneToMany(mappedBy = "booking")
+    private Set<Ticket> tickets;
 
 }
