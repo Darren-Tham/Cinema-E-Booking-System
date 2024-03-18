@@ -1,6 +1,7 @@
 package com.server.cinema.database.ticket;
 
 import com.server.cinema.database.booking.Booking;
+import com.server.cinema.database.seat.Seat;
 import com.server.cinema.database.ticket.enums.TicketType;
 
 import jakarta.persistence.Column;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -35,5 +37,9 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "booking_id", nullable = false)
     private Booking booking;
+
+    @OneToOne
+    @JoinColumn(name = "seat_id", nullable = false)
+    private Seat seat;
 
 }
