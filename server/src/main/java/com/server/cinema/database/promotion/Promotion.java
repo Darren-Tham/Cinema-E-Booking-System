@@ -1,17 +1,21 @@
 package com.server.cinema.database.promotion;
 
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import java.util.Set;
+
+import com.server.cinema.database.booking.Booking;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@EnableAspectJAutoProxy
+@Entity
 public class Promotion {
 
     @Id
@@ -30,5 +34,8 @@ public class Promotion {
 
     @Column(columnDefinition = "DATE", nullable = false)
     private String endDate;
+
+    @OneToMany(mappedBy = "promotion")
+    private Set<Booking> bookings;
 
 }
