@@ -9,6 +9,7 @@ import com.server.cinema.database.movie_cast_member.MovieCastMember;
 import com.server.cinema.database.movie_director.MovieDirector;
 import com.server.cinema.database.movie_producer.MovieProducer;
 import com.server.cinema.database.review.Review;
+import com.server.cinema.database.show_room.ShowRoom;
 import com.server.cinema.database.show_time.ShowTime;
 
 import jakarta.persistence.CollectionTable;
@@ -21,6 +22,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -75,6 +78,10 @@ public class Movie {
 
     @Enumerated(EnumType.STRING)
     private MovieStatus status;
+
+    @ManyToMany
+    @JoinTable(name = "movie_show_room", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "show_room_id"))
+    private Set<ShowRoom> showRooms;
 
     public MovieDTO toDTO() {
         final String ratingCodeStr = ratingCode == null

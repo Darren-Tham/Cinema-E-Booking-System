@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.server.cinema.database.booking.Booking;
 import com.server.cinema.database.movie.Movie;
+import com.server.cinema.database.show_room.ShowRoom;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +36,14 @@ public class ShowTime {
     @Column(columnDefinition = "DATETIME", nullable = false)
     private String dateTime;
 
+    @Column(nullable = false)
+    private int durationInMinutes;
+
     @OneToMany(mappedBy = "showTime")
     private Set<Booking> bookings;
+
+    @ManyToOne
+    @JoinColumn(name = "show_room_id", nullable = false)
+    private ShowRoom showRoom;
 
 }
