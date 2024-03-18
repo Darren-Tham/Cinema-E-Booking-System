@@ -1,5 +1,6 @@
 package com.server.cinema.util;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public final class ShowTimeDataManager extends DataManager implements InitRunnab
         return new ShowTime(
                 showTimeRecord.id(),
                 movieMap.get(showTimeRecord.movieId()),
-                showTimeRecord.dateTime());
+                showTimeRecord.dateTime(), new HashSet<>());
     }
 
 }

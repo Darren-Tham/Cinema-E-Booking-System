@@ -3,6 +3,7 @@ package com.server.cinema.database.booking;
 import java.util.Set;
 
 import com.server.cinema.database.promotion.Promotion;
+import com.server.cinema.database.showtime.ShowTime;
 import com.server.cinema.database.ticket.Ticket;
 
 import jakarta.persistence.Column;
@@ -41,5 +42,9 @@ public class Booking {
 
     @OneToMany(mappedBy = "booking")
     private Set<Ticket> tickets;
+
+    @ManyToOne
+    @JoinColumn(name = "show_time_id", nullable = false)
+    private ShowTime showTime;
 
 }

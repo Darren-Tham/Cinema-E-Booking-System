@@ -1,5 +1,8 @@
 package com.server.cinema.database.showtime;
 
+import java.util.Set;
+
+import com.server.cinema.database.booking.Booking;
 import com.server.cinema.database.movie.Movie;
 
 import jakarta.persistence.Column;
@@ -9,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,5 +34,8 @@ public class ShowTime {
 
     @Column(columnDefinition = "DATETIME", nullable = false)
     private String dateTime;
+
+    @OneToMany(mappedBy = "showTime")
+    private Set<Booking> bookings;
 
 }
