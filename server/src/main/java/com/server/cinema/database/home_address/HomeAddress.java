@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,8 +32,24 @@ public class HomeAddress {
     @Column(nullable = false)
     private String state;
 
+    @Column(nullable = false)
+    private String zipcode;
+
     @OneToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
+
+    public HomeAddress(
+            final String address,
+            final String city,
+            final String state,
+            final String zipcode,
+            final Customer customer) {
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zipcode = zipcode;
+        this.customer = customer;
+    }
 
 }

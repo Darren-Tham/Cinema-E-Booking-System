@@ -33,7 +33,6 @@ public class CardService {
                 formatExpirationDate(cardDTO.expirationDate()),
                 cardDTO.billingAddress(),
                 customer);
-        card.setCustomer(customer);
         customer.getCards().add(card);
     }
 
