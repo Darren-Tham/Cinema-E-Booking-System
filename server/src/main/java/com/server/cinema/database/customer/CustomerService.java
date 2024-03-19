@@ -1,5 +1,6 @@
 package com.server.cinema.database.customer;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class CustomerService {
     }
 
     public int addInactiveCustomer(final InactiveCustomerDTO customer) {
+        final String encryptedPassword = BCrypt.hashpw(customer.getPassword(), BCrypt.gensalt());
+        customer.setPassword(encryptedPassword);
         return customerDAO.addInactiveCustomer(customer.toCustomer());
     }
 

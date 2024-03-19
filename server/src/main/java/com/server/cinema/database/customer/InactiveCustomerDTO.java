@@ -2,15 +2,19 @@ package com.server.cinema.database.customer;
 
 import com.server.cinema.database.customer.enums.UserState;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class InactiveCustomerDTO {
-    private final String firstName;
-    private final String lastName;
-    private final String email;
-    private final String password;
-    private final String phoneNumber;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private String phoneNumber;
 
     public Customer toCustomer() {
         return new Customer(
