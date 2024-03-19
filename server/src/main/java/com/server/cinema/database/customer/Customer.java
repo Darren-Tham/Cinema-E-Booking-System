@@ -7,6 +7,7 @@ import com.server.cinema.database.customer.enums.UserState;
 import com.server.cinema.database.home_address.HomeAddress;
 import com.server.cinema.database.user.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -43,7 +44,7 @@ public class Customer extends User {
     @Column(nullable = false)
     private boolean isSubscribedForPromotions;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Card> cards;
 
     @OneToOne(mappedBy = "customer")

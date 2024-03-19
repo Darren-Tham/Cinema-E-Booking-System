@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class InactiveCustomerDTO {
+
     private String firstName;
     private String lastName;
     private String email;

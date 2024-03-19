@@ -26,7 +26,7 @@ public class Card {
     private String cardType;
 
     @Column(nullable = false)
-    private int cardNumber;
+    private String encryptedCardNumber;
 
     @Column(columnDefinition = "DATE", nullable = false)
     private String expirationDate;
@@ -37,5 +37,18 @@ public class Card {
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
+
+    public Card(
+            final String cardType,
+            final String encryptedCardNumber,
+            final String expirationDate,
+            final String billingAddress,
+            final Customer customer) {
+        this.cardType = cardType;
+        this.encryptedCardNumber = encryptedCardNumber;
+        this.expirationDate = expirationDate;
+        this.billingAddress = billingAddress;
+        this.customer = customer;
+    }
 
 }
