@@ -22,7 +22,7 @@ public class CustomerController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Integer> addInactiveCustomer(@RequestBody final Customer customer) {
+    public ResponseEntity<Integer> addInactiveCustomer(@RequestBody final InactiveCustomerDTO customer) {
         final int customerId = customerService.addInactiveCustomer(customer);
         return new ResponseEntity<>(customerId, HttpStatus.CREATED);
     }
