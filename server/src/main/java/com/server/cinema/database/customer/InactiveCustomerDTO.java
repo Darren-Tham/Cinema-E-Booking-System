@@ -15,6 +15,7 @@ public class InactiveCustomerDTO {
     private String email;
     private String password;
     private String phoneNumber;
+    private boolean isSubscribedForPromotions;
 
     public Customer toCustomer() {
         return new Customer(
@@ -23,6 +24,7 @@ public class InactiveCustomerDTO {
                 email,
                 password,
                 phoneNumber,
-                UserState.INACTIVE);
+                UserState.INACTIVE,
+                isSubscribedForPromotions);
     }
 }

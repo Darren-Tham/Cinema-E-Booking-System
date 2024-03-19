@@ -40,6 +40,9 @@ public class Customer extends User {
     @Enumerated(EnumType.STRING)
     private UserState status;
 
+    @Column(nullable = false)
+    private boolean isSubscribedForPromotions;
+
     @OneToMany(mappedBy = "customer")
     private Set<Card> cards;
 
@@ -52,13 +55,15 @@ public class Customer extends User {
             final String email,
             final String encryptedPassword,
             final String phoneNumber,
-            final UserState status) {
+            final UserState status,
+            final boolean isSubscribedForPromotions) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.encryptedPassword = encryptedPassword;
         this.phoneNumber = phoneNumber;
         this.status = status;
+        this.isSubscribedForPromotions = isSubscribedForPromotions;
     }
 
 }

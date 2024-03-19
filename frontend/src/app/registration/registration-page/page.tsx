@@ -6,6 +6,7 @@ type Customer = {
   email: string
   password: string
   phoneNumber: string
+  isSubscribedForPromotions: boolean
 }
 
 import Link from "next/link"
@@ -20,7 +21,7 @@ export default function RegistrationPage() {
   const [showPaymentInformationForm, setShowPaymentInformationForm] =
     useState(false)
   const [showHomeAddressForm, setShowHomeAddressForm] = useState(false)
-  const [promotionSubscriptionChecked, setPromotionSubscriptionChecked] =
+  const [isSubscribedForPromotions, setIsSubscribedForPromotions] =
     useState(true)
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -156,7 +157,8 @@ export default function RegistrationPage() {
       lastName,
       email,
       password,
-      phoneNumber
+      phoneNumber,
+      isSubscribedForPromotions
     }
   }
 
@@ -276,12 +278,12 @@ export default function RegistrationPage() {
             </div>
             <div className="flex items-center gap-2 mt-2 mb-1">
               <input
-                checked={promotionSubscriptionChecked}
+                checked={isSubscribedForPromotions}
                 id="promotions"
                 type="checkbox"
                 className="w-6 aspect-square"
                 onChange={() =>
-                  setPromotionSubscriptionChecked(!promotionSubscriptionChecked)
+                  setIsSubscribedForPromotions(!isSubscribedForPromotions)
                 }
               />
               <label htmlFor="promotions" className="label select-none">
