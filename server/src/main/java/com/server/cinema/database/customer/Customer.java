@@ -11,7 +11,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
@@ -26,9 +25,6 @@ import lombok.ToString;
 @Entity
 public class Customer extends User {
 
-    @Enumerated(EnumType.STRING)
-    private UserState status;
-
     @Column(nullable = false)
     private String firstName;
 
@@ -41,10 +37,28 @@ public class Customer extends User {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
+    private UserState status;
+
     @OneToMany(mappedBy = "customer")
     private Set<Card> cards;
 
     @OneToOne(mappedBy = "customer")
     private HomeAddress homeAddress;
+
+    public Customer(
+            final String firstName,
+            final String lastName,
+            final String email,
+            final String encryptedPassword,
+            final String phoneNumber,
+            final UserState status) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.encryptedPassword = encryptedPassword;
+        this.phoneNumber = phoneNumber;
+        this.status = status;
+    }
 
 }
