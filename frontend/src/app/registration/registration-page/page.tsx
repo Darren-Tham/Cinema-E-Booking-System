@@ -1,5 +1,13 @@
 "use client"
 
+type Customer = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  phoneNumber: string
+}
+
 import Link from "next/link"
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
@@ -136,6 +144,33 @@ export default function RegistrationPage() {
       stateRef.current?.value === "" &&
       zipcode === ""
     )
+  }
+
+  function getCustomer(): Customer {
+    if (passwordRef.current === null) {
+      throw Error("passwordRef should not be null.")
+    }
+    const { value: password } = passwordRef.current
+    return {
+      firstName,
+      lastName,
+      email,
+      password,
+      phoneNumber
+    }
+  }
+
+  async function addCustomer() {
+    const customer = getCustomer()
+    const response = await fetch("http://localhost:8080/api/customer/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(customer)
+    })
+    const customerId = await response.text()
+    return parseInt(customerId)
   }
 
   const selectStyles = "rounded-sm font-semibold p-[0.375rem] w-full"
@@ -470,16 +505,18 @@ export default function RegistrationPage() {
               <button
                 type="submit"
                 className="action-button"
-                onClick={e => {
+                onClick={async e => {
                   e.preventDefault()
-                  console.log(validHomeAddress())
-                  if (validHomeAddress()) {
-                    router.push("./registration-verification-code")
-                  } else {
+                  if (!validHomeAddress()) {
                     alert(
                       "Please either complete the home address information form correctly or delete all incomplete fields."
                     )
+                    return
                   }
+
+                  const customerId = await addCustomer()
+                  console.log(customerId)
+                  //   router.push("./registration-verification-code")
                 }}
               >
                 Submit
