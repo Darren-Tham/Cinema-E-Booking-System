@@ -1,4 +1,4 @@
-package com.server.cinema.movie.dao;
+package com.server.cinema.movie;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

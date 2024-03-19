@@ -1,4 +1,4 @@
-package com.server.cinema.movie.serivice;
+package com.server.cinema.movie;
 
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
