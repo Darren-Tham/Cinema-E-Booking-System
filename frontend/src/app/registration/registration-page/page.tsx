@@ -1,10 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import HomeNavbar from "@/components/HomeNavbar"
-import PhoneInput from "react-phone-number-input/input"
 
 export default function RegistrationPage() {
   const router = useRouter()
@@ -13,6 +12,23 @@ export default function RegistrationPage() {
   const [showPaymentInformationForm, setShowPaymentInformationForm] =
     useState(false)
   const [showHomeAddressForm, setShowHomeAddressForm] = useState(false)
+  const [promotionSubscriptionChecked, setPromotionSubscriptionChecked] =
+    useState(true)
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const passwordRef = useRef<HTMLInputElement | null>(null)
+  const confirmPasswordRef = useRef<HTMLInputElement | null>(null)
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const creditCardTypeRef = useRef<HTMLSelectElement | null>(null)
+  const [creditCardNumber, setCreditCardNumber] = useState("")
+  const [expirationDate, setExpirationDate] = useState("")
+  const [cvv, setCVV] = useState("")
+  const billingAddressRef = useRef<HTMLInputElement | null>(null)
+  const homeAddressRef = useRef<HTMLInputElement | null>(null)
+  const cityRef = useRef<HTMLInputElement | null>(null)
+  const stateRef = useRef<HTMLSelectElement | null>(null)
+  const [zipcode, setZipcode] = useState("")
 
   function goToPersonalInformationForm() {
     setShowPersonalInformationForm(true)
@@ -21,15 +37,105 @@ export default function RegistrationPage() {
   }
 
   function goToPaymentInformationForm() {
-    setShowPersonalInformationForm(false)
-    setShowPaymentInformationForm(true)
-    setShowHomeAddressForm(false)
+    if (hasPersonalInformation()) {
+      setShowPersonalInformationForm(false)
+      setShowPaymentInformationForm(true)
+      setShowHomeAddressForm(false)
+    }
   }
 
   function goToHomeAddressForm() {
-    setShowPersonalInformationForm(false)
-    setShowPaymentInformationForm(false)
-    setShowHomeAddressForm(true)
+    if (!validPaymentInformation()) {
+      alert(
+        "Please either complete the payment information form correctly or delete all incomplete fields."
+      )
+      return
+    }
+    if (hasPersonalInformation()) {
+      setShowPersonalInformationForm(false)
+      setShowPaymentInformationForm(false)
+      setShowHomeAddressForm(true)
+    }
+  }
+
+  function hasPersonalInformation() {
+    if (firstName === "") {
+      alert("First name cannot be empty.")
+      return false
+    }
+    if (lastName === "") {
+      alert("Last name cannot be empty.")
+      return false
+    }
+    if (email === "") {
+      alert("Email cannot be empty.")
+      return false
+    }
+    if (!email.includes("@")) {
+      alert("Email must contain the @ character.")
+      return false
+    }
+    const password = passwordRef.current?.value
+    const confirmPassword = confirmPasswordRef.current?.value
+    if (password === "") {
+      alert("Password cannot be empty.")
+      return false
+    }
+    if (password !== confirmPassword) {
+      alert("Passwords must match.")
+      return false
+    }
+    if (phoneNumber === "") {
+      alert("Phone number cannot be empty.")
+      return false
+    }
+    return true
+  }
+
+  function validPaymentInformation() {
+    return paymentInformationComplete() || paymentInformationEmpty()
+  }
+
+  function paymentInformationComplete() {
+    return (
+      creditCardTypeRef.current?.value !== "" &&
+      creditCardNumber !== "" &&
+      /^\d{2}\/\d{4}$/.test(expirationDate) &&
+      cvv !== "" &&
+      billingAddressRef.current?.value !== ""
+    )
+  }
+
+  function paymentInformationEmpty() {
+    return (
+      creditCardTypeRef.current?.value === "" &&
+      creditCardNumber === "" &&
+      expirationDate === "" &&
+      cvv === "" &&
+      billingAddressRef.current?.value === ""
+    )
+  }
+
+  function validHomeAddress() {
+    return homeAddressComplete() || homeAddressEmpty()
+  }
+
+  function homeAddressComplete() {
+    return (
+      homeAddressRef.current?.value !== "" &&
+      cityRef.current?.value !== "" &&
+      stateRef.current?.value !== "" &&
+      zipcode !== ""
+    )
+  }
+
+  function homeAddressEmpty() {
+    return (
+      homeAddressRef.current?.value === "" &&
+      cityRef.current?.value === "" &&
+      stateRef.current?.value === "" &&
+      zipcode === ""
+    )
   }
 
   const selectStyles = "rounded-sm font-semibold p-[0.375rem] w-full"
@@ -66,44 +172,82 @@ export default function RegistrationPage() {
                 <label htmlFor="first-name" className="label">
                   First Name *
                 </label>
-                <input id="first-name" type="text" className="input" />
+                <input
+                  id="first-name"
+                  type="text"
+                  className="input"
+                  value={firstName}
+                  onChange={e => setValueWithNoSpaces(e, setFirstName)}
+                />
               </div>
               <div className="flex flex-col w-1/2">
                 <label htmlFor="last-name" className="label">
                   Last Name *
                 </label>
-                <input id="last-name" type="text" className="input" />
+                <input
+                  id="last-name"
+                  type="text"
+                  value={lastName}
+                  className="input"
+                  onChange={e => setValueWithNoSpaces(e, setLastName)}
+                />
               </div>
             </div>
             <div className="flex flex-col">
               <label htmlFor="email" className="label">
                 Email *
               </label>
-              <input id="email" type="text" className="input" />
+              <input
+                id="email"
+                type="text"
+                value={email}
+                className="input"
+                onChange={e => setValueWithNoSpaces(e, setEmail)}
+              />
             </div>
             <div className="flex flex-col">
               <label htmlFor="password" className="label">
                 Password *
               </label>
-              <input id="password" type="password" className="input" />
+              <input
+                id="password"
+                type="password"
+                className="input"
+                ref={passwordRef}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="confirm-password" className="label">
+                Confirm Password *
+              </label>
+              <input
+                id="confirm-password"
+                type="password"
+                className="input"
+                ref={confirmPasswordRef}
+              />
             </div>
             <div className="flex flex-col">
               <label htmlFor="phone-number" className="label">
                 Phone Number *
               </label>
-              <PhoneInput
+              <input
                 id="phone-number"
-                country="US"
-                maxLength={14}
-                onChange={e => e}
+                type="text"
+                value={phoneNumber}
                 className="input"
+                onChange={e => setValueWithOnlyDigits(e, setPhoneNumber)}
               />
             </div>
             <div className="flex items-center gap-2 mt-2 mb-1">
               <input
+                checked={promotionSubscriptionChecked}
                 id="promotions"
                 type="checkbox"
                 className="w-6 aspect-square"
+                onChange={() =>
+                  setPromotionSubscriptionChecked(!promotionSubscriptionChecked)
+                }
               />
               <label htmlFor="promotions" className="label select-none">
                 Subscribe For Promotions
@@ -138,7 +282,7 @@ export default function RegistrationPage() {
               }}
             >
               <h2 className="label">Credit Card Type</h2>
-              <select className={selectStyles}>
+              <select className={selectStyles} ref={creditCardTypeRef}>
                 <option />
                 <option>Visa</option>
                 <option>Mastercard</option>
@@ -150,7 +294,13 @@ export default function RegistrationPage() {
               <label htmlFor="credit-card-number" className="label">
                 Credit Card Number
               </label>
-              <input id="credit-card-number" type="text" className="input" />
+              <input
+                id="credit-card-number"
+                type="text"
+                value={creditCardNumber}
+                className="input"
+                onChange={e => setValueWithOnlyDigits(e, setCreditCardNumber)}
+              />
             </div>
             <div className="flex gap-3">
               <div className="flex flex-col">
@@ -160,22 +310,44 @@ export default function RegistrationPage() {
                 <input
                   id="expiration-date"
                   type="text"
+                  value={expirationDate}
                   placeholder="MM/YYYY"
                   className="input"
+                  onChange={e => {
+                    const { value } = e.target
+                    if (
+                      /(?:\d|\/)*/.test(value) &&
+                      value.length <= 7 &&
+                      value.indexOf("/") === value.lastIndexOf("/")
+                    ) {
+                      setExpirationDate(value)
+                    }
+                  }}
                 />
               </div>
               <div className="flex flex-col">
                 <label htmlFor="cvv" className="label">
                   CVV
                 </label>
-                <input id="cvv" type="password" className="input" />
+                <input
+                  id="cvv"
+                  type="text"
+                  value={cvv}
+                  className="input"
+                  onChange={e => setValueWithOnlyDigits(e, setCVV)}
+                />
               </div>
             </div>
             <div className="flex flex-col">
               <label htmlFor="billing-address" className="label">
                 Billing Address
               </label>
-              <input id="billing-address" type="text" className="input" />
+              <input
+                id="billing-address"
+                type="text"
+                className="input"
+                ref={billingAddressRef}
+              />
             </div>
             <div className="flex justify-between">
               <button
@@ -200,17 +372,22 @@ export default function RegistrationPage() {
               <label htmlFor="home-address" className="label">
                 Home Address
               </label>
-              <input id="home-address" type="text" className="input" />
+              <input
+                id="home-address"
+                type="text"
+                className="input"
+                ref={homeAddressRef}
+              />
             </div>
             <div className="flex flex-col">
               <label htmlFor="city" className="label">
                 City
               </label>
-              <input id="city" type="text" className="input" />
+              <input id="city" type="text" className="input" ref={cityRef} />
             </div>
             <div>
               <h2 className="label">State</h2>
-              <select className={selectStyles}>
+              <select className={selectStyles} ref={stateRef}>
                 <option />
                 <option>Alabama</option>
                 <option>Alaska</option>
@@ -278,7 +455,13 @@ export default function RegistrationPage() {
               <label htmlFor="zip-code" className="label">
                 Zip Code
               </label>
-              <input id="zip-code" type="text" className="input" />
+              <input
+                id="zip-code"
+                type="text"
+                value={zipcode}
+                className="input"
+                onChange={e => setValueWithOnlyDigits(e, setZipcode)}
+              />
             </div>
             <div className="flex justify-between">
               <button
@@ -293,7 +476,14 @@ export default function RegistrationPage() {
                 className="action-button"
                 onClick={e => {
                   e.preventDefault()
-                  router.push("./registration-verification-code")
+                  console.log(validHomeAddress())
+                  if (validHomeAddress()) {
+                    router.push("./registration-verification-code")
+                  } else {
+                    alert(
+                      "Please either complete the home address information form correctly or delete all incomplete fields."
+                    )
+                  }
                 }}
               >
                 Submit
@@ -314,4 +504,24 @@ function getButtonStepStyles(showForm: boolean) {
   return `text-white text-left p-6 font-semibold ${
     showForm ? "bg-jade" : "hover:bg-light-jade transition-colors duration-300"
   }`
+}
+
+function setValueWithNoSpaces(
+  e: ChangeEvent<HTMLInputElement>,
+  setValue: Dispatch<SetStateAction<string>>
+) {
+  const { value } = e.target
+  if (!value.includes(" ")) {
+    setValue(value)
+  }
+}
+
+function setValueWithOnlyDigits(
+  e: ChangeEvent<HTMLInputElement>,
+  setValue: Dispatch<SetStateAction<string>>
+) {
+  const { value } = e.target
+  if (/^\d*$/.test(value)) {
+    setValue(value)
+  }
 }
