@@ -417,14 +417,10 @@ export default function RegistrationPage() {
                 <option>Montana</option>
                 <option>Nebraska</option>
                 <option>Nevada</option>
-                <option>New</option>
-                <option>Hampshire</option>
-                <option>New</option>
-                <option>Jersey</option>
-                <option>New</option>
-                <option>Mexico</option>
-                <option>New</option>
-                <option>York</option>
+                <option>New Hampshire</option>
+                <option>New Jersey</option>
+                <option>New Mexico</option>
+                <option>New York</option>
                 <option>North</option>
                 <option>Carolina</option>
                 <option>North</option>
