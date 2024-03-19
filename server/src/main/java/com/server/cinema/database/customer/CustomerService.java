@@ -15,8 +15,8 @@ public class CustomerService {
         this.customerDAO = customerDAO;
     }
 
-    public void addInactiveCustomer(final Customer customer) {
-        customerDAO.addInactiveCustomer(customer);
+    public int addInactiveCustomer(final Customer customer) {
+        return customerDAO.addInactiveCustomer(customer);
     }
 
 }

@@ -4,6 +4,6 @@ import com.server.cinema.database.customer.Customer;
 
 public interface CustomerDAO {
 
-    void addInactiveCustomer(final Customer customer);
+    int addInactiveCustomer(final Customer customer);
 
 }

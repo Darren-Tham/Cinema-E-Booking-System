@@ -17,8 +17,8 @@ public class CustomerDAOJPA implements CustomerDAO {
     }
 
     @Override
-    public void addInactiveCustomer(final Customer customer) {
-        customerRepository.save(customer);
+    public int addInactiveCustomer(final Customer customer) {
+        return customerRepository.save(customer).getId();
     }
 
 }

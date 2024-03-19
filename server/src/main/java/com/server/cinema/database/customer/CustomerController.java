@@ -22,10 +22,9 @@ public class CustomerController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addInactiveCustomer(@RequestBody final Customer customer) {
-        customerService.addInactiveCustomer(customer);
-        return new ResponseEntity<>("Customer has been successfully added with a status of inactive.",
-                HttpStatus.CREATED);
+    public ResponseEntity<Integer> addInactiveCustomer(@RequestBody final Customer customer) {
+        final int customerId = customerService.addInactiveCustomer(customer);
+        return new ResponseEntity<>(customerId, HttpStatus.CREATED);
     }
 
 }
