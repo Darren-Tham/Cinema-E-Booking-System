@@ -15,7 +15,7 @@ public class User {
     private int id;
 
     @Column(nullable = false)
-    private String password;
+    private String hashedPassword;
 
     protected User() {
     }

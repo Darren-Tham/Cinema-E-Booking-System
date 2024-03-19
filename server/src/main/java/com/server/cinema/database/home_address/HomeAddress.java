@@ -1,4 +1,4 @@
-package com.server.cinema.database.card;
+package com.server.cinema.database.home_address;
 
 import com.server.cinema.database.customer.Customer;
 
@@ -7,15 +7,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @Entity
-public class Card {
+public class HomeAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,18 +22,15 @@ public class Card {
     private int id;
 
     @Column(nullable = false)
-    private String cardType;
+    private String address;
 
     @Column(nullable = false)
-    private int cardNumber;
-
-    @Column(columnDefinition = "DATE", nullable = false)
-    private String expirationDate;
+    private String city;
 
     @Column(nullable = false)
-    private String billingAddress;
+    private String state;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @OneToOne(mappedBy = "homeAddress")
     private Customer customer;
+
 }

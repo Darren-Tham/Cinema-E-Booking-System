@@ -4,13 +4,16 @@ import java.util.Set;
 
 import com.server.cinema.database.card.Card;
 import com.server.cinema.database.customer.enums.UserState;
+import com.server.cinema.database.home_address.HomeAddress;
 import com.server.cinema.database.user.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,9 +26,6 @@ import lombok.ToString;
 @Entity
 public class Customer extends User {
 
-    @Column(nullable = false, updatable = false)
-    private String email;
-
     @Enumerated(EnumType.STRING)
     private UserState status;
 
@@ -35,6 +35,17 @@ public class Customer extends User {
     @Column(nullable = false)
     private String lastName;
 
+    @Column(nullable = false, updatable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String phoneNumber;
+
     @OneToMany(mappedBy = "customer")
     private Set<Card> cards;
+
+    @OneToOne
+    @JoinColumn(name = "home_address_id")
+    private HomeAddress homeAddress;
+
 }
