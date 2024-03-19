@@ -44,8 +44,7 @@ public class Customer extends User {
     @OneToMany(mappedBy = "customer")
     private Set<Card> cards;
 
-    @OneToOne
-    @JoinColumn(name = "home_address_id")
+    @OneToOne(mappedBy = "customer")
     private HomeAddress homeAddress;
 
 }
