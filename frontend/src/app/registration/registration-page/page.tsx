@@ -9,6 +9,14 @@ type Customer = {
   isSubscribedForPromotions: boolean
 }
 
+type Card = {
+  customerId: number
+  cardType: string
+  cardNumber: string
+  expirationDate: string
+  billingAddress: string
+}
+
 import Link from "next/link"
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
@@ -21,14 +29,13 @@ export default function RegistrationPage() {
   const [showPaymentInformationForm, setShowPaymentInformationForm] =
     useState(false)
   const [showHomeAddressForm, setShowHomeAddressForm] = useState(false)
-  const [isSubscribedForPromotions, setIsSubscribedForPromotions] =
-    useState(true)
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
   const passwordRef = useRef<HTMLInputElement | null>(null)
   const confirmPasswordRef = useRef<HTMLInputElement | null>(null)
   const [phoneNumber, setPhoneNumber] = useState("")
+  const promotionSubscriptionRef = useRef<HTMLInputElement | null>(null)
   const creditCardTypeRef = useRef<HTMLSelectElement | null>(null)
   const [creditCardNumber, setCreditCardNumber] = useState("")
   const [expirationDate, setExpirationDate] = useState("")
@@ -151,14 +158,16 @@ export default function RegistrationPage() {
     if (passwordRef.current === null) {
       throw Error("passwordRef should not be null.")
     }
-    const { value: password } = passwordRef.current
+    if (promotionSubscriptionRef.current === null) {
+      throw Error("promotionSubscriptionRef should not be null.")
+    }
     return {
       firstName,
       lastName,
       email,
-      password,
+      password: passwordRef.current.value,
       phoneNumber,
-      isSubscribedForPromotions
+      isSubscribedForPromotions: promotionSubscriptionRef.current.checked
     }
   }
 
@@ -173,6 +182,35 @@ export default function RegistrationPage() {
     })
     const customerId = await response.text()
     return parseInt(customerId)
+  }
+
+  function getCard(customerId: number): Card {
+    if (creditCardTypeRef.current === null) {
+      throw Error("creditCardTypeRef should not be null.")
+    }
+    if (billingAddressRef.current === null) {
+      throw Error("billingAddressRef should not be null.")
+    }
+    const { value: cardType } = creditCardTypeRef.current
+    const { value: billingAddress } = billingAddressRef.current
+    return {
+      customerId,
+      cardType,
+      cardNumber: creditCardNumber,
+      expirationDate,
+      billingAddress
+    }
+  }
+
+  async function addCard(customerId: number) {
+    const card = getCard(customerId)
+    const response = await fetch("http://localhost:8080/api/card/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(card)
+    })
   }
 
   const selectStyles = "rounded-sm font-semibold p-[0.375rem] w-full"
@@ -278,13 +316,10 @@ export default function RegistrationPage() {
             </div>
             <div className="flex items-center gap-2 mt-2 mb-1">
               <input
-                checked={isSubscribedForPromotions}
                 id="promotions"
                 type="checkbox"
                 className="w-6 aspect-square"
-                onChange={() =>
-                  setIsSubscribedForPromotions(!isSubscribedForPromotions)
-                }
+                ref={promotionSubscriptionRef}
               />
               <label htmlFor="promotions" className="label select-none">
                 Subscribe For Promotions
@@ -517,7 +552,9 @@ export default function RegistrationPage() {
                   }
 
                   const customerId = await addCustomer()
-                  console.log(customerId)
+                  if (paymentInformationComplete()) {
+                    addCard(customerId)
+                  }
                   //   router.push("./registration-verification-code")
                 }}
               >
