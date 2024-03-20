@@ -130,7 +130,7 @@ export default function RegistrationPage() {
     return (
       creditCardTypeRef.current?.value !== "" &&
       creditCardNumber !== "" &&
-      /^\d{2}\/\d{4}$/.test(expirationDate) &&
+      /^(?:0[1-9]|1[0-2])\/\d{4}$/.test(expirationDate) &&
       cvv !== "" &&
       billingAddressRef.current?.value !== ""
     )
