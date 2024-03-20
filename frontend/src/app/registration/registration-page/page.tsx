@@ -17,6 +17,14 @@ type Card = {
   billingAddress: string
 }
 
+type HomeAddress = {
+  customerId: number
+  address: string
+  city: string
+  state: string
+  zipcode: string
+}
+
 import Link from "next/link"
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
@@ -204,12 +212,42 @@ export default function RegistrationPage() {
 
   async function addCard(customerId: number) {
     const card = getCard(customerId)
-    const response = await fetch("http://localhost:8080/api/card/add", {
+    await fetch("http://localhost:8080/api/card/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(card)
+    })
+  }
+
+  function getHomeAddress(customerId: number): HomeAddress {
+    if (homeAddressRef.current === null) {
+      throw Error("homeAddressRef should not be null.")
+    }
+    if (cityRef.current === null) {
+      throw Error("cityRef should not be null.")
+    }
+    if (stateRef.current === null) {
+      throw Error("stateRef should not be null.")
+    }
+    return {
+      customerId,
+      address: homeAddressRef.current.value,
+      city: cityRef.current.value,
+      state: stateRef.current.value,
+      zipcode: zipcode
+    }
+  }
+
+  async function addHomeAddress(customerId: number) {
+    const homeAddress = getHomeAddress(customerId)
+    await fetch("http://localhost:8080/api/home_address/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(homeAddress)
     })
   }
 
@@ -553,9 +591,12 @@ export default function RegistrationPage() {
 
                   const customerId = await addCustomer()
                   if (paymentInformationComplete()) {
-                    addCard(customerId)
+                    await addCard(customerId)
                   }
-                  //   router.push("./registration-verification-code")
+                  if (homeAddressComplete()) {
+                    await addHomeAddress(customerId)
+                  }
+                  router.push("./registration-verification-code")
                 }}
               >
                 Submit
