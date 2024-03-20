@@ -61,29 +61,29 @@ export default function RegistrationPage() {
     setShowHomeAddressForm(false)
   }
 
-  function goToPaymentInformationForm() {
-    if (hasPersonalInformation()) {
+  async function goToPaymentInformationForm() {
+    if (await hasPersonalInformation()) {
       setShowPersonalInformationForm(false)
       setShowPaymentInformationForm(true)
       setShowHomeAddressForm(false)
     }
   }
 
-  function goToHomeAddressForm() {
+  async function goToHomeAddressForm() {
     if (!validPaymentInformation()) {
       alert(
         "Please either complete the payment information form correctly or delete all incomplete fields."
       )
       return
     }
-    if (hasPersonalInformation()) {
+    if (await hasPersonalInformation()) {
       setShowPersonalInformationForm(false)
       setShowPaymentInformationForm(false)
       setShowHomeAddressForm(true)
     }
   }
 
-  function hasPersonalInformation() {
+  async function hasPersonalInformation() {
     if (firstName === "") {
       alert("First name cannot be empty.")
       return false
@@ -98,6 +98,10 @@ export default function RegistrationPage() {
     }
     if (!email.includes("@")) {
       alert("Email must contain the @ character.")
+      return false
+    }
+    if (await emailExists()) {
+      alert("Email is already taken.")
       return false
     }
     const password = passwordRef.current?.value
@@ -249,6 +253,12 @@ export default function RegistrationPage() {
     })
   }
 
+  async function emailExists() {
+    const response = await fetch(`http://localhost:8080/api/customer/${email}`)
+    const data = await response.text()
+    return data === "true"
+  }
+
   const selectStyles = "rounded-sm font-semibold p-[0.375rem] w-full"
 
   return (
@@ -265,13 +275,13 @@ export default function RegistrationPage() {
             </button>
             <button
               className={getButtonStepStyles(showPaymentInformationForm)}
-              onClick={goToPaymentInformationForm}
+              onClick={async () => await goToPaymentInformationForm()}
             >
               2. (Optional) Payment Information
             </button>
             <button
               className={getButtonStepStyles(showHomeAddressForm)}
-              onClick={goToHomeAddressForm}
+              onClick={async () => await goToHomeAddressForm()}
             >
               3. (Optional) Home Address
             </button>
@@ -367,7 +377,7 @@ export default function RegistrationPage() {
             <button
               type="button"
               className="action-button w-full mt-0"
-              onClick={goToPaymentInformationForm}
+              onClick={async () => await goToPaymentInformationForm()}
             >
               Next
             </button>
@@ -471,7 +481,7 @@ export default function RegistrationPage() {
               <button
                 type="button"
                 className="action-button"
-                onClick={goToHomeAddressForm}
+                onClick={async() => await goToHomeAddressForm()}
               >
                 Next
               </button>
@@ -574,7 +584,7 @@ export default function RegistrationPage() {
               <button
                 type="button"
                 className="back-button"
-                onClick={goToPaymentInformationForm}
+                onClick={async () => await goToPaymentInformationForm()}
               >
                 Back
               </button>

@@ -29,6 +29,12 @@ public class CustomerController {
         return ResponseEntity.ok(email);
     }
 
+    @GetMapping("/{email}")
+    public ResponseEntity<Boolean> emailExists(@PathVariable final String email) {
+        final boolean emailExists = customerService.emailExists(email);
+        return ResponseEntity.ok(emailExists);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Integer> addInactiveCustomer(@RequestBody final InactiveCustomerDTO customer) {
         final int customerId = customerService.addInactiveCustomer(customer);

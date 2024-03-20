@@ -6,4 +6,6 @@ public interface CustomerDAO {
 
     int addInactiveCustomer(final Customer customer);
 
+    boolean emailExists(final String email);
+
 }

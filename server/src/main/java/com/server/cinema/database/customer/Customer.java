@@ -32,7 +32,7 @@ public class Customer extends User {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, unique = true)
     private String email;
 
     @Column(nullable = false)

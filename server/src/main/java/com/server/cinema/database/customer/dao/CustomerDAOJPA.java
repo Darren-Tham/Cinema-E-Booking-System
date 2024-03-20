@@ -21,4 +21,9 @@ public class CustomerDAOJPA implements CustomerDAO {
         return customerRepository.save(customer).getId();
     }
 
+    @Override
+    public boolean emailExists(final String email) {
+        return customerRepository.existsByEmail(email);
+    }
+
 }
