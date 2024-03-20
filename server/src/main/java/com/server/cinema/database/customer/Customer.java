@@ -6,6 +6,7 @@ import com.server.cinema.database.card.Card;
 import com.server.cinema.database.customer.enums.UserState;
 import com.server.cinema.database.home_address.HomeAddress;
 import com.server.cinema.database.user.User;
+import com.server.cinema.database.verification_code.VerificationCode;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -44,14 +45,14 @@ public class Customer extends User {
     @Column(nullable = false)
     private boolean isSubscribedForPromotions;
 
-    @Column(nullable = false)
-    private String verificationCode;
-
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Card> cards;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private HomeAddress homeAddress;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private VerificationCode verificationCode;
 
     public Customer(
             final String firstName,
@@ -60,8 +61,7 @@ public class Customer extends User {
             final String encryptedPassword,
             final String phoneNumber,
             final UserState status,
-            final boolean isSubscribedForPromotions,
-            final String verificationCode) {
+            final boolean isSubscribedForPromotions) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -69,7 +69,6 @@ public class Customer extends User {
         this.phoneNumber = phoneNumber;
         this.status = status;
         this.isSubscribedForPromotions = isSubscribedForPromotions;
-        this.verificationCode = verificationCode;
     }
 
 }

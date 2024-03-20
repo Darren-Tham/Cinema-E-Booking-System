@@ -6,6 +6,5 @@ public record InactiveCustomerDTO(
         String email,
         String password,
         String phoneNumber,
-        boolean isSubscribedForPromotions,
-        String verificationCode) {
+        boolean isSubscribedForPromotions) {
 }

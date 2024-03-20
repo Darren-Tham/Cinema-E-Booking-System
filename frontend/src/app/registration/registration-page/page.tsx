@@ -7,7 +7,6 @@ type Customer = {
   password: string
   phoneNumber: string
   isSubscribedForPromotions: boolean
-  verificationCode: string
 }
 
 type Card = {
@@ -24,6 +23,11 @@ type HomeAddress = {
   city: string
   state: string
   zipcode: string
+}
+
+type VerificationCode = {
+  customerId: number
+  code: string
 }
 
 type Email = {
@@ -49,7 +53,7 @@ export default function RegistrationPage() {
   const passwordRef = useRef<HTMLInputElement | null>(null)
   const confirmPasswordRef = useRef<HTMLInputElement | null>(null)
   const [phoneNumber, setPhoneNumber] = useState("")
-  const [isSubscribedForPromotions, setIsSubcribedForPromotions] =
+  const [isSubscribedForPromotions, setIsSubscribedForPromotions] =
     useState(true)
   const creditCardTypeRef = useRef<HTMLSelectElement | null>(null)
   const [creditCardNumber, setCreditCardNumber] = useState("")
@@ -169,7 +173,7 @@ export default function RegistrationPage() {
     )
   }
 
-  function getCustomer(verificationCode: string): Customer {
+  function getCustomer(): Customer {
     if (passwordRef.current === null) {
       throw Error("passwordRef should not be null.")
     }
@@ -179,13 +183,12 @@ export default function RegistrationPage() {
       email,
       password: passwordRef.current.value,
       phoneNumber,
-      isSubscribedForPromotions,
-      verificationCode
+      isSubscribedForPromotions
     }
   }
 
-  async function addCustomer(verificationCode: string) {
-    const customer = getCustomer(verificationCode)
+  async function addCustomer() {
+    const customer = getCustomer()
     const response = await fetch("http://localhost:8080/api/customer/add", {
       method: "POST",
       headers: {
@@ -253,6 +256,16 @@ export default function RegistrationPage() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(homeAddress)
+    })
+  }
+
+  async function addVerificationCode(verificationCode: VerificationCode) {
+    await fetch("http://localhost:8080/api/verification_code/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(verificationCode)
     })
   }
 
@@ -382,7 +395,7 @@ export default function RegistrationPage() {
                 type="checkbox"
                 className="w-6 aspect-square"
                 onChange={() =>
-                  setIsSubcribedForPromotions(!isSubscribedForPromotions)
+                  setIsSubscribedForPromotions(!isSubscribedForPromotions)
                 }
               />
               <label htmlFor="promotions" className="label select-none">
@@ -615,16 +628,22 @@ export default function RegistrationPage() {
                     return
                   }
 
-                  const verificationCode = generateVerificationCode()
-                  const customerId = await addCustomer(verificationCode)
+                  const customerId = await addCustomer()
                   if (paymentInformationComplete()) {
                     await addCard(customerId)
                   }
                   if (homeAddressComplete()) {
                     await addHomeAddress(customerId)
                   }
-                  await sendEmail(verificationCode)
-                  router.push("./registration-verification-code")
+
+                  const verificationCode = {
+                    customerId,
+                    code: generateVerificationCode()
+                  }
+                  await addVerificationCode(verificationCode)
+                  await sendEmail(verificationCode.code)
+
+                  router.push(`./registration-verification-code?id=${customerId}`)
                 }}
               >
                 Submit

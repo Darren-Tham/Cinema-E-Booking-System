@@ -26,8 +26,7 @@ public class CustomerService {
                 encryptedPassword,
                 customerDTO.phoneNumber(),
                 UserState.INACTIVE,
-                customerDTO.isSubscribedForPromotions(),
-                customerDTO.verificationCode());
+                customerDTO.isSubscribedForPromotions());
         return customerDAO.addInactiveCustomer(customer);
     }
 
