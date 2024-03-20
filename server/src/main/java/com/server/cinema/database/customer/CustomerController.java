@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,14 @@ public class CustomerController {
     public ResponseEntity<Integer> addInactiveCustomer(@RequestBody final InactiveCustomerDTO customer) {
         final int customerId = customerService.addInactiveCustomer(customer);
         return new ResponseEntity<>(customerId, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/set_active_status/{customerId}")
+    public ResponseEntity<String> setStatusToActive(@PathVariable final int customerId) {
+        customerService.setStatusToActive(customerId);
+        final String msg = String.format("The status of the customer with id %d has been changed to ACTIVE.",
+                customerId);
+        return ResponseEntity.ok(msg);
     }
 
 }

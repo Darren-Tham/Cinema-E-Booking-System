@@ -54,6 +54,15 @@ export default function RegistrationVerificationCode() {
     })
   }
 
+  async function setStatusToActive() {
+    await fetch(
+      `http://localhost:8080/api/customer/set_active_status/${customerId}`,
+      {
+        method: "PUT"
+      }
+    )
+  }
+
   return loadRef.current ? (
     <div className="min-h-screen bg-black flex flex-col">
       <HomeNavbar />
@@ -70,13 +79,14 @@ export default function RegistrationVerificationCode() {
           />
           <button
             className="bg-jade text-white w-full font-bold px-4 py-2 rounded-sm hover:scale-105 transition-transform duration-300 mb-1"
-            onClick={() => {
+            onClick={async () => {
               if (inputRef.current?.value.trim() !== verificationCode) {
                 alert(
                   "The verification code is incorrect. Please try again or resend another verification code."
                 )
                 return
               }
+              await setStatusToActive()
               router.push("./registration-confirmation")
             }}
           >
