@@ -8,6 +8,4 @@ public interface CustomerDAO {
 
     boolean emailExists(final String email);
 
-    boolean phoneNumberExists(final String phoneNumber);
-
 }

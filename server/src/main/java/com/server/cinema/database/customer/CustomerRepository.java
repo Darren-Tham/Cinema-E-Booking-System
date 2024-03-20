@@ -10,7 +10,4 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query("SELECT CASE WHEN COUNT(c) = 1 THEN true ELSE false END FROM Customer c WHERE c.email = ?1")
     boolean existsByEmail(final String email);
 
-    @Query("SELECT CASE WHEN COUNT(c) = 1 THEN true ELSE false END FROM Customer c WHERE c.phoneNumber = ?1")
-    boolean existsByPhoneNumber(final String phoneNumber);
-
 }

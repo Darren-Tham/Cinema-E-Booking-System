@@ -26,9 +26,4 @@ public class CustomerDAOJPA implements CustomerDAO {
         return customerRepository.existsByEmail(email);
     }
 
-    @Override
-    public boolean phoneNumberExists(final String phoneNumber) {
-        return customerRepository.existsByPhoneNumber(phoneNumber);
-    }
-
 }
