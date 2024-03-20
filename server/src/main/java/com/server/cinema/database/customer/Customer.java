@@ -6,7 +6,6 @@ import com.server.cinema.database.card.Card;
 import com.server.cinema.database.customer.enums.UserState;
 import com.server.cinema.database.home_address.HomeAddress;
 import com.server.cinema.database.user.User;
-import com.server.cinema.database.verification_code.VerificationCode;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -50,9 +49,6 @@ public class Customer extends User {
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private HomeAddress homeAddress;
-
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
-    private VerificationCode verificationCode;
 
     public Customer(
             final String firstName,
