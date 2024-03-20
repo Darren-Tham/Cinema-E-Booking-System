@@ -7,6 +7,7 @@ type Customer = {
   password: string
   phoneNumber: string
   isSubscribedForPromotions: boolean
+  verificationCode: string
 }
 
 type Card = {
@@ -23,6 +24,11 @@ type HomeAddress = {
   city: string
   state: string
   zipcode: string
+}
+
+type Email = {
+  receiverEmail: string
+  verificationCode: string
 }
 
 import Link from "next/link"
@@ -162,7 +168,7 @@ export default function RegistrationPage() {
     )
   }
 
-  function getCustomer(): Customer {
+  function getCustomer(verificationCode: string): Customer {
     if (passwordRef.current === null) {
       throw Error("passwordRef should not be null.")
     }
@@ -175,12 +181,13 @@ export default function RegistrationPage() {
       email,
       password: passwordRef.current.value,
       phoneNumber,
-      isSubscribedForPromotions: promotionSubscriptionRef.current.checked
+      isSubscribedForPromotions: promotionSubscriptionRef.current.checked,
+      verificationCode
     }
   }
 
-  async function addCustomer() {
-    const customer = getCustomer()
+  async function addCustomer(verificationCode: string) {
+    const customer = getCustomer(verificationCode)
     const response = await fetch("http://localhost:8080/api/customer/add", {
       method: "POST",
       headers: {
@@ -248,6 +255,24 @@ export default function RegistrationPage() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(homeAddress)
+    })
+  }
+
+  function getEmail(verificationCode: string): Email {
+    return {
+      receiverEmail: email,
+      verificationCode
+    }
+  }
+
+  async function sendEmail(verificationCode: string) {
+    const email = getEmail(verificationCode)
+    await fetch("http://localhost:8080/api/email/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(email)
     })
   }
 
@@ -589,13 +614,15 @@ export default function RegistrationPage() {
                     return
                   }
 
-                  const customerId = await addCustomer()
+                  const verificationCode = generateVerificationCode()
+                  const customerId = await addCustomer(verificationCode)
                   if (paymentInformationComplete()) {
                     await addCard(customerId)
                   }
                   if (homeAddressComplete()) {
                     await addHomeAddress(customerId)
                   }
+                  await sendEmail(verificationCode)
                   router.push("./registration-verification-code")
                 }}
               >
@@ -637,4 +664,13 @@ function setValueWithOnlyDigits(
   if (/^\d*$/.test(value)) {
     setValue(value)
   }
+}
+
+function generateVerificationCode() {
+  const randomNumber = Math.floor(Math.random() * 1_000_000)
+  let verificationCode = randomNumber.toString()
+  while (verificationCode.length < 6) {
+    verificationCode = "0" + verificationCode
+  }
+  return verificationCode
 }

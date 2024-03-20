@@ -44,6 +44,9 @@ public class Customer extends User {
     @Column(nullable = false)
     private boolean isSubscribedForPromotions;
 
+    @Column(nullable = false)
+    private String verificationCode;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Card> cards;
 
@@ -57,7 +60,8 @@ public class Customer extends User {
             final String encryptedPassword,
             final String phoneNumber,
             final UserState status,
-            final boolean isSubscribedForPromotions) {
+            final boolean isSubscribedForPromotions,
+            final String verificationCode) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -65,6 +69,7 @@ public class Customer extends User {
         this.phoneNumber = phoneNumber;
         this.status = status;
         this.isSubscribedForPromotions = isSubscribedForPromotions;
+        this.verificationCode = verificationCode;
     }
 
 }
