@@ -31,6 +31,10 @@ public class CustomerService {
         return customerDAO.emailExists(email);
     }
 
+    public boolean phoneNumberExists(final String phoneNumber) {
+        return customerDAO.phoneNumberExists(phoneNumber);
+    }
+
     public int addInactiveCustomer(final InactiveCustomerDTO customerDTO) {
         final String encryptedPassword = BCrypt.hashpw(customerDTO.password(), BCrypt.gensalt());
         Customer customer = new Customer(

@@ -12,7 +12,7 @@ export default function ForgotPassword() {
       <div className="grow grid place-items-center">
         <div className="bg-dark-jade rounded-sm p-8 w-96 flex flex-col gap-3 items-center">
           <h1 className="h1">Reset Password</h1>
-          <p className="text-white text-center">
+          <p className="text-white text-center font-semibold">
             Enter the email address or phone number associated with your
             account.
           </p>

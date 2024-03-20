@@ -254,7 +254,9 @@ export default function RegistrationPage() {
   }
 
   async function emailExists() {
-    const response = await fetch(`http://localhost:8080/api/customer/${email}`)
+    const response = await fetch(
+      `http://localhost:8080/api/customer/email_exists/${email}`
+    )
     const data = await response.text()
     return data === "true"
   }
@@ -481,7 +483,7 @@ export default function RegistrationPage() {
               <button
                 type="button"
                 className="action-button"
-                onClick={async() => await goToHomeAddressForm()}
+                onClick={async () => await goToHomeAddressForm()}
               >
                 Next
               </button>

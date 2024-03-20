@@ -30,10 +30,16 @@ public class CustomerController {
         return ResponseEntity.ok(email);
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/email_exists/{email}")
     public ResponseEntity<Boolean> emailExists(@PathVariable final String email) {
         final boolean emailExists = customerService.emailExists(email);
         return ResponseEntity.ok(emailExists);
+    }
+
+    @GetMapping("/phone_number_exists/{phoneNumber}")
+    public ResponseEntity<Boolean> phoneNumberExists(@PathVariable final String phoneNumber) {
+        final boolean phoneNumberExists = customerService.phoneNumberExists(phoneNumber);
+        return ResponseEntity.ok(phoneNumberExists);
     }
 
     @PostMapping("/add")
