@@ -49,7 +49,8 @@ export default function RegistrationPage() {
   const passwordRef = useRef<HTMLInputElement | null>(null)
   const confirmPasswordRef = useRef<HTMLInputElement | null>(null)
   const [phoneNumber, setPhoneNumber] = useState("")
-  const promotionSubscriptionRef = useRef<HTMLInputElement | null>(null)
+  const [isSubscribedForPromotions, setIsSubcribedForPromotions] =
+    useState(true)
   const creditCardTypeRef = useRef<HTMLSelectElement | null>(null)
   const [creditCardNumber, setCreditCardNumber] = useState("")
   const [expirationDate, setExpirationDate] = useState("")
@@ -172,16 +173,13 @@ export default function RegistrationPage() {
     if (passwordRef.current === null) {
       throw Error("passwordRef should not be null.")
     }
-    if (promotionSubscriptionRef.current === null) {
-      throw Error("promotionSubscriptionRef should not be null.")
-    }
     return {
       firstName,
       lastName,
       email,
       password: passwordRef.current.value,
       phoneNumber,
-      isSubscribedForPromotions: promotionSubscriptionRef.current.checked,
+      isSubscribedForPromotions,
       verificationCode
     }
   }
@@ -379,10 +377,13 @@ export default function RegistrationPage() {
             </div>
             <div className="flex items-center gap-2 mt-2 mb-1">
               <input
+                checked={isSubscribedForPromotions}
                 id="promotions"
                 type="checkbox"
                 className="w-6 aspect-square"
-                ref={promotionSubscriptionRef}
+                onChange={() =>
+                  setIsSubcribedForPromotions(!isSubscribedForPromotions)
+                }
               />
               <label htmlFor="promotions" className="label select-none">
                 Subscribe For Promotions
