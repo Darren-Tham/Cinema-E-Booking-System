@@ -23,8 +23,9 @@ public class VerificationCodeController {
     }
 
     @GetMapping("/{customerId}")
-    public String getVerificationCode(@PathVariable final int customerId) {
-        return verificationCodeService.getVerificationCode(customerId);
+    public ResponseEntity<String> getVerificationCode(@PathVariable final int customerId) {
+        final String verificationCode = verificationCodeService.getVerificationCode(customerId);
+        return ResponseEntity.ok(verificationCode);
     }
 
     @PostMapping("/add")
