@@ -6,14 +6,14 @@ export default function RegistrationVerificationCode() {
     <div className="min-h-screen bg-black flex flex-col">
       <HomeNavbar />
       <div className="grow grid place-items-center">
-        <div className="bg-dark-jade p-5 flex flex-col gap-1 rounded-sm w-80 text-center">
-          <p className="text-white font-semibold text-lg">
+        <div className="bg-dark-jade p-5 flex flex-col rounded-sm w-96 text-center">
+          <p className="text-white font-semibold text-lg mb-4">
             A verification code is sent to your email. Please enter the code
             below to verify your account.
           </p>
           <input
             type="text"
-            className="rounded-sm font-semibold outline-none p-[0.375rem] w-full"
+            className="rounded-sm font-semibold outline-none p-[0.375rem] w-full mb-1"
           />
           <Link
             href="./registration-confirmation"
