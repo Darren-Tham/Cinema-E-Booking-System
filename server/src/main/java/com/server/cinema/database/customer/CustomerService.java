@@ -3,6 +3,7 @@ package com.server.cinema.database.customer;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.server.cinema.database.customer.dao.CustomerDAO;
 import com.server.cinema.database.customer.enums.UserState;
@@ -41,6 +42,13 @@ public class CustomerService {
                 UserState.INACTIVE,
                 customerDTO.isSubscribedForPromotions());
         return customerDAO.addInactiveCustomer(customer);
+    }
+
+    @Transactional
+    public void setStatusToActive(final int customerId) {
+        Customer customer = entityManager.find(Customer.class, customerId);
+        customer.setStatus(UserState.ACTIVE);
+        entityManager.merge(customer);
     }
 
 }
