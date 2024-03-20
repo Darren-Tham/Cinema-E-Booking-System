@@ -1,30 +1,60 @@
 "use client"
 
+type Email = {
+  receiverEmail: string
+  verificationCode: string
+}
+
 import HomeNavbar from "@/components/HomeNavbar"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 
 export default function RegistrationVerificationCode() {
-  const [load, setLoad] = useState(false)
   const [verificationCode, setVerificationCode] = useState("")
   const inputRef = useRef<HTMLInputElement | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
   const customerId = searchParams.get("id")
+  const loadRef = useRef(false)
 
   useEffect(() => {
-    async function getVerificationCode() {
-      const response = await fetch(
-        `http://localhost:8080/api/verification_code/${customerId}`
-      )
-      const data = await response.text()
-      setVerificationCode(data)
+    if (loadRef.current) {
+      sendAndSetNewVerificationCode()
     }
-    getVerificationCode()
-    setLoad(true)
+
+    return () => {
+      loadRef.current = true
+    }
   }, [])
 
-  return load ? (
+  async function sendAndSetNewVerificationCode() {
+    const code = generateVerificationCode()
+    sendEmail(code)
+    setVerificationCode(code)
+  }
+
+  async function getEmail() {
+    const response = await fetch(
+      `http://localhost:8080/api/customer/email/${customerId}`
+    )
+    return await response.text()
+  }
+
+  async function sendEmail(code: string) {
+    const email: Email = {
+      receiverEmail: await getEmail(),
+      verificationCode: code
+    } as const
+    await fetch("http://localhost:8080/api/email/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(email)
+    })
+  }
+
+  return loadRef.current ? (
     <div className="min-h-screen bg-black flex flex-col">
       <HomeNavbar />
       <div className="grow grid place-items-center">
@@ -52,7 +82,15 @@ export default function RegistrationVerificationCode() {
           >
             Submit
           </button>
-          <button className="back-button w-full">
+          <button
+            className="back-button w-full"
+            onClick={async () => {
+              await sendAndSetNewVerificationCode()
+              alert(
+                "A new verification code has been sent to your associated email account. The previous verification code is now expired. Please enter the new verification code."
+              )
+            }}
+          >
             Resend Verification Code
           </button>
         </div>
@@ -61,4 +99,13 @@ export default function RegistrationVerificationCode() {
   ) : (
     <></>
   )
+}
+
+function generateVerificationCode() {
+  const randomNumber = Math.floor(Math.random() * 1_000_000)
+  let verificationCode = randomNumber.toString()
+  while (verificationCode.length < 6) {
+    verificationCode = "0" + verificationCode
+  }
+  return verificationCode
 }

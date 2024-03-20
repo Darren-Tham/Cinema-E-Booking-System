@@ -25,16 +25,6 @@ type HomeAddress = {
   zipcode: string
 }
 
-type VerificationCode = {
-  customerId: number
-  code: string
-}
-
-type Email = {
-  receiverEmail: string
-  verificationCode: string
-}
-
 import Link from "next/link"
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
@@ -256,34 +246,6 @@ export default function RegistrationPage() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(homeAddress)
-    })
-  }
-
-  async function addVerificationCode(verificationCode: VerificationCode) {
-    await fetch("http://localhost:8080/api/verification_code/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(verificationCode)
-    })
-  }
-
-  function getEmail(verificationCode: string): Email {
-    return {
-      receiverEmail: email,
-      verificationCode
-    }
-  }
-
-  async function sendEmail(verificationCode: string) {
-    const email = getEmail(verificationCode)
-    await fetch("http://localhost:8080/api/email/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(email)
     })
   }
 
@@ -636,14 +598,9 @@ export default function RegistrationPage() {
                     await addHomeAddress(customerId)
                   }
 
-                  const verificationCode = {
-                    customerId,
-                    code: generateVerificationCode()
-                  }
-                  await addVerificationCode(verificationCode)
-                  await sendEmail(verificationCode.code)
-
-                  router.push(`./registration-verification-code?id=${customerId}`)
+                  router.push(
+                    `./registration-verification-code?id=${customerId}`
+                  )
                 }}
               >
                 Submit
@@ -684,13 +641,4 @@ function setValueWithOnlyDigits(
   if (/^\d*$/.test(value)) {
     setValue(value)
   }
-}
-
-function generateVerificationCode() {
-  const randomNumber = Math.floor(Math.random() * 1_000_000)
-  let verificationCode = randomNumber.toString()
-  while (verificationCode.length < 6) {
-    verificationCode = "0" + verificationCode
-  }
-  return verificationCode
 }

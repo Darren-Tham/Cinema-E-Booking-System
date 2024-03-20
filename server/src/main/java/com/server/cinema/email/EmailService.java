@@ -19,7 +19,8 @@ public class EmailService {
         final SimpleMailMessage message = new SimpleMailMessage();
         final String subject = String.format("Cinema E-Booking System Email Verification Code: %s",
                 email.verificationCode());
-        final String text = String.format("In order to activate your account, please enter the verification code: %s.",
+        final String text = String.format(
+                "In order to activate your account, please enter the verification code: %s. Please do not share your verification code with anyone. If you do not recognize this email, please safely discard it.",
                 email.verificationCode());
         message.setTo(email.receiverEmail());
         message.setSubject(subject);

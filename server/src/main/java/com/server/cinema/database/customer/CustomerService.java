@@ -7,14 +7,23 @@ import org.springframework.stereotype.Service;
 import com.server.cinema.database.customer.dao.CustomerDAO;
 import com.server.cinema.database.customer.enums.UserState;
 
+import jakarta.persistence.EntityManager;
+
 @Service
 public class CustomerService {
 
     private final CustomerDAO customerDAO;
+    private final EntityManager entityManager;
 
     @Autowired
-    public CustomerService(final CustomerDAO customerDAO) {
+    public CustomerService(final CustomerDAO customerDAO, final EntityManager entityManager) {
         this.customerDAO = customerDAO;
+        this.entityManager = entityManager;
+    }
+
+    public String getEmailByCustomerId(final int customerId) {
+        Customer customer = entityManager.find(Customer.class, customerId);
+        return customer.getEmail();
     }
 
     public int addInactiveCustomer(final InactiveCustomerDTO customerDTO) {
