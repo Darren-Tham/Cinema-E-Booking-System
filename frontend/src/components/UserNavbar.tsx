@@ -9,7 +9,7 @@ import { useState } from "react"
 
 export default function UserNavbar() {
   const router = useRouter()
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   return (
     <nav className="w-full p-4 flex justify-between px-10">
       <div className="flex gap-5 items-center">
