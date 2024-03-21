@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.server.cinema.database.movie.dao.MovieDAO;
-import com.server.cinema.database.movie.exception.MovieNotFoundException;
 
 @Service
 public class MovieService {

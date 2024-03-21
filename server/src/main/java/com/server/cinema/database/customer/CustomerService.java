@@ -44,6 +44,14 @@ public class CustomerService {
         return customerDAO.addInactiveCustomer(customer);
     }
 
+    public int getCustomerIdByEmail(final String email) {
+        return customerDAO
+                .getCustomerIdByEmail(email).orElseThrow(
+                        () -> new CustomerNotFoundException(
+                                String.format("Customer with email `%s` does not exist.", email)))
+                .getId();
+    }
+
     @Transactional
     public void setStatusToActive(final int customerId) {
         Customer customer = entityManager.find(Customer.class, customerId);

@@ -1,5 +1,7 @@
 package com.server.cinema.database.customer.dao;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +26,11 @@ public class CustomerDAOJPA implements CustomerDAO {
     @Override
     public boolean emailExists(final String email) {
         return customerRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Optional<Customer> getCustomerIdByEmail(final String email) {
+        return customerRepository.findByEmail(email);
     }
 
 }
