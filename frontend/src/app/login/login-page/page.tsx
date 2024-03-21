@@ -70,6 +70,11 @@ export default function Login() {
                 const data = await response.text()
                 const customerId = parseInt(data)
                 console.log("customerId = " + customerId)
+
+                /**
+                 * KHOA'S CODE
+                 */
+
                 // router.push("/")
               } else {
                 alert(
