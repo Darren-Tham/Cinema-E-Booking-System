@@ -56,4 +56,11 @@ public class CustomerController {
         return ResponseEntity.ok(msg);
     }
 
+    @PutMapping("/change_password/{customerId}/{password}")
+    public ResponseEntity<String> changePassword(@PathVariable final int customerId,
+            @PathVariable final String password) {
+        customerService.changePassword(customerId, password);
+        return ResponseEntity.ok("Password changed successfully.");
+    }
+
 }

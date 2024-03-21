@@ -1,58 +1,35 @@
 "use client"
 
-type Email = {
-  receiverEmail: string
-  verificationCode: string
-}
-
 import HomeNavbar from "@/components/HomeNavbar"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
+import {
+  resendVerificationCode,
+  sendAndSetNewVerificationCode
+} from "@/lib/FetchCalls"
 
 export default function RegistrationVerificationCode() {
   const [verificationCode, setVerificationCode] = useState("")
   const inputRef = useRef<HTMLInputElement | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
-  const customerId = searchParams.get("id")
+  const param = searchParams.get("id")
   const loadRef = useRef(false)
+
+  if (param === null) {
+    throw Error("customerId should not be null.")
+  }
+  const customerId = parseInt(param)
 
   useEffect(() => {
     if (loadRef.current) {
-      sendAndSetNewVerificationCode()
+      sendAndSetNewVerificationCode(customerId, setVerificationCode)
     }
 
     return () => {
       loadRef.current = true
     }
   }, [])
-
-  async function sendAndSetNewVerificationCode() {
-    const code = generateVerificationCode()
-    sendEmail(code)
-    setVerificationCode(code)
-  }
-
-  async function getEmail() {
-    const response = await fetch(
-      `http://localhost:8080/api/customer/email/${customerId}`
-    )
-    return await response.text()
-  }
-
-  async function sendEmail(code: string) {
-    const email: Email = {
-      receiverEmail: await getEmail(),
-      verificationCode: code
-    } as const
-    await fetch("http://localhost:8080/api/email/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(email)
-    })
-  }
 
   async function setStatusToActive() {
     await fetch(
@@ -80,26 +57,23 @@ export default function RegistrationVerificationCode() {
           <button
             className="bg-jade text-white w-full font-bold px-4 py-2 rounded-sm hover:scale-105 transition-transform duration-300 mb-1"
             onClick={async () => {
-              if (inputRef.current?.value.trim() !== verificationCode) {
+              if (inputRef.current?.value.trim() === verificationCode) {
+                await setStatusToActive()
+                router.push("./registration-confirmation")
+              } else {
                 alert(
                   "The verification code is incorrect. Please try again or resend another verification code."
                 )
-                return
               }
-              await setStatusToActive()
-              router.push("./registration-confirmation")
             }}
           >
             Submit
           </button>
           <button
             className="back-button w-full"
-            onClick={async () => {
-              await sendAndSetNewVerificationCode()
-              alert(
-                "A new verification code has been sent to your associated email account. The previous verification code is now expired. Please enter the new verification code."
-              )
-            }}
+            onClick={async () =>
+              await resendVerificationCode(customerId, setVerificationCode)
+            }
           >
             Resend Verification Code
           </button>
@@ -109,13 +83,4 @@ export default function RegistrationVerificationCode() {
   ) : (
     <></>
   )
-}
-
-function generateVerificationCode() {
-  const randomNumber = Math.floor(Math.random() * 1_000_000)
-  let verificationCode = randomNumber.toString()
-  while (verificationCode.length < 6) {
-    verificationCode = "0" + verificationCode
-  }
-  return verificationCode
 }

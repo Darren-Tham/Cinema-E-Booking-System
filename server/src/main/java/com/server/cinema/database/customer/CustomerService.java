@@ -59,4 +59,12 @@ public class CustomerService {
         entityManager.merge(customer);
     }
 
+    @Transactional
+    public void changePassword(final int customerId, final String password) {
+        final String encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        Customer customer = entityManager.find(Customer.class, customerId);
+        customer.setEncryptedPassword(encryptedPassword);
+        entityManager.merge(customer);
+    }
+
 }
