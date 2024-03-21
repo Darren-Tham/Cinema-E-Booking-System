@@ -1,4 +1,4 @@
-package com.server.cinema.database.movie.exception;
+package com.server.cinema.exception;
 
 import java.time.ZonedDateTime;
 
