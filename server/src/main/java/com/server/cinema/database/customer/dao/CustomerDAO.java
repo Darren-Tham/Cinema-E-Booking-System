@@ -10,6 +10,6 @@ public interface CustomerDAO {
 
     boolean emailExists(final String email);
 
-    Optional<Customer> getCustomerIdByEmail(final String email);
+    Optional<Customer> getCustomerByEmail(final String email);
 
 }

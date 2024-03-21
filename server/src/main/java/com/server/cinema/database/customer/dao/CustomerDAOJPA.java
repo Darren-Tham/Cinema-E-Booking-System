@@ -29,7 +29,7 @@ public class CustomerDAOJPA implements CustomerDAO {
     }
 
     @Override
-    public Optional<Customer> getCustomerIdByEmail(final String email) {
+    public Optional<Customer> getCustomerByEmail(final String email) {
         return customerRepository.findByEmail(email);
     }
 
