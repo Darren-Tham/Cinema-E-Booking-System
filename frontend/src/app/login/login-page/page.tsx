@@ -76,7 +76,7 @@ export default function Login() {
                  * KHOA'S CODE
                  */
 
-                // router.push("/")
+                //router.push("/")
               } else {
                 alert(
                   "Email or password credential is incorrect. Please try again. If you do not have an account, please create a new account."
