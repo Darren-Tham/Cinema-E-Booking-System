@@ -4,7 +4,7 @@ import HomeNavbar from "@/components/HomeNavbar"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useRef, useState } from "react"
-import { initialSetUp } from "../../../../lib"
+import { initialSetUp } from "../../../lib/Auth"
 
 export default function Login() {
   const router = useRouter()
@@ -70,13 +70,11 @@ export default function Login() {
               if (response.ok) {
                 const data = await response.text()
                 const customerId = parseInt(data)
-                console.log("customerId = " + customerId)
+                //console.log("customerId = " + customerId)
+                console.log(customerId)
+                initialSetUp(customerId)
 
-                /**
-                 * KHOA'S CODE
-                 */
-
-                //router.push("/")
+                router.push("/")
               } else {
                 alert(
                   "Email or password credential is incorrect. Please try again. If you do not have an account, please create a new account."

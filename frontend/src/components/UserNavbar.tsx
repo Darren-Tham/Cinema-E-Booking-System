@@ -5,11 +5,19 @@ import ProfileIcon from "@public/profile-icon.svg"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect} from "react"
+import { destroyCookie, hasCookie} from "@/lib/Auth"
 
 export default function UserNavbar() {
   const router = useRouter()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  useEffect(() => {
+    const authenticate = async () => {
+      const auth = await hasCookie()
+      setIsLoggedIn(auth)
+    }
+    authenticate()
+  },[])
   return (
     <nav className="w-full p-4 flex justify-between px-10">
       <div className="flex gap-5 items-center">
@@ -47,7 +55,12 @@ export default function UserNavbar() {
             </p>
             <button
               className="back-button"
-              onClick={() => setIsLoggedIn(false)}
+              onClick={async () => {
+                setIsLoggedIn(false)
+                destroyCookie()
+                setIsLoggedIn(await hasCookie())
+
+              }}
             >
               Logout
             </button>
