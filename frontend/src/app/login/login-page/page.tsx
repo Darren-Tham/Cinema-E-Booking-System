@@ -3,9 +3,13 @@
 import HomeNavbar from "@/components/HomeNavbar"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useRef, useState } from "react"
 
 export default function Login() {
   const router = useRouter()
+  const [email, setEmail] = useState("")
+  const passwordRef = useRef<HTMLInputElement | null>(null)
+
   return (
     <div className="min-h-screen bg-black flex flex-col">
       <HomeNavbar />
@@ -16,13 +20,29 @@ export default function Login() {
             <label htmlFor="email" className="label">
               Email *
             </label>
-            <input type="text" id="email" className="input" />
+            <input
+              type="text"
+              id="email"
+              value={email}
+              className="input"
+              onChange={e => {
+                const { value } = e.target
+                if (!value.includes(" ")) {
+                  setEmail(value)
+                }
+              }}
+            />
           </div>
           <div className="flex flex-col gap-1 w-full">
             <label htmlFor="password" className="label">
               Password *
             </label>
-            <input type="password" id="password" className="input" />
+            <input
+              type="password"
+              id="password"
+              className="input"
+              ref={passwordRef}
+            />
             <Link
               href="./forgot-password"
               className="text-bright-jade font-semibold w-max hover:scale-105 transition-transform duration-300"
@@ -32,13 +52,40 @@ export default function Login() {
           </div>
           <button
             className="action-button w-full"
-            onClick={() => router.push("/")}
+            onClick={async () => {
+              const password = passwordRef.current?.value
+              if (email === "") {
+                alert("Email cannot be empty.")
+                return
+              }
+              if (password === "") {
+                alert("Password cannot be empty.")
+                return
+              }
+
+              const response = await fetch(
+                `http://localhost:8080/api/customer/login_credentials/${email}/${password}`
+              )
+              if (response.ok) {
+                const data = await response.text()
+                const customerId = parseInt(data)
+                console.log("customerId = " + customerId)
+                // router.push("/")
+              } else {
+                alert(
+                  "Email or password credential is incorrect. Please try again. If you do not have an account, please create a new account."
+                )
+              }
+            }}
           >
             Log In
           </button>
           <div className="flex justify-center">
             <p className="p-redirection">Don&apos;t Have An Account?</p>
-            <Link href="/registration/registration-page" className="link-redirection">
+            <Link
+              href="/registration/registration-page"
+              className="link-redirection"
+            >
               Register Here
             </Link>
           </div>

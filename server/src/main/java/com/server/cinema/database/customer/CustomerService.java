@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.server.cinema.database.customer.dao.CustomerDAO;
 import com.server.cinema.database.customer.enums.UserState;
+import com.server.cinema.database.customer.exception.CustomerNotFoundException;
+import com.server.cinema.database.customer.exception.LoginCredentialsInvalidException;
 
 import jakarta.persistence.EntityManager;
 
@@ -46,10 +48,21 @@ public class CustomerService {
 
     public int getCustomerIdByEmail(final String email) {
         return customerDAO
-                .getCustomerIdByEmail(email).orElseThrow(
+                .getCustomerByEmail(email).orElseThrow(
                         () -> new CustomerNotFoundException(
                                 String.format("Customer with email `%s` does not exist.", email)))
                 .getId();
+    }
+
+    public int getCustomerIdByEmailAndPassword(final String email, final String password) {
+        Customer customer = customerDAO.getCustomerByEmail(email)
+                .orElseThrow(() -> new CustomerNotFoundException(
+                        String.format("Customer with email `%s` does not exist.", email)));
+        if (BCrypt.checkpw(password, customer.getEncryptedPassword())) {
+            return customer.getId();
+        } else {
+            throw new LoginCredentialsInvalidException("Email or password credential is incorrect.");
+        }
     }
 
     @Transactional
