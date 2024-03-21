@@ -34,7 +34,7 @@ export default function ForgotPassword() {
               if (response.ok) {
                 const data = await response.text()
                 const customerId = parseInt(data)
-                router.push("./reset-password")
+                router.push(`./reset-password?id=${customerId}`)
               } else {
                 alert(
                   "The email inputted is not associated with any account in our system. Please try again or create a new account."
