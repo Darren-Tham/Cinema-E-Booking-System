@@ -4,6 +4,7 @@ import HomeNavbar from "@/components/HomeNavbar"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useRef, useState } from "react"
+import { initialSetUp } from "../../../../lib"
 
 export default function Login() {
   const router = useRouter()
