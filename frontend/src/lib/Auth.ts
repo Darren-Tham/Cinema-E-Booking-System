@@ -1,3 +1,4 @@
+"use server"
 import { SignJWT, jwtVerify} from "jose"
 import {cookies} from "next/headers"
 import {NextRequest, NextResponse} from "next/server"
@@ -12,8 +13,17 @@ export async function encrypt (payload: any) {
 }
 
 export async function initialSetUp(data: any) {
-    const user = {id: data.customerId, email : data.email}
+    //const user = {id: data.customerId, email : data.email}
+    const user = data
     const expiration = new Date(Date.now() + 15*1000) // 15 sec expiration
     const session = await encrypt({user, expiration})
     cookies().set("session", session, {expires: expiration, httpOnly: true})
+}
+
+export async function updateSession(request: NextRequest) {
+    const session = request.cookies.get("session")?.value
+    if (!session) return
+    else {
+        //const sessionData 
+    }
 }
