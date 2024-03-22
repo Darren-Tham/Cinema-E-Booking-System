@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import SearchIcon from "@public/search-icon.svg"
-import ProfileIcon from "@public/profile-icon.svg"
-import Image from "next/image"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useState, useEffect} from "react"
-import { destroyCookie, hasCookie} from "@/lib/Auth"
+import SearchIcon from "@public/search-icon.svg";
+import ProfileIcon from "@public/profile-icon.svg";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { destroyCookie, hasCookie } from "@/lib/Auth";
 
 export default function UserNavbar() {
-  const router = useRouter()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const authenticate = async () => {
-      const auth = await hasCookie()
-      setIsLoggedIn(auth)
-    }
-    authenticate()
-  },[])
+      const auth = await hasCookie();
+      setIsLoggedIn(auth);
+    };
+    authenticate();
+  }, []);
   return (
     <nav className="w-full p-4 flex justify-between px-10">
       <div className="flex gap-5 items-center">
@@ -35,11 +35,11 @@ export default function UserNavbar() {
             id="search"
             placeholder="Search..."
             className="input rounded-full w-96 bg-transparent text-white placeholder:text-neutral-200"
-            onKeyDown={e => {
+            onKeyDown={(e) => {
               if (e.key !== "Enter") {
-                return
+                return;
               }
-              router.push(`/search/${e.currentTarget.value}`)
+              router.push(`/search/${e.currentTarget.value}`);
             }}
           />
         </div>
@@ -56,10 +56,9 @@ export default function UserNavbar() {
             <button
               className="back-button"
               onClick={async () => {
-                setIsLoggedIn(false)
-                destroyCookie()
-                setIsLoggedIn(await hasCookie())
-
+                setIsLoggedIn(false);
+                destroyCookie();
+                setIsLoggedIn(await hasCookie());
               }}
             >
               Logout
@@ -80,5 +79,5 @@ export default function UserNavbar() {
         )}
       </div>
     </nav>
-  )
+  );
 }

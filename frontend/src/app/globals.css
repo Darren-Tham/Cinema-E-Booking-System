@@ -22,7 +22,7 @@ body {
     @apply button border-[3px];
   }
   .action-button {
-    @apply button bg-jade;
+    @apply button border-[3px] border-jade bg-jade;
   }
   .p-redirection {
     @apply inline text-white font-semibold mr-2;

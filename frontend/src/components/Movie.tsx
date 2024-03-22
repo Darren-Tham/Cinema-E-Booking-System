@@ -1,19 +1,19 @@
-import Image from "next/image"
-import PlayCircle from "@public/play-circle-icon.svg"
-import Link from "next/link"
+import Image from "next/image";
+import PlayCircle from "@public/play-circle-icon.svg";
+import Link from "next/link";
 
 export type MovieType = {
-  id: number
-  title: string
-  trailerLink: string
-  imageLink: string
-  status: string
-}
+  id: number;
+  title: string;
+  trailerLink: string;
+  imageLink: string;
+  status: string;
+};
 
 type Props = {
-  movie: MovieType
-  handleTrailerClick: () => void
-}
+  movie: MovieType;
+  handleTrailerClick: () => void;
+};
 
 export default function Movie({ movie, handleTrailerClick }: Readonly<Props>) {
   return (
@@ -32,9 +32,9 @@ export default function Movie({ movie, handleTrailerClick }: Readonly<Props>) {
           />
         </Link>
       </div>
-      <h2 className="text-white text-center font-semibold mt-1">
+      <h2 className="text-black text-center font-semibold mt-1">
         {movie.title}
       </h2>
     </div>
-  )
+  );
 }

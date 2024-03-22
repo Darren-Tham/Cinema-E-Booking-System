@@ -1,10 +1,10 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export default function checkoutInfo() {
-  const h1Styles = "font-bold text-4xl text-white text-center p-10"
-  const h2Styles = "text-lg text-white font-semibold"
+  const h1Styles = "font-bold text-4xl text-white text-center p-10";
+  const h2Styles = "text-lg text-white font-semibold";
   const inputStyles =
-    "bg-light-jade outline-none flex-grow rounded h-8 max-w-80 p-2"
+    "bg-light-jade outline-none flex-grow rounded h-8 max-w-80 p-2";
 
   return (
     <div className="grid place-items-center bg-black min-h-screen">
@@ -17,7 +17,9 @@ export default function checkoutInfo() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center space-x-20 px-10 ">
               <h3 className={h2Styles}>Name *</h3>
-              <input className={inputStyles} type="email" />
+              <div className="flex items-end">
+                <input className={inputStyles} type="email" />
+              </div>
             </div>
             <div className="flex items-center space-x-5 px-10">
               <h3 className={h2Styles}>Email Address *</h3>
@@ -92,5 +94,5 @@ export default function checkoutInfo() {
         </div>
       </div>
     </div>
-  )
+  );
 }
