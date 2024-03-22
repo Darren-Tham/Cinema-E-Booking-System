@@ -6,15 +6,19 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState, useEffect} from "react"
-import { destroyCookie, hasCookie} from "@/lib/Auth"
+import { destroyCookie, hasCookie, getUser} from "@/lib/Auth"
 
 export default function UserNavbar() {
   const router = useRouter()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [displayName, setDisplayName] = useState("User")
   useEffect(() => {
     const authenticate = async () => {
       const auth = await hasCookie()
       setIsLoggedIn(auth)
+      const data = await getUser()
+      if (data)
+        setDisplayName(data.user.email)
     }
     authenticate()
   },[])
@@ -51,7 +55,7 @@ export default function UserNavbar() {
               <Image src={ProfileIcon} alt="Profile" width={45} />
             </Link>
             <p className="text-white font-semibold text-lg mr-4">
-              Hello, User!
+              Hello, {displayName}
             </p>
             <button
               className="back-button"
@@ -59,7 +63,6 @@ export default function UserNavbar() {
                 setIsLoggedIn(false)
                 destroyCookie()
                 setIsLoggedIn(await hasCookie())
-
               }}
             >
               Logout

@@ -68,11 +68,8 @@ export default function Login() {
                 `http://localhost:8080/api/customer/login_credentials/${email}/${password}`
               )
               if (response.ok) {
-                const data = await response.text()
-                const customerId = parseInt(data)
-                //console.log("customerId = " + customerId)
-                console.log(customerId)
-                initialSetUp(customerId)
+                const data = await response.json()
+                initialSetUp(data) // Set Up Cookies Authentication
 
                 router.push("/")
               } else {

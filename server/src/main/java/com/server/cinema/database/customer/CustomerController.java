@@ -43,9 +43,9 @@ public class CustomerController {
         return ResponseEntity.ok(emailExists);
     }
     @GetMapping("/login_credentials/{email}/{password}")
-    public ResponseEntity<Integer> login(@PathVariable final String email, @PathVariable final String password) {
-        final int customerId = customerService.getCustomerIdByEmailAndPassword(email, password);
-        return ResponseEntity.ok(customerId);
+    public ResponseEntity<String[]> login(@PathVariable final String email, @PathVariable final String password) {
+        final String[] res = {email, "" + customerService.getCustomerIdByEmailAndPassword(email, password)};
+        return ResponseEntity.ok(res);
     }
 
     @PostMapping("/add")
