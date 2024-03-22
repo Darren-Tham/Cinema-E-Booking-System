@@ -10,6 +10,7 @@ export default function Login() {
   const router = useRouter()
   const [email, setEmail] = useState("")
   const passwordRef = useRef<HTMLInputElement | null>(null)
+  const [loginFailed, setLoginFailed] = useState(false)
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -70,12 +71,14 @@ export default function Login() {
               if (response.ok) {
                 const data = await response.json()
                 initialSetUp(data) // Set Up Cookies Authentication
-
+                setLoginFailed(false)
                 router.push("/")
               } else {
-                alert(
-                  "Email or password credential is incorrect. Please try again. If you do not have an account, please create a new account."
-                )
+                setLoginFailed(true)
+                
+                // alert(
+                //   "Email or password credential is incorrect. Please try again. If you do not have an account, please create a new account."
+                // )
               }
             }}
           >
@@ -93,6 +96,15 @@ export default function Login() {
           <p className="text-white font-semibold text-sm self-start">
             * Required Field
           </p>
+          {loginFailed && (
+            <div role="alert"> 
+            <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+              Incorrect Credentials
+            </div>
+            <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+              <p>Email or password credential is incorrect. Please try again. If you do not have an account, please create a new account.</p>
+            </div>
+          </div>)}
         </div>
       </div>
     </div>
