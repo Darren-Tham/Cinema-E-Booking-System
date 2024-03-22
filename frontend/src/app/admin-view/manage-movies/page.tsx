@@ -89,7 +89,7 @@ export default function Manage() {
   ]
   movies = movies.filter((_, i) => i <= 5)
   return (
-    <div className="flex flex-col bg-dark-jade h-screen items-center space-y-10">
+    <div className="flex flex-col bg-black h-screen items-center space-y-10">
       <div className="flex items-center bg-jade rounded-full p-2 mt-5">
         <label htmlFor="search">
           <Image src={SearchIcon} alt="Search Icon" width={30} />

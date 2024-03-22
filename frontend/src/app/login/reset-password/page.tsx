@@ -35,9 +35,9 @@ export default function ResetPassword() {
             Reset Password
           </button>
           <div className="flex justify-center">
-            <p className="p-redirection">Back To</p>
+            <p className="p-redirection"></p>
             <Link href="./login-page" className="link-redirection">
-              Login
+              Back To Login
             </Link>
           </div>
         </div>

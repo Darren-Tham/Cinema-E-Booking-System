@@ -1,26 +1,35 @@
 import AccountField from "@/components/AccountField"
+import SearchIcon from "@public/search-icon.svg"
+import ProfileIcon from "@public/profile-icon.svg"
+import Image from "next/image"
 
 export default function SuspendUser() {
   return (
-    <div className="flex flex-col bg-black h-screen items-center justify-center">
-      <div className="flex flex-col p-10 bg-dark-jade items-center rounded gap-4">
+    <div className="flex flex-col bg-black h-screen align-center">
+      <div className="flex flex-col p-2 bg-black items-center rounded gap-4">
         <div className="flex items-center gap-3">
-          <label htmlFor="search" className="text-white font-semibold text-lg">
-            Search User
+          <div className="flex items-center bg-jade rounded-full p-2">
+          <label htmlFor="search">
+            <Image src={SearchIcon} alt="Search Icon" width={30} />
           </label>
-          <input id="search" className="input w-max" />
+          <input
+            id="search"
+            placeholder="Search User..."
+            className="input rounded-full w-96 bg-transparent text-white placeholder:text-neutral-200"
+          />
         </div>
-        <AccountField email="firstname12345@gmail.com" />
-        <AccountField email="firstname12345@gmail.com" />
-        <AccountField email="firstname12345@gmail.com" />
-        <AccountField email="firstname12345@gmail.com" />
-        <AccountField email="firstname12345@gmail.com" />
-        <AccountField email="firstname12345@gmail.com" />
-        <AccountField email="firstname12345@gmail.com" />
-        <AccountField email="firstname12345@gmail.com" />
-        <AccountField email="firstname12345@gmail.com" />
-        <AccountField email="firstname12345@gmail.com" />
-        <AccountField email="firstname12345@gmail.com" />
+        </div>
+        <div className="flex columns-4 flex-row flex-wrap justify-center">
+          <AccountField email="firstname12345@gmail.com" first="firstName" last="lastName" />
+          <AccountField email="firstname12345@gmail.com" first="firstName" last="lastName" />
+          <AccountField email="firstname12345@gmail.com" first="firstName" last="lastName" />
+          <AccountField email="firstname12345@gmail.com" first="firstName" last="lastName" />
+          <AccountField email="firstname12345@gmail.com" first="firstName" last="lastName" />
+          <AccountField email="firstname12345@gmail.com" first="firstName" last="lastName" />
+          <AccountField email="firstname12345@gmail.com" first="firstName" last="lastName" />
+
+        </div>
+        
       </div>
     </div>
   )

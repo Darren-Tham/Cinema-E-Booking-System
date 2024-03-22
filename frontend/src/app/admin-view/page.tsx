@@ -6,7 +6,7 @@ export default function Admin() {
   const h1Styles = "font-bold text-xl text-white text-center"
 
   return (
-    <div className="h-screen bg-dark-jade flex justify-center items-center">
+    <div className="h-screen bg-black flex justify-center items-center">
       <div className="bg-teal-950 p-16 rounded-lg flex flex-col gap-4 items-center">
         <h1 className={h1Styles}>Admin</h1>
         <Link href="/admin-view/manage-movies" className={buttonStyles}>
