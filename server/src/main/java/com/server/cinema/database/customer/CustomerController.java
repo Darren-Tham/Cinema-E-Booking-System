@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.server.cinema.database.customer.dto.InactiveCustomerDTO;
+import com.server.cinema.database.customer.dto.LoginCustomerDTO;
+
 @CrossOrigin
 @RestController
 @RequestMapping("api/customer")
@@ -43,9 +46,10 @@ public class CustomerController {
     }
 
     @GetMapping("/login_credentials/{email}/{password}")
-    public ResponseEntity<String[]> login(@PathVariable final String email, @PathVariable final String password) {
-        final String[] res = { email, "" + customerService.getCustomerIdByEmailAndPassword(email, password) };
-        return ResponseEntity.ok(res);
+    public ResponseEntity<LoginCustomerDTO> login(@PathVariable final String email,
+            @PathVariable final String password) {
+        final LoginCustomerDTO customer = customerService.getCustomerByEmailAndPassword(email, password);
+        return ResponseEntity.ok(customer);
     }
 
     @PostMapping("/add")

@@ -1,4 +1,4 @@
-package com.server.cinema.database.customer;
+package com.server.cinema.database.customer.dto;
 
 public record InactiveCustomerDTO(
         String firstName,

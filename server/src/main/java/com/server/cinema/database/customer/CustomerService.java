@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.server.cinema.database.customer.dao.CustomerDAO;
+import com.server.cinema.database.customer.dto.InactiveCustomerDTO;
+import com.server.cinema.database.customer.dto.LoginCustomerDTO;
 import com.server.cinema.database.customer.enums.UserState;
 import com.server.cinema.database.customer.exception.CustomerNotFoundException;
 import com.server.cinema.database.customer.exception.LoginCredentialsInvalidException;
@@ -54,12 +56,19 @@ public class CustomerService {
                 .getId();
     }
 
-    public int getCustomerIdByEmailAndPassword(final String email, final String password) {
+    public LoginCustomerDTO getCustomerByEmailAndPassword(final String email, final String password) {
         Customer customer = customerDAO.getCustomerByEmail(email)
                 .orElseThrow(() -> new CustomerNotFoundException(
                         String.format("Customer with email `%s` does not exist.", email)));
         if (BCrypt.checkpw(password, customer.getEncryptedPassword())) {
-            return customer.getId();
+            return new LoginCustomerDTO(
+                    customer.getId(),
+                    customer.getFirstName(),
+                    customer.getLastName(),
+                    customer.getEmail(),
+                    customer.getPhoneNumber(),
+                    customer.getStatus(),
+                    customer.isSubscribedForPromotions());
         } else {
             throw new LoginCredentialsInvalidException("Email or password credential is incorrect.");
         }
