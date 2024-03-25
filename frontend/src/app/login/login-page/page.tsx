@@ -75,10 +75,6 @@ export default function Login() {
                 router.push("/")
               } else {
                 setLoginFailed(true)
-
-                // alert(
-                //   "Email or password credential is incorrect. Please try again. If you do not have an account, please create a new account."
-                // )
               }
             }}
           >
