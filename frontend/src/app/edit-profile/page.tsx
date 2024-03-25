@@ -9,7 +9,9 @@ import {
   KeyboardEvent,
   useRef,
   useState,
-  useEffect
+  useEffect,
+  createRef,
+  RefObject
 } from "react"
 import { Customer, getUser } from "@/lib/Auth"
 
@@ -20,15 +22,25 @@ type HomeAddress = {
   zipcode: string
 }
 
+type Card = {
+  cardType: string
+  expirationDate: string
+  billingAddress: string
+  lastFourDigits: string
+}
+
 export default function EditProfile() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState("")
   const [customer, setCustomer] = useState<Customer>()
   const [homeAddress, setHomeAddress] = useState<HomeAddress>()
+  const [cards, setCards] = useState<Card[]>([])
   const firstNameDialogRef = useRef<HTMLDialogElement | null>(null)
   const lastNameDialogRef = useRef<HTMLDialogElement | null>(null)
   const phoneNumberDialogRef = useRef<HTMLDialogElement | null>(null)
   const homeAddressDialogRef = useRef<HTMLDialogElement | null>(null)
+  const cardsRef = useRef<RefObject<HTMLDialogElement>[]>([])
+
   const boxStyles = "p-2 rounded-sm font-semibold"
   const jadeBoxStyles = `${boxStyles} bg-light-jade`
   const emeraldBoxStyles = `${boxStyles} bg-emerald-50`
@@ -43,6 +55,20 @@ export default function EditProfile() {
       )
       if (homeAddressResponse.ok) {
         setHomeAddress(await homeAddressResponse.json())
+      }
+
+      const cardsResponse = await fetch(
+        `http://localhost:8080/api/card/${customer.id}`
+      )
+      if (cardsResponse.ok) {
+        const cards: Card[] = await cardsResponse.json()
+        setCards(cards)
+        const refs: RefObject<HTMLDialogElement>[] = []
+
+        for (let i = 0; i < cards.length; i++) {
+          refs.push(createRef<HTMLDialogElement>())
+          cardsRef.current = refs
+        }
       }
     }
     initInfo()
@@ -149,22 +175,76 @@ export default function EditProfile() {
                 <div className={`${jadeBoxStyles} w-full`}>Credit Cards</div>
                 {addButton()}
               </div>
-              <div className="flex gap-3">
-                <div
-                  className={`${emeraldBoxStyles} grid gap-x-6 w-full`}
-                  style={{ gridTemplateColumns: "repeat(2, auto)" }}
-                >
-                  <p>Credit Card Type</p>
-                  <p>Visa</p>
-                  <p>Credit Card Number</p>
-                  <p>5555555555555555</p>
-                  <p>Expiration Date</p>
-                  <p>MM/YYYY</p>
-                  <p>Billing Address</p>
-                  <p>123 Example St.</p>
-                </div>
-                {/* {editButton()} */}
-              </div>
+              {cards.map((card, i) => (
+                <>
+                  <dialog
+                    ref={cardsRef.current[i]}
+                    className="bg-transparent"
+                    onKeyDown={preventEscape}
+                  >
+                    <div className="bg-dark-jade p-6 flex flex-col gap-3 rounded-md border-2">
+                      <h2 className="bg-light-jade font-bold text-center text-2xl py-3 px-20 rounded-sm">
+                        Edit Credit Card
+                      </h2>
+                      <div
+                        className="grid gap-3"
+                        style={{ gridTemplateColumns: "repeat(2, auto)" }}
+                      >
+                        <div className={jadeBoxStyles}>Credit Card Type</div>
+                        <input
+                          className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
+                          defaultValue={card.cardType}
+                        />
+                        <div className={jadeBoxStyles}>Credit Card Number</div>
+                        <input className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm" />
+                        <div className={jadeBoxStyles}>Expiration Date</div>
+                        <input
+                          className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
+                          defaultValue={formatExpirationDate(
+                            card.expirationDate
+                          )}
+                        />
+                        <div className={jadeBoxStyles}>Billing Address</div>
+                        <input
+                          className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
+                          defaultValue={card.billingAddress}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <button
+                          className="border-[3px] text-white font-bold p-2 hover:scale-[1.015] transition-transform duration-300"
+                          onClick={() => {
+                            console.log(cardsRef)
+                            cardsRef.current[i].current?.close()
+                            setDialogOpen(false)
+                          }}
+                        >
+                          Close
+                        </button>
+                        <button className="bg-light-jade font-bold p-2 hover:scale-[1.015] transition-transform duration-300 rounded-sm">
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  </dialog>
+                  <div className="flex gap-3">
+                    <div
+                      className={`${emeraldBoxStyles} grid gap-x-6 w-full`}
+                      style={{ gridTemplateColumns: "repeat(2, auto)" }}
+                    >
+                      <p>Credit Card Type</p>
+                      <p>{card.cardType}</p>
+                      <p>Credit Card Number</p>
+                      <p>Ending in {card.lastFourDigits}</p>
+                      <p>Expiration Date</p>
+                      <p>{formatExpirationDate(card.expirationDate)}</p>
+                      <p>Billing Address</p>
+                      <p>{card.billingAddress}</p>
+                    </div>
+                    {editButton(cardsRef.current[i])}
+                  </div>
+                </>
+              ))}
             </div>
             <div className="flex flex-col gap-3">
               <div className="flex gap-2">
@@ -251,13 +331,25 @@ export default function EditProfile() {
             style={{ gridTemplateColumns: "repeat(2, auto)" }}
           >
             <div className={jadeBoxStyles}>Home Address</div>
-            <input className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm" />
+            <input
+              className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
+              defaultValue={homeAddress?.address}
+            />
             <div className={jadeBoxStyles}>City</div>
-            <input className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm" />
+            <input
+              className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
+              defaultValue={homeAddress?.city}
+            />
             <div className={jadeBoxStyles}>State</div>
-            <input className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm" />
+            <input
+              className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
+              defaultValue={homeAddress?.state}
+            />
             <div className={jadeBoxStyles}>Zipcode</div>
-            <input className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm" />
+            <input
+              className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
+              defaultValue={homeAddress?.zipcode}
+            />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <button
@@ -291,4 +383,9 @@ function preventEscape(e: KeyboardEvent<HTMLDialogElement>) {
   if (e.key === "Escape") {
     e.preventDefault()
   }
+}
+
+function formatExpirationDate(expirationDate: string) {
+  const parts = expirationDate.split("-")
+  return parts[1] + "/" + parts[0]
 }
