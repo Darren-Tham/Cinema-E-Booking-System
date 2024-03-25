@@ -4,7 +4,7 @@ import { SignJWT, jwtVerify } from "jose"
 import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 
-type LoginCustomerDTO = {
+export type Customer = {
   id: number
   firstName: string
   lastName: string
@@ -32,10 +32,14 @@ export async function encrypt(payload: any) {
     .sign(key)
 }
 
-export async function initialSetUp(user: LoginCustomerDTO) {
-  const expiration = new Date(Date.now() + (60 * 60 * 1000)) // 30 minutes cookies
+export async function initialSetUp(user: Customer) {
+  const expiration = new Date(Date.now() + 60 * 60 * 1000) // 30 minutes cookies
   const session = await encrypt({ user, expiration })
-  cookies().set("session", session, { expires: expiration, httpOnly: true, sameSite : "lax"})
+  cookies().set("session", session, {
+    expires: expiration,
+    httpOnly: true,
+    sameSite: "lax"
+  })
 }
 
 export async function hasCookie() {
@@ -43,7 +47,7 @@ export async function hasCookie() {
   return !!val
 }
 export async function destroyCookie() {
-  cookies().set("session", "", { expires: new Date(0), sameSite : "lax"})
+  cookies().set("session", "", { expires: new Date(0), sameSite: "lax" })
 }
 
 export async function getUser() {
@@ -61,7 +65,7 @@ export async function updateSession(request: NextRequest) {
       name: "session",
       value: await encrypt(sessionData),
       httpOnly: true,
-      expires: new Date(Date.now() + (60 * 60 * 1000)) ,
+      expires: new Date(Date.now() + 60 * 60 * 1000),
       sameSite: "lax"
     })
     return res

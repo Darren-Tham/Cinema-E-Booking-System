@@ -1,4 +1,4 @@
-package com.server.cinema.database.home_address;
+package com.server.cinema.database.home_address.dto;
 
 public record HomeAddressDTO(
         int customerId,

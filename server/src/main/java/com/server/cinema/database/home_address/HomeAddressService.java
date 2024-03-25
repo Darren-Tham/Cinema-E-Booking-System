@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.server.cinema.database.customer.Customer;
+import com.server.cinema.database.home_address.dto.HomeAddressDTO;
+import com.server.cinema.database.home_address.dto.HomeAddressDTONoId;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -28,6 +30,21 @@ public class HomeAddressService {
                 homeAddressDTO.zipcode(),
                 customer);
         customer.setHomeAddress(homeAddress);
+    }
+
+    public HomeAddressDTONoId getHomeAddress(final int customerId) {
+        final Customer customer = entityManager.find(Customer.class, customerId);
+        final HomeAddress homeAddress = customer.getHomeAddress();
+        if (homeAddress == null) {
+            final String msg = String.format("Customer with id %d does not have a home address.", customer.getId());
+            throw new HomeAddressNotFoundException(msg);
+        } else {
+            return new HomeAddressDTONoId(
+                    homeAddress.getAddress(),
+                    homeAddress.getCity(),
+                    homeAddress.getState(),
+                    homeAddress.getZipcode());
+        }
     }
 
 }

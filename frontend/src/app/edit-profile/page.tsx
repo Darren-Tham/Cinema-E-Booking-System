@@ -4,11 +4,27 @@ import Image from "next/image"
 import Link from "next/link"
 import BluePlusIcon from "@public/blue-plus-icon.svg"
 import PencilIcon from "@public/pencil-icon.svg"
-import { MutableRefObject, KeyboardEvent, useRef, useState } from "react"
+import {
+  MutableRefObject,
+  KeyboardEvent,
+  useRef,
+  useState,
+  useEffect
+} from "react"
+import { Customer, getUser } from "@/lib/Auth"
+
+type HomeAddress = {
+  address: string
+  city: string
+  state: string
+  zipcode: string
+}
 
 export default function EditProfile() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState("")
+  const [customer, setCustomer] = useState<Customer>()
+  const [homeAddress, setHomeAddress] = useState<HomeAddress>()
   const firstNameDialogRef = useRef<HTMLDialogElement | null>(null)
   const lastNameDialogRef = useRef<HTMLDialogElement | null>(null)
   const phoneNumberDialogRef = useRef<HTMLDialogElement | null>(null)
@@ -16,6 +32,21 @@ export default function EditProfile() {
   const boxStyles = "p-2 rounded-sm font-semibold"
   const jadeBoxStyles = `${boxStyles} bg-light-jade`
   const emeraldBoxStyles = `${boxStyles} bg-emerald-50`
+
+  useEffect(() => {
+    async function initInfo() {
+      const customer: Customer = (await getUser()).user
+      setCustomer(customer)
+
+      const homeAddressResponse = await fetch(
+        `http://localhost:8080/api/home_address/${customer.id}`
+      )
+      if (homeAddressResponse.ok) {
+        setHomeAddress(await homeAddressResponse.json())
+      }
+    }
+    initInfo()
+  }, [])
 
   function editButton(dialogRef: MutableRefObject<HTMLDialogElement | null>) {
     return (
@@ -95,16 +126,16 @@ export default function EditProfile() {
                 style={{ gridTemplateColumns: "repeat(3, auto)" }}
               >
                 <div className={jadeBoxStyles}>First Name</div>
-                <div className={jadeBoxStyles}>Darren</div>
+                <div className={jadeBoxStyles}>{customer?.firstName}</div>
                 {editButton(firstNameDialogRef)}
                 <div className={emeraldBoxStyles}>Last Name</div>
-                <div className={emeraldBoxStyles}>Thammavong</div>
+                <div className={emeraldBoxStyles}>{customer?.lastName}</div>
                 {editButton(lastNameDialogRef)}
                 <div className={jadeBoxStyles}>Email</div>
-                <div className={jadeBoxStyles}>darrent9859@gmail.com</div>
+                <div className={jadeBoxStyles}>{customer?.email}</div>
                 <div />
                 <div className={emeraldBoxStyles}>Phone Number</div>
-                <div className={emeraldBoxStyles}>6789252555</div>
+                <div className={emeraldBoxStyles}>{customer?.phoneNumber}</div>
                 {editButton(phoneNumberDialogRef)}
               </div>
               <button
@@ -138,24 +169,26 @@ export default function EditProfile() {
             <div className="flex flex-col gap-3">
               <div className="flex gap-2">
                 <div className={`${emeraldBoxStyles} w-full`}>Home Address</div>
-                {addButton()}
+                {homeAddress === undefined && addButton()}
               </div>
-              <div className="flex gap-3">
-                <div
-                  className={`${jadeBoxStyles} grid gap-x-6 w-full`}
-                  style={{ gridTemplateColumns: "repeat(2, auto)" }}
-                >
-                  <p>Home Address</p>
-                  <p>123 Example St.</p>
-                  <p>City</p>
-                  <p>Example City</p>
-                  <p>State</p>
-                  <p>Example State</p>
-                  <p>Zipcode</p>
-                  <p>55555</p>
+              {homeAddress !== undefined && (
+                <div className="flex gap-3">
+                  <div
+                    className={`${jadeBoxStyles} grid gap-x-6 w-full`}
+                    style={{ gridTemplateColumns: "repeat(2, auto)" }}
+                  >
+                    <p>Home Address</p>
+                    <p>{homeAddress?.address}</p>
+                    <p>City</p>
+                    <p>{homeAddress?.city}</p>
+                    <p>State</p>
+                    <p>{homeAddress?.state}</p>
+                    <p>Zipcode</p>
+                    <p>{homeAddress?.zipcode}</p>
+                  </div>
+                  {editButton(homeAddressDialogRef)}
                 </div>
-                {editButton(homeAddressDialogRef)}
-              </div>
+              )}
             </div>
           </div>
           <Link
