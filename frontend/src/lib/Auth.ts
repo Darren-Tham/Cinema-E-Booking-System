@@ -1,7 +1,18 @@
 "use server"
+
 import { SignJWT, jwtVerify } from "jose"
 import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
+
+type LoginCustomerDTO = {
+  id: number
+  firstName: string
+  lastName: string
+  email: string
+  phoneNumber: string
+  status: string
+  isSubscribedForPromotions: boolean
+}
 
 const secretKey = "swe4050"
 const key = new TextEncoder().encode(secretKey)
@@ -19,12 +30,10 @@ export async function encrypt (payload: any) {
     return await new SignJWT(payload).setProtectedHeader({alg: "HS256"}).setIssuedAt().setExpirationTime("1 hour from now").sign(key)
 }
 
-export async function initialSetUp(data: any) {
-    let user = data
-    user = {"email" : user[0], "user_id" : user[1]}
-    const expiration = new Date(Date.now() + (60 * 60 * 1000)) // 1 hour cookie
-    const session = await encrypt({user, expiration})
-    cookies().set("session", session, {expires: expiration, httpOnly: true, sameSite : "lax"})
+export async function initialSetUp(user: LoginCustomerDTO) {
+  const expiration = new Date(Date.now() + 18 * 100000) // 30 minutes cookies
+  const session = await encrypt({ user, expiration })
+  cookies().set("session", session, { expires: expiration, httpOnly: true })
 }
 
 export async function hasCookie() {
