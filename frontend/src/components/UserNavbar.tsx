@@ -5,8 +5,8 @@ import ProfileIcon from "@public/profile-icon.svg"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState, useEffect} from "react"
-import { destroyCookie, hasCookie, getUser} from "@/lib/Auth"
+import { useState, useEffect } from "react"
+import { destroyCookie, hasCookie, getUser } from "@/lib/Auth"
 
 export default function UserNavbar() {
   const router = useRouter()
@@ -15,13 +15,15 @@ export default function UserNavbar() {
   useEffect(() => {
     const authenticate = async () => {
       const auth = await hasCookie()
+      if (!auth) {
+        return
+      }
       setIsLoggedIn(auth)
       const data = await getUser()
-      if (data)
-        setDisplayName(data.user.email)
+      setDisplayName(data.user.firstName)
     }
     authenticate()
-  },[])
+  }, [])
   return (
     <nav className="w-full p-4 flex justify-between px-10">
       <div className="flex gap-5 items-center">
