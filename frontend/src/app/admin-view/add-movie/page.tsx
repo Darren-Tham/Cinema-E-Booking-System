@@ -5,7 +5,7 @@ export default function AddMovie() {
     const textBoxNumbers = "mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-24";
 
     return (
-      <div className="flex justify-center items-center flex-col h-screen bg-dark-jade">
+      <div className="flex justify-center items-center flex-col h-screen bg-black">
         <div className="flex flex-row gap-2 justify-center items-center">
             <div className="bg-teal-950 p-16 rounded-lg flex flex-col items-center mt-2"></div>
             <div className="w-10 h-10 rounded-full bg-white hover:scale-105 transition-transform duration-300">
@@ -74,7 +74,7 @@ export default function AddMovie() {
             </div>
                 
         </div>
-        <div className="flex justify-center mt-4 bg-dark-jade">
+        <div className="flex justify-center mt-4">
             <button className={buttonStyles}>Confirm and Add Movie</button>
         </div>
       </div>

@@ -6,7 +6,7 @@ const ManagePromotions: React.FC = () => {
   const [discount, setDiscount] = useState<number>(0);
 
   return (
-    <div className="flex bg-dark-jade min-h-screen items-center justify-center px-4">
+    <div className="flex bg-black min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-md bg-teal-950 p-4 rounded-md shadow-lg">
         <h1 className="text-white text-xl font-bold underline mb-4 text-center">
           Promotions
@@ -84,7 +84,7 @@ const ManagePromotions: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full p-2 bg-dark-jade text-white rounded hover:scale-105 transition-transform duration-400"
+            className="w-full p-2 bg-light-jade text-white rounded hover:scale-105 transition-transform duration-400"
           >
             Confirm
           </button>
