@@ -75,7 +75,7 @@ export default function Login() {
                 router.push("/")
               } else {
                 setLoginFailed(true)
-                
+
                 // alert(
                 //   "Email or password credential is incorrect. Please try again. If you do not have an account, please create a new account."
                 // )
@@ -97,14 +97,18 @@ export default function Login() {
             * Required Field
           </p>
           {loginFailed && (
-            <div role="alert"> 
-            <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
-              Incorrect Credentials
+            <div role="alert">
+              <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                Incorrect Credentials
+              </div>
+              <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                <p>
+                  Email or password credential is incorrect. Please try again.
+                  If you do not have an account, please create a new account.
+                </p>
+              </div>
             </div>
-            <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
-              <p>Email or password credential is incorrect. Please try again. If you do not have an account, please create a new account.</p>
-            </div>
-          </div>)}
+          )}
         </div>
       </div>
     </div>
