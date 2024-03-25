@@ -96,6 +96,7 @@ export default function EditProfile() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
           </InfoField>
           <InfoField info="Phone" color="bg-light-jade">
             <input value={phone} onChange={(e) => setPhone(e.target.value)} />
