@@ -1,7 +1,7 @@
 "use server"
-import { SignJWT, jwtVerify} from "jose"
-import {cookies} from "next/headers"
-import {NextRequest, NextResponse} from "next/server"
+import { SignJWT, jwtVerify } from "jose"
+import { cookies } from "next/headers"
+import { NextRequest, NextResponse } from "next/server"
 
 const secretKey = "swe4050"
 const key = new TextEncoder().encode(secretKey)
@@ -27,20 +27,19 @@ export async function initialSetUp(data: any) {
     cookies().set("session", session, {expires: expiration, httpOnly: true, sameSite : "lax"})
 }
 
-export async function hasCookie(){
-    const val = cookies().get("session")?.value
-    return !!val
+export async function hasCookie() {
+  const val = cookies().get("session")?.value
+  return !!val
 }
 export async function destroyCookie() {
     cookies().set("session", "", {expires: new Date(0), sameSite : "lax"})
 }
 
 export async function getUser() {
-    const data = cookies().get("session")?.value
-    if (data)
-        return await decrypt(data)
-    else return
-}   
+  const data = cookies().get("session")?.value
+  if (data) return await decrypt(data)
+  else return
+}
 
 export async function updateSession(request: NextRequest) {
     const session = request.cookies.get("session")?.value
