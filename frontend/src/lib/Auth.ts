@@ -33,9 +33,9 @@ export async function encrypt(payload: any) {
 }
 
 export async function initialSetUp(user: LoginCustomerDTO) {
-  const expiration = new Date(Date.now() + 18 * 100000) // 30 minutes cookies
+  const expiration = new Date(Date.now() + (60 * 60 * 1000)) // 30 minutes cookies
   const session = await encrypt({ user, expiration })
-  cookies().set("session", session, { expires: expiration, httpOnly: true })
+  cookies().set("session", session, { expires: expiration, httpOnly: true, sameSite : "lax"})
 }
 
 export async function hasCookie() {
@@ -43,7 +43,7 @@ export async function hasCookie() {
   return !!val
 }
 export async function destroyCookie() {
-  cookies().set("session", "", { expires: new Date(0) })
+  cookies().set("session", "", { expires: new Date(0), sameSite : "lax"})
 }
 
 export async function getUser() {
@@ -56,13 +56,14 @@ export async function updateSession(request: NextRequest) {
   const session = request.cookies.get("session")?.value
   if (session) {
     const sessionData = await decrypt(session)
-    sessionData.expires = new Date(Date.now() + 15 * 1000)
+    sessionData.expires = new Date(Date.now() + (60 * 60 * 1000))
     const res = NextResponse.next()
     res.cookies.set({
       name: "session",
       value: await encrypt(sessionData),
       httpOnly: true,
-      expires: sessionData.expires
+      expires: sessionData.expires,
+      sameSite: "lax"
     })
     return res
   } else return
