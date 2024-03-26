@@ -53,11 +53,19 @@ export default function Login() {
             </Link>
           </div>
           <div className="flex items-center w-full">
-              <input type="checkbox" value="" className="w-4 h-4 rounded" checked={remember} onChange={e => {
+            <input
+              type="checkbox"
+              value=""
+              className="w-4 h-4 rounded"
+              checked={remember}
+              onChange={e => {
                 setRemember(e.target.checked)
                 console.log(remember)
-              }}/>
-              <label className="ml-1.5 text-sm font-medium text-white">Remember Me</label>
+              }}
+            />
+            <label className="ml-1.5 text-sm font-medium text-white">
+              Remember Me
+            </label>
           </div>
           <button
             className="action-button w-full"
@@ -71,23 +79,27 @@ export default function Login() {
                 alert("Password cannot be empty.")
                 return
               }
-              if (email == "admin") {
+
+              const adminResponse = await fetch(
+                `http://localhost:8080/api/admin/login/${email}/${password}`
+              )
+              const adminData = await adminResponse.text()
+              if (adminData === "true") {
                 router.push("/admin-view")
-              } else {
-                  const response = await fetch(
-                    `http://localhost:8080/api/customer/login_credentials/${email}/${password}`
-                  )
-                  if (response.ok) {
-                    const data = await response.json()
-                    initialSetUp(data, remember) // Set Up Cookies Authentication
-                    setLoginFailed(false)
-                    router.push("/")
-                  } else {
-                    setLoginFailed(true)
-                  }
-                }}
               }
-              
+
+              const response = await fetch(
+                `http://localhost:8080/api/customer/login_credentials/${email}/${password}`
+              )
+              if (response.ok) {
+                const data = await response.json()
+                initialSetUp(data, remember) // Set Up Cookies Authentication
+                setLoginFailed(false)
+                router.push("/")
+              } else {
+                setLoginFailed(true)
+              }
+            }}
           >
             Log In
           </button>

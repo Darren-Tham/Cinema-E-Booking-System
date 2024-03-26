@@ -17,13 +17,11 @@ import lombok.ToString;
 public class Admin extends User {
 
     @Column(nullable = false, updatable = false, unique = true)
-    private String email;
+    private String username;
 
-    public Admin(String email) {
-        this.email = email;
+    public Admin(final String username, final String encryptedPassword) {
+        super(encryptedPassword);
+        this.username = username;
     }
-
-
-
 
 }
