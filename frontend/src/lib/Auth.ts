@@ -51,9 +51,7 @@ export async function initialSetUp(user: LoginCustomerDTO, persist : boolean) {
     if (!persist) {   
         expiration = new Date(Date.now() + (60 * 60 * 1000)) // 1-hour cookies
     } else {
-        console.log("100!")
         expiration = new Date(Date.now() + (100 * 24 * 60 * 60 * 1000)) // 100-day cookies
-        console.log(expiration)
     }
   
     const session = await encrypt({ user, expiration }, persist)
@@ -68,6 +66,13 @@ export async function hasCookie() {
 export async function destroyCookie() {
     remember = false
     cookies().set("session", "", { expires: new Date(0), sameSite : "lax"})
+}
+export async function updateUser(user: LoginCustomerDTO) {
+    const val = cookies().get("session")?.value
+    if (val) {
+        initialSetUp(user,remember)
+    }
+
 }
 
 export async function getUser() {
