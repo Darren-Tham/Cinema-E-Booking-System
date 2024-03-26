@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.server.cinema.database.customer.dto.InactiveCustomerDTO;
 import com.server.cinema.database.customer.dto.LoginCustomerDTO;
+import com.server.cinema.database.customer.enums.UserState;
 
 @CrossOrigin
 @RestController
@@ -49,6 +50,12 @@ public class CustomerController {
     public ResponseEntity<Boolean> getIsSubscribedForPromotionsByCustomerId(@PathVariable final int customerId) {
         final boolean isSubscribedForPromotions = customerService.isSubscribedForPromotions(customerId);
         return ResponseEntity.ok(isSubscribedForPromotions);
+    }
+
+    @GetMapping("/status/{customerId}")
+    public ResponseEntity<UserState> getStatus(@PathVariable final int customerId) {
+        final UserState status = customerService.getStatus(customerId);
+        return ResponseEntity.ok(status);
     }
 
     @GetMapping("/email/{customerId}")

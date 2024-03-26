@@ -11,6 +11,7 @@ import HomeAddressInput from "./HomeAddressInput"
 import CardsInput from "./CardsInput"
 import PasswordInput from "./PasswordInput"
 import PromotionButton from "./PromotionButton"
+import VerificationCodeInput from "./VerificationCodeInput"
 
 export default function EditProfile() {
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -92,6 +93,7 @@ export default function EditProfile() {
               setDialogOpen={setDialogOpen}
             />
           </div>
+          <VerificationCodeInput customerId={customer?.id} />
           <PromotionButton customerId={customer?.id} email={customer?.email} />
           <Link
             href="/"

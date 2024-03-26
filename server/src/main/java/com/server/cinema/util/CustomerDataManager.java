@@ -25,7 +25,7 @@ public class CustomerDataManager
     }
 
     public void init() {
-        final String email = "darrent9859@gmail.com";
+        final String email = "exampleemail@gmail.com";
         if (customerRepository.findByEmail(email).isPresent()) {
             return;
         }

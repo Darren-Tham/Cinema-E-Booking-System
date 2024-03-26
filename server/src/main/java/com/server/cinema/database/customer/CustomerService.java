@@ -46,6 +46,11 @@ public class CustomerService {
         return customer.isSubscribedForPromotions();
     }
 
+    public UserState getStatus(final int customerId) {
+        final Customer customer = entityManager.find(Customer.class, customerId);
+        return customer.getStatus();
+    }
+
     public String getEmailByCustomerId(final int customerId) {
         Customer customer = entityManager.find(Customer.class, customerId);
         return customer.getEmail();
