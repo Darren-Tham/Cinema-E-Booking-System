@@ -9,6 +9,7 @@ import LastNameInput from "./LastNameInput"
 import PhoneNumberInput from "./PhoneNumberInput"
 import HomeAddressInput from "./HomeAddressInput"
 import CardsInput from "./CardsInput"
+import PasswordInput from "./PasswordInput"
 
 export default function EditProfile() {
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -71,11 +72,10 @@ export default function EditProfile() {
                   setDialogOpen={setDialogOpen}
                 />
               </div>
-              <button
-                className={`${jadeBoxStyles} hover:scale-[1.015] transition-transform duration-300`}
-              >
-                Change Password
-              </button>
+              <PasswordInput
+                customerId={customer?.id}
+                setDialogOpen={setDialogOpen}
+              />
             </div>
             <CardsInput
               customerId={customer?.id}

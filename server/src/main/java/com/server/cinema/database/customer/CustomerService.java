@@ -56,8 +56,13 @@ public class CustomerService {
                 .getId();
     }
 
+    public boolean isValidPassword(final int customerId, final String password) {
+        final Customer customer = entityManager.find(Customer.class, customerId);
+        return BCrypt.checkpw(password, customer.getEncryptedPassword());
+    }
+
     public LoginCustomerDTO getCustomerByEmailAndPassword(final String email, final String password) {
-        Customer customer = customerDAO.getCustomerByEmail(email)
+        final Customer customer = customerDAO.getCustomerByEmail(email)
                 .orElseThrow(() -> new CustomerNotFoundException(
                         String.format("Customer with email `%s` does not exist.", email)));
         if (BCrypt.checkpw(password, customer.getEncryptedPassword())) {

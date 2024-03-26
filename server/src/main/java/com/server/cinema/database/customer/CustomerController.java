@@ -1,5 +1,6 @@
 package com.server.cinema.database.customer;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,13 @@ public class CustomerController {
     public ResponseEntity<Boolean> emailExists(@PathVariable final String email) {
         final boolean emailExists = customerService.emailExists(email);
         return ResponseEntity.ok(emailExists);
+    }
+
+    @GetMapping("/password/{customerId}/{password}")
+    public ResponseEntity<Boolean> isValidPassword(@PathVariable final int customerId,
+            @PathVariable final String password) {
+        final boolean isValidPassword = customerService.isValidPassword(customerId, password);
+        return ResponseEntity.ok(isValidPassword);
     }
 
     @GetMapping("/login_credentials/{email}/{password}")
