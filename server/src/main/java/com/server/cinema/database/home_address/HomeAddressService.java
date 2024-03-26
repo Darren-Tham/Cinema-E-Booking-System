@@ -61,6 +61,8 @@ public class HomeAddressService {
     @Transactional
     public void removeHomeAddress(final int homeAddressId) {
         final HomeAddress homeAddress = entityManager.find(HomeAddress.class, homeAddressId);
+        homeAddress.getCustomer().setHomeAddress(null);
+        entityManager.merge(homeAddress.getCustomer());
         entityManager.remove(homeAddress);
     }
 }

@@ -35,7 +35,7 @@ public class HomeAddress {
     @Column(nullable = false)
     private String zipcode;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
