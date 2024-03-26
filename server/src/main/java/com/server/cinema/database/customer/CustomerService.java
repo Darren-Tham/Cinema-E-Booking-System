@@ -26,6 +26,21 @@ public class CustomerService {
         this.entityManager = entityManager;
     }
 
+    public String getFirstNameByCustomerId(final int customerId) {
+        Customer customer = entityManager.find(Customer.class, customerId);
+        return customer.getFirstName();
+    }
+
+    public String getLastNameByCustomerId(final int customerId) {
+        Customer customer = entityManager.find(Customer.class, customerId);
+        return customer.getLastName();
+    }
+
+    public String getPhoneNumberByCustomerId(final int customerId) {
+        Customer customer = entityManager.find(Customer.class, customerId);
+        return customer.getPhoneNumber();
+    }
+
     public String getEmailByCustomerId(final int customerId) {
         Customer customer = entityManager.find(Customer.class, customerId);
         return customer.getEmail();

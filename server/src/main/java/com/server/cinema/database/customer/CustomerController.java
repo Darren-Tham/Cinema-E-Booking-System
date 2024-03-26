@@ -27,6 +27,24 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @GetMapping("/first_name/{customerId}")
+    public ResponseEntity<String> getFirstNameByCustomerId(@PathVariable final int customerId) {
+        final String firstName = customerService.getFirstNameByCustomerId(customerId);
+        return ResponseEntity.ok(firstName);
+    }
+
+    @GetMapping("/last_name/{customerId}")
+    public ResponseEntity<String> getLastNameByCustomerId(@PathVariable final int customerId) {
+        final String lastName = customerService.getLastNameByCustomerId(customerId);
+        return ResponseEntity.ok(lastName);
+    }
+
+    @GetMapping("/phone_number/{customerId}")
+    public ResponseEntity<String> getPhoneNumberByCustomerId(@PathVariable final int customerId) {
+        final String phoneNumber = customerService.getPhoneNumberByCustomerId(customerId);
+        return ResponseEntity.ok(phoneNumber);
+    }
+
     @GetMapping("/email/{customerId}")
     public ResponseEntity<String> getEmailByCustomerId(@PathVariable final int customerId) {
         final String email = customerService.getEmailByCustomerId(customerId);

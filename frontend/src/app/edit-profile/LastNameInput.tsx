@@ -1,22 +1,35 @@
 "use client"
 
-import { Dispatch, SetStateAction, useRef } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import PencilIcon from "@public/pencil-icon.svg"
 
 type Props = {
   customerId: number | undefined
-  lastName: string | undefined
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function LastNameInput({
   customerId,
-  lastName,
   setDialogOpen
 }: Readonly<Props>) {
   const dialogRef = useRef<HTMLDialogElement | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
+  const [lastName, setLastName] = useState("")
+
+  useEffect(() => {
+    async function initLastName() {
+      if (customerId === undefined) {
+        return
+      }
+      const response = await fetch(
+        `http://localhost:8080/api/customer/last_name/${customerId}`
+      )
+      setLastName(await response.text())
+    }
+    initLastName()
+  }, [customerId])
+
   return (
     <>
       <div className="p-2 rounded-sm font-semibold bg-emerald-50">

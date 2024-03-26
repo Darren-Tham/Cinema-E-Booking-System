@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import PencilIcon from "@public/pencil-icon.svg"
-import { Dispatch, SetStateAction, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 
 type Props = {
   customerId: number | undefined
@@ -12,11 +12,25 @@ type Props = {
 
 export default function PhoneNumberInput({
   customerId,
-  phoneNumber,
   setDialogOpen
 }: Readonly<Props>) {
   const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState("")
   const dialogRef = useRef<HTMLDialogElement | null>(null)
+  const [phoneNumber, setPhoneNumber] = useState("")
+
+  useEffect(() => {
+    async function initPhoneNumber() {
+      if (customerId === undefined) {
+        return
+      }
+      const response = await fetch(
+        `http://localhost:8080/api/customer/phone_number/${customerId}`
+      )
+      setPhoneNumber(await response.text())
+    }
+    initPhoneNumber()
+  }, [customerId])
+
   return (
     <>
       <div className="p-2 rounded-sm font-semibold bg-emerald-50">

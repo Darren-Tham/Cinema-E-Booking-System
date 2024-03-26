@@ -55,12 +55,10 @@ export default function EditProfile() {
               >
                 <FirstNameInput
                   customerId={customer?.id}
-                  firstName={customer?.firstName}
                   setDialogOpen={setDialogOpen}
                 />
                 <LastNameInput
                   customerId={customer?.id}
-                  lastName={customer?.lastName}
                   setDialogOpen={setDialogOpen}
                 />
                 <div className={jadeBoxStyles}>Email</div>
