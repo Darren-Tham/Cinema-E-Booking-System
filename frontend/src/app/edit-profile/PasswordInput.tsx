@@ -4,11 +4,13 @@ import { Dispatch, SetStateAction, useRef } from "react"
 
 type Props = {
   customerId: number | undefined
+  email: string | undefined
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function PasswordInput({
   customerId,
+  email,
   setDialogOpen
 }: Readonly<Props>) {
   const dialogRef = useRef<HTMLDialogElement | null>(null)
@@ -106,6 +108,17 @@ export default function PasswordInput({
                   `http://localhost:8080/api/customer/change_password/${customerId}/${newPassword}`,
                   { method: "PUT" }
                 )
+                await fetch("http://localhost:8080/api/email/profile", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({
+                    receiverEmail: email,
+                    subject: "Cinema E-Booking System Password Update",
+                    text: 'The password of your account has been updated. If this was unexpected, please change your password through "Forgot Password" to protect your account.'
+                  })
+                })
                 window.location.reload()
               }}
             >

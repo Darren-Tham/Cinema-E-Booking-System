@@ -6,12 +6,13 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 
 type Props = {
   customerId: number | undefined
-  phoneNumber: string | undefined
+  email: string | undefined
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function PhoneNumberInput({
   customerId,
+  email,
   setDialogOpen
 }: Readonly<Props>) {
   const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState("")
@@ -94,6 +95,17 @@ export default function PhoneNumberInput({
                     `http://localhost:8080/api/customer/change_phone_number/${customerId}/${updatedPhoneNumber}`,
                     { method: "PUT" }
                   )
+                  await fetch("http://localhost:8080/api/email/profile", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                      receiverEmail: email,
+                      subject: "Cinema E-Booking System Phone Number Update",
+                      text: "The phone number of your account has been updated. If this was unexpected, please change your password to protect your account."
+                    })
+                  })
                   window.location.reload()
                 }
               }}

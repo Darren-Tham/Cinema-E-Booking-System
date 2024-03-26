@@ -5,6 +5,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.server.cinema.email.dto.EmailProfileDTO;
+import com.server.cinema.email.dto.EmailVerificationCodeDTO;
+
 @Service
 public class EmailService {
 
@@ -15,7 +18,15 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendEmail(final EmailDTO email) {
+    public void sendProfileEmail(final EmailProfileDTO email) {
+        final SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email.receiverEmail());
+        message.setSubject(email.subject());
+        message.setText(email.text());
+        javaMailSender.send(message);
+    }
+
+    public void sendEmail(final EmailVerificationCodeDTO email) {
         final SimpleMailMessage message = new SimpleMailMessage();
         final String subject = String.format("Cinema E-Booking System Email Verification Code: %s",
                 email.verificationCode());

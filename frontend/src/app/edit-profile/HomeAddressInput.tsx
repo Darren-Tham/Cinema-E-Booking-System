@@ -8,6 +8,7 @@ import RedDeleteIcon from "@public/red-delete-icon.svg"
 
 type Props = {
   customerId: number | undefined
+  email: string | undefined
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
@@ -21,6 +22,7 @@ type HomeAddress = {
 
 export default function HomeAddressInput({
   customerId,
+  email,
   setDialogOpen
 }: Readonly<Props>) {
   const [homeAddress, setHomeAddress] = useState<HomeAddress>()
@@ -103,6 +105,17 @@ export default function HomeAddressInput({
                     `http://localhost:8080/api/home_address/delete/${homeAddress.id}`,
                     { method: "DELETE" }
                   )
+                  await fetch("http://localhost:8080/api/email/profile", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                      receiverEmail: email,
+                      subject: "Cinema E-Booking System Home Address Delete",
+                      text: "The home address in your account has been deleted. If this was unexpected, please change your password to protect your account."
+                    })
+                  })
                   window.location.reload()
                 }}
               >
@@ -264,6 +277,17 @@ export default function HomeAddressInput({
                       zipcode: editZipcode
                     })
                   })
+                  await fetch("http://localhost:8080/api/email/profile", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                      receiverEmail: email,
+                      subject: "Cinema E-Booking System Home Address Update",
+                      text: "The home address in your account has been updated. If this was unexpected, please change your password to protect your account."
+                    })
+                  })
                   window.location.reload()
                 }
               }}
@@ -419,6 +443,17 @@ export default function HomeAddressInput({
                       city,
                       state,
                       zipcode: addZipcode
+                    })
+                  })
+                  await fetch("http://localhost:8080/api/email/profile", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                      receiverEmail: email,
+                      subject: "Cinema E-Booking System Home Address Add",
+                      text: "A home address has been added to your account. If this was unexpected, please change your password to protect your account."
                     })
                   })
                   window.location.reload()

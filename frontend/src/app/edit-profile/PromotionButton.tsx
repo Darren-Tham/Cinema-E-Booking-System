@@ -4,9 +4,13 @@ import { useEffect, useState } from "react"
 
 type Props = {
   customerId: number | undefined
+  email: string | undefined
 }
 
-export default function PromotionButton({ customerId }: Readonly<Props>) {
+export default function PromotionButton({
+  customerId,
+  email
+}: Readonly<Props>) {
   const [isSubscribedForPromotions, setIsSubscribedForPromotions] =
     useState(false)
 
@@ -31,6 +35,21 @@ export default function PromotionButton({ customerId }: Readonly<Props>) {
           `http://localhost:8080/api/customer/change_promotion/${customerId}/${!isSubscribedForPromotions}`,
           { method: "PUT" }
         )
+        await fetch("http://localhost:8080/api/email/profile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            receiverEmail: email,
+            subject: "Cinema E-Booking System Promotion Subscription Update",
+            text: `${
+              isSubscribedForPromotions
+                ? "You are no longer subscribed for promotions."
+                : "You are now subscribed for promotions."
+            } If this was unexpected, please change your password to protect your account.`
+          })
+        })
         window.location.reload()
       }}
     >

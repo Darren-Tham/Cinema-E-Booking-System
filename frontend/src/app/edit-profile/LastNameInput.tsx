@@ -6,11 +6,13 @@ import PencilIcon from "@public/pencil-icon.svg"
 
 type Props = {
   customerId: number | undefined
+  email: string | undefined
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function LastNameInput({
   customerId,
+  email,
   setDialogOpen
 }: Readonly<Props>) {
   const dialogRef = useRef<HTMLDialogElement | null>(null)
@@ -88,6 +90,17 @@ export default function LastNameInput({
                     `http://localhost:8080/api/customer/change_last_name/${customerId}/${updatedLastName}`,
                     { method: "PUT" }
                   )
+                  await fetch("http://localhost:8080/api/email/profile", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                      receiverEmail: email,
+                      subject: "Cinema E-Booking System Last Name Update",
+                      text: "The last name of your account has been updated. If this was unexpected, please change your password to protect your account."
+                    })
+                  })
                   window.location.reload()
                 }
               }}

@@ -17,6 +17,7 @@ import {
 
 type Props = {
   customerId: number | undefined
+  email: string | undefined
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
@@ -37,6 +38,7 @@ type Refs = {
 
 export default function CardsInput({
   customerId,
+  email,
   setDialogOpen
 }: Readonly<Props>) {
   const [cards, setCards] = useState<Card[]>([])
@@ -194,6 +196,18 @@ export default function CardsInput({
                             lastFourDigits: card.lastFourDigits
                           })
                         })
+                        await fetch("http://localhost:8080/api/email/profile", {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json"
+                          },
+                          body: JSON.stringify({
+                            receiverEmail: email,
+                            subject:
+                              "Cinema E-Booking System Credit Card Update",
+                            text: `The credit card ending in ${card.lastFourDigits} in your account has been updated. If this was unexpected, please change your password to protect your account.`
+                          })
+                        })
                         window.location.reload()
                       }
                     }}
@@ -234,6 +248,17 @@ export default function CardsInput({
                       `http://localhost:8080/api/card/delete/${card.id}`,
                       { method: "DELETE" }
                     )
+                    await fetch("http://localhost:8080/api/email/profile", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json"
+                      },
+                      body: JSON.stringify({
+                        receiverEmail: email,
+                        subject: "Cinema E-Booking System Credit Card Delete",
+                        text: `The credit card ending in ${card.lastFourDigits} in your account has been deleted. If this was unexpected, please change your password to protect your account.`
+                      })
+                    })
                     window.location.reload()
                   }}
                 >
@@ -352,6 +377,19 @@ export default function CardsInput({
                       cardNumber: addCreditCardNumber,
                       expirationDate: addExpirationDate,
                       billingAddress
+                    })
+                  })
+                  await fetch("http://localhost:8080/api/email/profile", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                      receiverEmail: email,
+                      subject: "Cinema E-Booking System Credit Card Add",
+                      text: `The credit card ending in ${addCreditCardNumber.substring(
+                        addCreditCardNumber.length - 4
+                      )} in your account has been added to your account. If this was unexpected, please change your password to protect your account.`
                     })
                   })
                   window.location.reload()

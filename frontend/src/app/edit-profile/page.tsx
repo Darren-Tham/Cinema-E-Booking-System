@@ -56,10 +56,12 @@ export default function EditProfile() {
               >
                 <FirstNameInput
                   customerId={customer?.id}
+                  email={customer?.email}
                   setDialogOpen={setDialogOpen}
                 />
                 <LastNameInput
                   customerId={customer?.id}
+                  email={customer?.email}
                   setDialogOpen={setDialogOpen}
                 />
                 <div className={jadeBoxStyles}>Email</div>
@@ -69,25 +71,28 @@ export default function EditProfile() {
                 <div />
                 <PhoneNumberInput
                   customerId={customer?.id}
-                  phoneNumber={customer?.phoneNumber}
+                  email={customer?.email}
                   setDialogOpen={setDialogOpen}
                 />
               </div>
               <PasswordInput
                 customerId={customer?.id}
+                email={customer?.email}
                 setDialogOpen={setDialogOpen}
               />
             </div>
             <CardsInput
               customerId={customer?.id}
+              email={customer?.email}
               setDialogOpen={setDialogOpen}
             />
             <HomeAddressInput
               customerId={customer?.id}
+              email={customer?.email}
               setDialogOpen={setDialogOpen}
             />
           </div>
-          <PromotionButton customerId={customer?.id} />
+          <PromotionButton customerId={customer?.id} email={customer?.email} />
           <Link
             href="/"
             className={`${jadeBoxStyles} w-full hover:scale-[1.015] transition-transform duration-300 text-center`}
