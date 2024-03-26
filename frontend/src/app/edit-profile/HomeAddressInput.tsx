@@ -99,11 +99,9 @@ export default function HomeAddressInput({
               <button
                 className="scale-transition w-max"
                 onClick={async () => {
-                  console.log(
-                    await fetch(
-                      `http://localhost:8080/api/home_address/delete/${homeAddress.id}`,
-                      { method: "DELETE" }
-                    )
+                  await fetch(
+                    `http://localhost:8080/api/home_address/delete/${homeAddress.id}`,
+                    { method: "DELETE" }
                   )
                   window.location.reload()
                 }}
