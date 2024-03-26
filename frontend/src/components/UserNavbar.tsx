@@ -11,7 +11,7 @@ import { destroyCookie, hasCookie, getUser } from "@/lib/Auth"
 export default function UserNavbar() {
   const router = useRouter()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [displayName, setDisplayName] = useState("User")
+  const [displayName, setDisplayName] = useState("")
   useEffect(() => {
     const authenticate = async () => {
       const auth = await hasCookie()
@@ -20,7 +20,10 @@ export default function UserNavbar() {
       }
       setIsLoggedIn(auth)
       const data = await getUser()
-      setDisplayName(data.user.firstName)
+      const firstNameResponse = await fetch(
+        `http://localhost:8080/api/customer/first_name/${data.user.id}`
+      )
+      setDisplayName(await firstNameResponse.text())
     }
     authenticate()
   }, [])
