@@ -11,7 +11,7 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const passwordRef = useRef<HTMLInputElement | null>(null)
   const [loginFailed, setLoginFailed] = useState(false)
-
+  const [remember, setRemember] = useState(false)
   return (
     <div className="min-h-screen bg-black flex flex-col">
       <HomeNavbar />
@@ -52,6 +52,13 @@ export default function Login() {
               Forgot Password?
             </Link>
           </div>
+          <div className="flex items-center w-full">
+              <input type="checkbox" value="" className="w-4 h-4 rounded" checked={remember} onChange={e => {
+                setRemember(e.target.checked)
+                console.log(remember)
+              }}/>
+              <label className="ml-1.5 text-sm font-medium text-white">Remember Me</label>
+          </div>
           <button
             className="action-button w-full"
             onClick={async () => {
@@ -70,7 +77,7 @@ export default function Login() {
               )
               if (response.ok) {
                 const data = await response.json()
-                initialSetUp(data) // Set Up Cookies Authentication
+                initialSetUp(data, remember) // Set Up Cookies Authentication
                 setLoginFailed(false)
                 router.push("/")
               } else {
