@@ -56,7 +56,7 @@ export default function HomeAddressInput({
     <>
       <div className="flex flex-col gap-3">
         <div className="flex gap-2">
-          <div className="p-2 rounded-sm font-semibold bg-emerald-50 w-full">
+          <div className="p-2 rounded-sm font-semibold bg-light-jade w-full">
             Home Address
           </div>
           {homeAddress === undefined && (
@@ -74,7 +74,7 @@ export default function HomeAddressInput({
         {homeAddress !== undefined && (
           <div className="flex gap-3">
             <div
-              className="p-2 rounded-sm font-semibold bg-light-jade grid gap-x-6 w-full"
+              className="p-2 rounded-sm font-semibold bg-emerald-50 grid gap-x-6 w-full"
               style={{ gridTemplateColumns: "repeat(2, auto)" }}
             >
               <p>Home Address</p>

@@ -32,7 +32,7 @@ export default function LastNameInput({
 
   return (
     <>
-      <div className="p-2 rounded-sm font-semibold bg-emerald-50">
+      <div className="p-2 rounded-sm font-semibold bg-light-jade">
         Last Name
       </div>
       <div className="p-2 rounded-sm font-semibold bg-emerald-50">

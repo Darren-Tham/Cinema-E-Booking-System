@@ -62,7 +62,9 @@ export default function EditProfile() {
                   setDialogOpen={setDialogOpen}
                 />
                 <div className={jadeBoxStyles}>Email</div>
-                <div className={jadeBoxStyles}>{customer?.email}</div>
+                <div className="p-2 rounded-sm font-semibold bg-emerald-50">
+                  {customer?.email}
+                </div>
                 <div />
                 <PhoneNumberInput
                   customerId={customer?.id}

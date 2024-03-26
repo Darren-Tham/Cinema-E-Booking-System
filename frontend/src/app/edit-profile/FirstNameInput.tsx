@@ -35,7 +35,7 @@ export default function FirstNameInput({
       <div className="p-2 rounded-sm font-semibold bg-light-jade">
         First Name
       </div>
-      <div className="p-2 rounded-sm font-semibold bg-light-jade">
+      <div className="p-2 rounded-sm font-semibold bg-emerald-50">
         {firstName}
       </div>
       <button

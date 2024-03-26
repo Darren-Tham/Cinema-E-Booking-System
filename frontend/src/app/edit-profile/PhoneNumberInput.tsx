@@ -33,7 +33,7 @@ export default function PhoneNumberInput({
 
   return (
     <>
-      <div className="p-2 rounded-sm font-semibold bg-emerald-50">
+      <div className="p-2 rounded-sm font-semibold bg-light-jade">
         Phone Number
       </div>
       <div className="p-2 rounded-sm font-semibold bg-emerald-50">
