@@ -13,7 +13,7 @@ type LoginCustomerDTO = {
   status: string
   isSubscribedForPromotions: boolean
 }
-
+let remember = false
 const secretKey = "swe4050"
 const key = new TextEncoder().encode(secretKey)
 
@@ -24,26 +24,50 @@ export async function decrypt(input: string): Promise<any> {
   return payload
 }
 
-export async function encrypt(payload: any) {
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("1 hour from now")
-    .sign(key)
+export async function encrypt(payload: any, persist : boolean) {
+    remember = persist
+    if (!remember) {
+        return await new SignJWT(payload)
+        .setProtectedHeader({ alg: "HS256" })
+        .setIssuedAt()
+        .setExpirationTime("1 hour from now")
+        .sign(key)
+    } else {
+        console.log("new")
+        return await new SignJWT(payload)
+        .setProtectedHeader({ alg: "HS256" })
+        .setIssuedAt()
+        .setExpirationTime("100 days from now")
+        .sign(key)
+    }
+}
+async function setPersist(persist : boolean) {
+    remember = persist
 }
 
-export async function initialSetUp(user: LoginCustomerDTO) {
-  const expiration = new Date(Date.now() + (60 * 60 * 1000)) // 30 minutes cookies
-  const session = await encrypt({ user, expiration })
-  cookies().set("session", session, { expires: expiration, httpOnly: true, sameSite : "lax"})
+export async function initialSetUp(user: LoginCustomerDTO, persist : boolean) {
+    remember = persist
+    let expiration = new Date(Date.now())
+    if (!persist) {   
+        expiration = new Date(Date.now() + (60 * 60 * 1000)) // 1-hour cookies
+    } else {
+        console.log("100!")
+        expiration = new Date(Date.now() + (100 * 24 * 60 * 60 * 1000)) // 100-day cookies
+        console.log(expiration)
+    }
+  
+    const session = await encrypt({ user, expiration }, persist)
+    cookies().set("session", session, { expires: expiration, httpOnly: true, sameSite : "lax"})
+    await setPersist(persist)
 }
 
 export async function hasCookie() {
-  const val = cookies().get("session")?.value
-  return !!val
+    const val = cookies().get("session")?.value
+    return !!val
 }
 export async function destroyCookie() {
-  cookies().set("session", "", { expires: new Date(0), sameSite : "lax"})
+    remember = false
+    cookies().set("session", "", { expires: new Date(0), sameSite : "lax"})
 }
 
 export async function getUser() {
@@ -57,13 +81,15 @@ export async function updateSession(request: NextRequest) {
   if (session) {
     const sessionData = await decrypt(session)
     const res = NextResponse.next()
-    res.cookies.set({
-      name: "session",
-      value: await encrypt(sessionData),
-      httpOnly: true,
-      expires: new Date(Date.now() + (60 * 60 * 1000)) ,
-      sameSite: "lax"
-    })
+    if (!(sessionData.exp - sessionData.iat == 8640000)) {
+        res.cookies.set({
+            name: "session",
+            value: await encrypt(sessionData, remember),
+            httpOnly: true,
+            expires: new Date(Date.now() + (60 * 60 * 1000)),
+            sameSite: "lax"
+          })
+    }
     return res
   } else return
 }
