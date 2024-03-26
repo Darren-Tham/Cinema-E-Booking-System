@@ -80,4 +80,18 @@ public class CustomerController {
         return ResponseEntity.ok("First name successfully changed.");
     }
 
+    @PutMapping("/change_last_name/{customerId}/{lastName}")
+    public ResponseEntity<String> changeLastName(@PathVariable final int customerId,
+            @PathVariable final String lastName) {
+        customerService.changeLastName(customerId, lastName);
+        return ResponseEntity.ok("Last name successfully changed.");
+    }
+
+    @PutMapping("/change_phone_number/{customerId}/{phoneNumber}")
+    public ResponseEntity<String> changePhoneNumber(@PathVariable final int customerId,
+            @PathVariable final String phoneNumber) {
+        customerService.changePhoneNumber(customerId, phoneNumber);
+        return ResponseEntity.ok("Last name successfully changed.");
+    }
+
 }

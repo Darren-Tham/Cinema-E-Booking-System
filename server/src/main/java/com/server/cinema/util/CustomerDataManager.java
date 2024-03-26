@@ -41,7 +41,7 @@ public class CustomerDataManager
                 UserState.ACTIVE,
                 true);
         final Card card = new Card("Visa", encryptedCardNumber, "2026/12/01", "123 Example St.", "5555", customer);
-        final HomeAddress homeAddress = new HomeAddress("123 Example St.", "Example City", "Example State", "55555",
+        final HomeAddress homeAddress = new HomeAddress("123 Example St.", "Example City", "Georgia", "55555",
                 customer);
         customer.setCards(new HashSet<>());
         customer.getCards().add(card);

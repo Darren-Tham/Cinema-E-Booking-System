@@ -96,4 +96,17 @@ public class CustomerService {
         entityManager.merge(customer);
     }
 
+    @Transactional
+    public void changeLastName(final int customerId, final String lastName) {
+        Customer customer = entityManager.find(Customer.class, customerId);
+        customer.setLastName(lastName);
+        entityManager.merge(customer);
+    }
+
+    @Transactional
+    public void changePhoneNumber(final int customerId, final String phoneNumber) {
+        Customer customer = entityManager.find(Customer.class, customerId);
+        customer.setPhoneNumber(phoneNumber);
+        entityManager.merge(customer);
+    }
 }

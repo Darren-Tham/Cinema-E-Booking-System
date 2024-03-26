@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.server.cinema.database.customer.Customer;
-import com.server.cinema.database.home_address.dto.HomeAddressDTO;
-import com.server.cinema.database.home_address.dto.HomeAddressDTONoId;
+import com.server.cinema.database.home_address.dto.HomeAddressDTOCustomerId;
+import com.server.cinema.database.home_address.dto.HomeAddressDTOAddressId;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -21,7 +21,7 @@ public class HomeAddressService {
     }
 
     @Transactional
-    public void addHomeAddress(final HomeAddressDTO homeAddressDTO) {
+    public void addHomeAddress(final HomeAddressDTOCustomerId homeAddressDTO) {
         Customer customer = entityManager.find(Customer.class, homeAddressDTO.customerId());
         final HomeAddress homeAddress = new HomeAddress(
                 homeAddressDTO.address(),
@@ -32,14 +32,15 @@ public class HomeAddressService {
         customer.setHomeAddress(homeAddress);
     }
 
-    public HomeAddressDTONoId getHomeAddress(final int customerId) {
+    public HomeAddressDTOAddressId getHomeAddress(final int customerId) {
         final Customer customer = entityManager.find(Customer.class, customerId);
         final HomeAddress homeAddress = customer.getHomeAddress();
         if (homeAddress == null) {
             final String msg = String.format("Customer with id %d does not have a home address.", customer.getId());
             throw new HomeAddressNotFoundException(msg);
         } else {
-            return new HomeAddressDTONoId(
+            return new HomeAddressDTOAddressId(
+                    homeAddress.getId(),
                     homeAddress.getAddress(),
                     homeAddress.getCity(),
                     homeAddress.getState(),
@@ -47,4 +48,13 @@ public class HomeAddressService {
         }
     }
 
+    @Transactional
+    public void updateHomeAddress(final HomeAddressDTOAddressId homeAddressDTO) {
+        final HomeAddress homeAddress = entityManager.find(HomeAddress.class, homeAddressDTO.id());
+        homeAddress.setAddress(homeAddressDTO.address());
+        homeAddress.setCity(homeAddressDTO.city());
+        homeAddress.setState(homeAddressDTO.state());
+        homeAddress.setZipcode(homeAddressDTO.zipcode());
+        entityManager.merge(homeAddress);
+    }
 }
