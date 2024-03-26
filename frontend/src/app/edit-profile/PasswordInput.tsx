@@ -15,6 +15,7 @@ export default function PasswordInput({
   const currentPasswordRef = useRef<HTMLInputElement | null>(null)
   const newPasswordRef = useRef<HTMLInputElement | null>(null)
   const confirmPasswordRef = useRef<HTMLInputElement | null>(null)
+
   return (
     <>
       <button

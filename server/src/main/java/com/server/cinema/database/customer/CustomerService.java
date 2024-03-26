@@ -27,18 +27,23 @@ public class CustomerService {
     }
 
     public String getFirstNameByCustomerId(final int customerId) {
-        Customer customer = entityManager.find(Customer.class, customerId);
+        final Customer customer = entityManager.find(Customer.class, customerId);
         return customer.getFirstName();
     }
 
     public String getLastNameByCustomerId(final int customerId) {
-        Customer customer = entityManager.find(Customer.class, customerId);
+        final Customer customer = entityManager.find(Customer.class, customerId);
         return customer.getLastName();
     }
 
     public String getPhoneNumberByCustomerId(final int customerId) {
-        Customer customer = entityManager.find(Customer.class, customerId);
+        final Customer customer = entityManager.find(Customer.class, customerId);
         return customer.getPhoneNumber();
+    }
+
+    public boolean isSubscribedForPromotions(final int customerId) {
+        final Customer customer = entityManager.find(Customer.class, customerId);
+        return customer.isSubscribedForPromotions();
     }
 
     public String getEmailByCustomerId(final int customerId) {
@@ -127,6 +132,13 @@ public class CustomerService {
     public void changePhoneNumber(final int customerId, final String phoneNumber) {
         Customer customer = entityManager.find(Customer.class, customerId);
         customer.setPhoneNumber(phoneNumber);
+        entityManager.merge(customer);
+    }
+
+    @Transactional
+    public void changeSubscribedForPromotions(final int customerId, final boolean isSubscribedForPromotions) {
+        Customer customer = entityManager.find(Customer.class, customerId);
+        customer.setSubscribedForPromotions(isSubscribedForPromotions);
         entityManager.merge(customer);
     }
 }

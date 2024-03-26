@@ -45,6 +45,12 @@ public class CustomerController {
         return ResponseEntity.ok(phoneNumber);
     }
 
+    @GetMapping("/promotions/{customerId}")
+    public ResponseEntity<Boolean> getIsSubscribedForPromotionsByCustomerId(@PathVariable final int customerId) {
+        final boolean isSubscribedForPromotions = customerService.isSubscribedForPromotions(customerId);
+        return ResponseEntity.ok(isSubscribedForPromotions);
+    }
+
     @GetMapping("/email/{customerId}")
     public ResponseEntity<String> getEmailByCustomerId(@PathVariable final int customerId) {
         final String email = customerService.getEmailByCustomerId(customerId);
@@ -117,6 +123,13 @@ public class CustomerController {
             @PathVariable final String phoneNumber) {
         customerService.changePhoneNumber(customerId, phoneNumber);
         return ResponseEntity.ok("Last name successfully changed.");
+    }
+
+    @PutMapping("/change_promotion/{customerId}/{isSubscribedForPromotions}")
+    public ResponseEntity<String> changeIsSubscribedForPromotions(@PathVariable final int customerId,
+            @PathVariable final boolean isSubscribedForPromotions) {
+        customerService.changeSubscribedForPromotions(customerId, isSubscribedForPromotions);
+        return ResponseEntity.ok("Promotion subscription status successfully changed.");
     }
 
 }

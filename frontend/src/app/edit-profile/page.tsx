@@ -10,6 +10,7 @@ import PhoneNumberInput from "./PhoneNumberInput"
 import HomeAddressInput from "./HomeAddressInput"
 import CardsInput from "./CardsInput"
 import PasswordInput from "./PasswordInput"
+import PromotionButton from "./PromotionButton"
 
 export default function EditProfile() {
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -86,6 +87,7 @@ export default function EditProfile() {
               setDialogOpen={setDialogOpen}
             />
           </div>
+          <PromotionButton customerId={customer?.id} />
           <Link
             href="/"
             className={`${jadeBoxStyles} w-full hover:scale-[1.015] transition-transform duration-300 text-center`}
