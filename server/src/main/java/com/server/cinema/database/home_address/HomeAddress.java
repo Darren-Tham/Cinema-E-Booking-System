@@ -2,6 +2,7 @@ package com.server.cinema.database.home_address;
 
 import com.server.cinema.database.customer.Customer;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

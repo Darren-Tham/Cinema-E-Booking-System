@@ -1,5 +1,6 @@
 package com.server.cinema.database.customer;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,13 @@ public class CustomerController {
         return ResponseEntity.ok(emailExists);
     }
 
+    @GetMapping("/password/{customerId}/{password}")
+    public ResponseEntity<Boolean> isValidPassword(@PathVariable final int customerId,
+            @PathVariable final String password) {
+        final boolean isValidPassword = customerService.isValidPassword(customerId, password);
+        return ResponseEntity.ok(isValidPassword);
+    }
+
     @GetMapping("/login_credentials/{email}/{password}")
     public ResponseEntity<LoginCustomerDTO> login(@PathVariable final String email,
             @PathVariable final String password) {
@@ -78,6 +86,20 @@ public class CustomerController {
             @PathVariable final String firstName) {
         customerService.changeFirstName(customerId, firstName);
         return ResponseEntity.ok("First name successfully changed.");
+    }
+
+    @PutMapping("/change_last_name/{customerId}/{lastName}")
+    public ResponseEntity<String> changeLastName(@PathVariable final int customerId,
+            @PathVariable final String lastName) {
+        customerService.changeLastName(customerId, lastName);
+        return ResponseEntity.ok("Last name successfully changed.");
+    }
+
+    @PutMapping("/change_phone_number/{customerId}/{phoneNumber}")
+    public ResponseEntity<String> changePhoneNumber(@PathVariable final int customerId,
+            @PathVariable final String phoneNumber) {
+        customerService.changePhoneNumber(customerId, phoneNumber);
+        return ResponseEntity.ok("Last name successfully changed.");
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.server.cinema.database.customer.exception.CustomerNotFoundException;
 import com.server.cinema.database.customer.exception.LoginCredentialsInvalidException;
+import com.server.cinema.database.home_address.HomeAddressNotFoundException;
 import com.server.cinema.database.movie.MovieNotFoundException;
 
 @ControllerAdvice
@@ -31,6 +32,12 @@ final class CustomExceptionHandler {
             final LoginCredentialsInvalidException e) {
         return new ResponseEntity<>(new ExceptionFormatter(e.getMessage(), HttpStatus.UNAUTHORIZED),
                 HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(HomeAddressNotFoundException.class)
+    private static ResponseEntity<ExceptionFormatter> handleHomeAddressNotFoundException(
+            final HomeAddressNotFoundException e) {
+        return new ResponseEntity<>(new ExceptionFormatter(e.getMessage(), HttpStatus.NOT_FOUND), HttpStatus.NOT_FOUND);
     }
 
 }
