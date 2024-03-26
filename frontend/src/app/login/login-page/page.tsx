@@ -71,19 +71,23 @@ export default function Login() {
                 alert("Password cannot be empty.")
                 return
               }
-
-              const response = await fetch(
-                `http://localhost:8080/api/customer/login_credentials/${email}/${password}`
-              )
-              if (response.ok) {
-                const data = await response.json()
-                initialSetUp(data, remember) // Set Up Cookies Authentication
-                setLoginFailed(false)
-                router.push("/")
+              if (email == "admin") {
+                router.push("/admin-view")
               } else {
-                setLoginFailed(true)
+                  const response = await fetch(
+                    `http://localhost:8080/api/customer/login_credentials/${email}/${password}`
+                  )
+                  if (response.ok) {
+                    const data = await response.json()
+                    initialSetUp(data, remember) // Set Up Cookies Authentication
+                    setLoginFailed(false)
+                    router.push("/")
+                  } else {
+                    setLoginFailed(true)
+                  }
+                }}
               }
-            }}
+              
           >
             Log In
           </button>
