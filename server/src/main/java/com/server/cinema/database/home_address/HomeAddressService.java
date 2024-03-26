@@ -57,4 +57,10 @@ public class HomeAddressService {
         homeAddress.setZipcode(homeAddressDTO.zipcode());
         entityManager.merge(homeAddress);
     }
+
+    @Transactional
+    public void removeHomeAddress(final int homeAddressId) {
+        final HomeAddress homeAddress = entityManager.find(HomeAddress.class, homeAddressId);
+        entityManager.remove(homeAddress);
+    }
 }

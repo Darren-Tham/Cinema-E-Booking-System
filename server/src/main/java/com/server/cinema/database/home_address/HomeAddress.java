@@ -2,6 +2,7 @@ package com.server.cinema.database.home_address;
 
 import com.server.cinema.database.customer.Customer;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class HomeAddress {
     @Column(nullable = false)
     private String zipcode;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 

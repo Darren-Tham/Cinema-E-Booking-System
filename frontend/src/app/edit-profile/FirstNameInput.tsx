@@ -75,6 +75,7 @@ export default function FirstNameInput({
                     `http://localhost:8080/api/customer/change_first_name/${customerId}/${updatedFirstName}`,
                     { method: "PUT" }
                   )
+                  window.location.reload()
                 }
               }}
             >

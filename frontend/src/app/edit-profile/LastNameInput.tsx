@@ -75,6 +75,7 @@ export default function LastNameInput({
                     `http://localhost:8080/api/customer/change_last_name/${customerId}/${updatedLastName}`,
                     { method: "PUT" }
                   )
+                  window.location.reload()
                 }
               }}
             >

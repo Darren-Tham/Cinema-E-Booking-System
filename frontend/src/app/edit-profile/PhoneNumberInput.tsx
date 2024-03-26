@@ -80,6 +80,7 @@ export default function PhoneNumberInput({
                     `http://localhost:8080/api/customer/change_phone_number/${customerId}/${updatedPhoneNumber}`,
                     { method: "PUT" }
                   )
+                  window.location.reload()
                 }
               }}
             >

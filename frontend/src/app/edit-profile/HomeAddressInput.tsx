@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import PencilIcon from "@public/pencil-icon.svg"
 import BluePlusIcon from "@public/blue-plus-icon.svg"
+import RedDeleteIcon from "@public/red-delete-icon.svg"
 
 type Props = {
   customerId: number | undefined
@@ -74,15 +75,31 @@ export default function HomeAddressInput({
               <p>Zipcode</p>
               <p>{homeAddress?.zipcode}</p>
             </div>
-            <button
-              className="self-center scale-transition w-max"
-              onClick={() => {
-                dialogRef.current?.showModal()
-                setDialogOpen(true)
-              }}
-            >
-              <Image src={PencilIcon} alt="Edit Icon" width={30} />
-            </button>
+            <div className="flex flex-col justify-evenly">
+              <button
+                className="scale-transition w-max"
+                onClick={() => {
+                  dialogRef.current?.showModal()
+                  setDialogOpen(true)
+                }}
+              >
+                <Image src={PencilIcon} alt="Edit Icon" width={30} />
+              </button>
+              <button
+                className="scale-transition w-max"
+                onClick={async () => {
+                  console.log(
+                    await fetch(
+                      `http://localhost:8080/api/home_address/delete/${homeAddress.id}`,
+                      { method: "DELETE" }
+                    )
+                  )
+                  window.location.reload()
+                }}
+              >
+                <Image src={RedDeleteIcon} alt="Delete Icon" width={30} />
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -125,135 +142,64 @@ export default function HomeAddressInput({
             <select
               className="rounded-sm font-semibold p-[0.375rem] bg-emerald-50"
               ref={stateSelectRef}
+              defaultValue={homeAddress?.state}
             >
-              <option selected={homeAddress?.state === "Alabama"}>
-                Alabama
-              </option>
-              <option selected={homeAddress?.state === "Alaska"}>Alaska</option>
-              <option selected={homeAddress?.state === "Arizona"}>
-                Arizona
-              </option>
-              <option selected={homeAddress?.state === "Arkansas"}>
-                Arkansas
-              </option>
-              <option selected={homeAddress?.state === "California"}>
-                California
-              </option>
-              <option selected={homeAddress?.state === "Colorado"}>
-                Colorado
-              </option>
-              <option selected={homeAddress?.state === "Connecticut"}>
-                Connecticut
-              </option>
-              <option selected={homeAddress?.state === "Delaware"}>
-                Delaware
-              </option>
-              <option selected={homeAddress?.state === "Florida"}>
-                Florida
-              </option>
-              <option selected={homeAddress?.state === "Georgia"}>
-                Georgia
-              </option>
-              <option selected={homeAddress?.state === "Hawaii"}>Hawaii</option>
-              <option selected={homeAddress?.state === "Idaho"}>Idaho</option>
-              <option selected={homeAddress?.state === "Illinois"}>
-                Illinois
-              </option>
-              <option selected={homeAddress?.state === "Indiana"}>
-                Indiana
-              </option>
-              <option selected={homeAddress?.state === "Iowa"}>Iowa</option>
-              <option selected={homeAddress?.state === "Kansas"}>Kansas</option>
-              <option selected={homeAddress?.state === "Kentucky"}>
-                Kentucky
-              </option>
-              <option selected={homeAddress?.state === "Louisiana"}>
-                Louisiana
-              </option>
-              <option selected={homeAddress?.state === "Maine"}>Maine</option>
-              <option selected={homeAddress?.state === "Maryland"}>
-                Maryland
-              </option>
-              <option selected={homeAddress?.state === "Massachusetts"}>
-                Massachusetts
-              </option>
-              <option selected={homeAddress?.state === "Michigan"}>
-                Michigan
-              </option>
-              <option selected={homeAddress?.state === "Minnesota"}>
-                Minnesota
-              </option>
-              <option selected={homeAddress?.state === "Mississippi"}>
-                Mississippi
-              </option>
-              <option selected={homeAddress?.state === "Missouri"}>
-                Missouri
-              </option>
-              <option selected={homeAddress?.state === "Montana"}>
-                Montana
-              </option>
-              <option selected={homeAddress?.state === "Nebraska"}>
-                Nebraska
-              </option>
-              <option selected={homeAddress?.state === "Nevada"}>Nevada</option>
-              <option selected={homeAddress?.state === "New Hampshire"}>
-                New Hampshire
-              </option>
-              <option selected={homeAddress?.state === "New Jersey"}>
-                New Jersey
-              </option>
-              <option selected={homeAddress?.state === "New Mexico"}>
-                New Mexico
-              </option>
-              <option selected={homeAddress?.state === "New York"}>
-                New York
-              </option>
-              <option selected={homeAddress?.state === "North"}>North</option>
-              <option selected={homeAddress?.state === "Carolina"}>
-                Carolina
-              </option>
-              <option selected={homeAddress?.state === "North"}>North</option>
-              <option selected={homeAddress?.state === "Dakota"}>Dakota</option>
-              <option selected={homeAddress?.state === "Ohio"}>Ohio</option>
-              <option selected={homeAddress?.state === "Oklahoma"}>
-                Oklahoma
-              </option>
-              <option selected={homeAddress?.state === "Oregon"}>Oregon</option>
-              <option selected={homeAddress?.state === "Pennsylvania"}>
-                Pennsylvania
-              </option>
-              <option selected={homeAddress?.state === "Rhode"}>Rhode</option>
-              <option selected={homeAddress?.state === "Island"}>Island</option>
-              <option selected={homeAddress?.state === "South"}>South</option>
-              <option selected={homeAddress?.state === "Carolina"}>
-                Carolina
-              </option>
-              <option selected={homeAddress?.state === "South"}>South</option>
-              <option selected={homeAddress?.state === "Dakota"}>Dakota</option>
-              <option selected={homeAddress?.state === "Tennessee"}>
-                Tennessee
-              </option>
-              <option selected={homeAddress?.state === "Texas"}>Texas</option>
-              <option selected={homeAddress?.state === "Utah"}>Utah</option>
-              <option selected={homeAddress?.state === "Vermont"}>
-                Vermont
-              </option>
-              <option selected={homeAddress?.state === "Virginia"}>
-                Virginia
-              </option>
-              <option selected={homeAddress?.state === "Washington"}>
-                Washington
-              </option>
-              <option selected={homeAddress?.state === "West"}>West</option>
-              <option selected={homeAddress?.state === "Virginia"}>
-                Virginia
-              </option>
-              <option selected={homeAddress?.state === "Wisconsin"}>
-                Wisconsin
-              </option>
-              <option selected={homeAddress?.state === "Wyoming"}>
-                Wyoming
-              </option>
+              <option>Alabama</option>
+              <option>Alaska</option>
+              <option>Arizona</option>
+              <option>Arkansas</option>
+              <option>California</option>
+              <option>Colorado</option>
+              <option>Connecticut</option>
+              <option>Delaware</option>
+              <option>Florida</option>
+              <option>Georgia</option>
+              <option>Hawaii</option>
+              <option>Idaho</option>
+              <option>Illinois</option>
+              <option>Indiana</option>
+              <option>Iowa</option>
+              <option>Kansas</option>
+              <option>Kentucky</option>
+              <option>Louisiana</option>
+              <option>Maine</option>
+              <option>Maryland</option>
+              <option>Massachusetts</option>
+              <option>Michigan</option>
+              <option>Minnesota</option>
+              <option>Mississippi</option>
+              <option>Missouri</option>
+              <option>Montana</option>
+              <option>Nebraska</option>
+              <option>Nevada</option>
+              <option>New Hampshire</option>
+              <option>New Jersey</option>
+              <option>New Mexico</option>
+              <option>New York</option>
+              <option>North</option>
+              <option>Carolina</option>
+              <option>North</option>
+              <option>Dakota</option>
+              <option>Ohio</option>
+              <option>Oklahoma</option>
+              <option>Oregon</option>
+              <option>Pennsylvania</option>
+              <option>Rhode</option>
+              <option>Island</option>
+              <option>South</option>
+              <option>Carolina</option>
+              <option>South</option>
+              <option>Dakota</option>
+              <option>Tennessee</option>
+              <option>Texas</option>
+              <option>Utah</option>
+              <option>Vermont</option>
+              <option>Virginia</option>
+              <option>Washington</option>
+              <option>West</option>
+              <option>Virginia</option>
+              <option>Wisconsin</option>
+              <option>Wyoming</option>
             </select>
             <div className="bg-light-jade outline-none font-semibold p-2 rounded-sm">
               Zipcode
@@ -309,6 +255,7 @@ export default function HomeAddressInput({
                       zipcode
                     })
                   })
+                  window.location.reload()
                 }
               }}
             >
