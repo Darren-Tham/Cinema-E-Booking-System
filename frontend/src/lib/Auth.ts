@@ -83,7 +83,7 @@ export async function updateUser(user: Customer) {
 export async function getUser() {
   const data = cookies().get("session")?.value
   if (data) return await decrypt(data)
-  else return
+  else return {}
 }
 
 export async function updateSession(request: NextRequest) {
