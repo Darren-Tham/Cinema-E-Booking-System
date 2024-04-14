@@ -83,21 +83,34 @@ export default function Login() {
               const adminResponse = await fetch(
                 `http://localhost:8080/api/admin/login/${email}/${password}`
               )
-              const adminData = await adminResponse.text()
-              if (adminData === "true") {
-                router.push("/admin-view")
-              }
+              if (adminResponse.status == 200) {
+                const adminData = await adminResponse.json()
+                if (adminData.username == "admin") {
+                  const setUpAdminData = {
+                    "id": 1,
+                    "firstName": "Admin",
+                    "lastName": "",
+                    "email": adminData.username,
+                    "phoneNumber": "",
+                    "status": "",
+                    "isSubscribedForPromotions": true
+                  }
+                  initialSetUp(setUpAdminData, remember)
 
-              const response = await fetch(
-                `http://localhost:8080/api/customer/login_credentials/${email}/${password}`
-              )
-              if (response.ok) {
-                const data = await response.json()
-                initialSetUp(data, remember) // Set Up Cookies Authentication
-                setLoginFailed(false)
-                router.push("/")
+                  router.push("/admin-view")
+                }
               } else {
-                setLoginFailed(true)
+                const response = await fetch(
+                  `http://localhost:8080/api/customer/login_credentials/${email}/${password}`
+                )
+                if (response.ok) {
+                  const data = await response.json()
+                  initialSetUp(data, remember) // Set Up Cookies Authentication
+                  setLoginFailed(false)
+                  router.push("/")
+                } else {
+                  setLoginFailed(true)
+                }
               }
             }}
           >
@@ -130,6 +143,6 @@ export default function Login() {
           )}
         </div>
       </div>
-    </div>
+    </div >
   )
 }

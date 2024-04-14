@@ -20,10 +20,7 @@ export default function UserNavbar() {
       }
       setIsLoggedIn(auth)
       const data = await getUser()
-      const firstNameResponse = await fetch(
-        `http://localhost:8080/api/customer/first_name/${data.user.id}`
-      )
-      setDisplayName(await firstNameResponse.text())
+      setDisplayName(data.user.firstName)
     }
     authenticate()
   }, [])
