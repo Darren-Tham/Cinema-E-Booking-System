@@ -39,7 +39,7 @@ export async function encrypt(payload: any, persist: boolean) {
     return await new SignJWT(payload)
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime("100 days from now")
+      .setExpirationTime("30 days from now")
       .sign(key)
   }
 }
@@ -53,7 +53,7 @@ export async function initialSetUp(user: Customer, persist: boolean) {
   if (!persist) {
     expiration = new Date(Date.now() + 60 * 60 * 1000) // 1-hour cookies
   } else {
-    expiration = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000) // 100-day cookies
+    expiration = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30-day cookies
   }
 
   const session = await encrypt({ user, expiration }, persist)
@@ -91,7 +91,7 @@ export async function updateSession(request: NextRequest) {
   if (session) {
     const sessionData = await decrypt(session)
     const res = NextResponse.next()
-    if (!(sessionData.exp - sessionData.iat == 8640000)) {
+    if (!(sessionData.exp - sessionData.iat == 2592000)) {
       res.cookies.set({
         name: "session",
         value: await encrypt(sessionData, remember),
