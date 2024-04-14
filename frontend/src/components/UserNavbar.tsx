@@ -7,11 +7,13 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { destroyCookie, hasCookie, getUser } from "@/lib/Auth"
+import { useAuth } from "@/lib/useAuth"
 
 export default function UserNavbar() {
   const router = useRouter()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [displayName, setDisplayName] = useState("")
+  const isAdmin = useAuth("admin")
   useEffect(() => {
     const authenticate = async () => {
       const auth = await hasCookie()
@@ -20,10 +22,7 @@ export default function UserNavbar() {
       }
       setIsLoggedIn(auth)
       const data = await getUser()
-      const firstNameResponse = await fetch(
-        `http://localhost:8080/api/customer/first_name/${data.user.id}`
-      )
-      setDisplayName(await firstNameResponse.text())
+      setDisplayName(data.user.firstName)
     }
     authenticate()
   }, [])
@@ -62,6 +61,14 @@ export default function UserNavbar() {
             <p className="text-white font-semibold text-lg mr-4">
               Hello, {displayName}
             </p>
+            {
+              isAdmin &&
+              <Link href="/admin-view">
+                <button className="back-button">
+                  Admin Portal
+                </button>
+              </Link>
+            }
             <button
               className="back-button"
               onClick={async () => {

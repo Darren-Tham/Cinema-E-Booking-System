@@ -1,9 +1,10 @@
 "use client"
-import { useState } from "react"
+import { use, useState } from "react"
 import Image from "next/image"
 import arrow from "./arrow.png"
 import SearchIcon from "@public/search-icon.svg"
 import Link from "next/link"
+import { useAuth } from "@/lib/useAuth"
 export default function Manage() {
   const [index, setIndex] = useState(0)
   let movies = [
@@ -88,60 +89,68 @@ export default function Manage() {
     }
   ]
   movies = movies.filter((_, i) => i <= 5)
+  const isAdmin = useAuth("admin")
+
   return (
-    <div className="flex flex-col bg-black h-screen items-center space-y-10">
-      <div className="flex items-center bg-jade rounded-full p-2 mt-5">
-        <label htmlFor="search">
-          <Image src={SearchIcon} alt="Search Icon" width={30} />
-        </label>
-        <input
-          id="search"
-          placeholder="Search..."
-          className="input rounded-full w-96 bg-transparent text-white placeholder:text-neutral-200"
-        />
-      </div>
-      <h1 className="self-start text-white font-sans font-semibold ml-6 text-xl">
-        Movies Currently Showing and Coming Soon
-      </h1>
-      <div className="flex flex-row w-full h-3/5 bg-teal-950 space-x-10 rounded">
-        <div className="flex items-center">
-          <Image src={arrow} alt="arrowleft" width={50} height={10} />
+    isAdmin ? (
+      <div className="flex flex-col bg-black h-screen items-center space-y-10">
+        <div className="flex items-center bg-jade rounded-full p-2 mt-5">
+          <label htmlFor="search">
+            <Image src={SearchIcon} alt="Search Icon" width={30} />
+          </label>
+          <input
+            id="search"
+            placeholder="Search..."
+            className="input rounded-full w-96 bg-transparent text-white placeholder:text-neutral-200"
+          />
         </div>
-        <div className="flex flex-row w-full justify-center space-x-10">
-          {movies.map(movie => {
-            return (
-              <div
-                key={movie.movie_name}
-                className="flex flex-col items-center justify-center w-full"
-              >
-                <h2 className="font-bold text-sm text-white mb-4">
-                  {movie.movie_name}
-                </h2>
-                <Link
-                  href="./edit-movie"
-                  className="flex bg-dark-jade p-3 gap-3 h-3/6 w-full rounded justify-center scale-transition"
+        <h1 className="self-start text-white font-sans font-semibold ml-6 text-xl">
+          Movies Currently Showing and Coming Soon
+        </h1>
+        <div className="flex flex-row w-full h-3/5 bg-teal-950 space-x-10 rounded">
+          <div className="flex items-center">
+            <Image src={arrow} alt="arrowleft" width={50} height={10} />
+          </div>
+          <div className="flex flex-row w-full justify-center space-x-10">
+            {movies.map(movie => {
+              return (
+                <div
+                  key={movie.movie_name}
+                  className="flex flex-col items-center justify-center w-full"
                 >
-                  <div className="flex flex-col aspect-auto justify-center">
-                    <Image
-                      src={movie.image_link}
-                      alt="movie"
-                      width={125}
-                      height={100}
-                      className="aspect-auto"
-                    />
-                  </div>
-                </Link>
-              </div>
-            )
-          })}
+                  <h2 className="font-bold text-sm text-white mb-4">
+                    {movie.movie_name}
+                  </h2>
+                  <Link
+                    href="./edit-movie"
+                    className="flex bg-dark-jade p-3 gap-3 h-3/6 w-full rounded justify-center scale-transition"
+                  >
+                    <div className="flex flex-col aspect-auto justify-center">
+                      <Image
+                        src={movie.image_link}
+                        alt="movie"
+                        width={125}
+                        height={100}
+                        className="aspect-auto"
+                      />
+                    </div>
+                  </Link>
+                </div>
+              )
+            })}
+          </div>
+          <div className="flex items-center scale-[-1]">
+            <Image src={arrow} alt="arrowright" width={50} height={10} />
+          </div>
         </div>
-        <div className="flex items-center scale-[-1]">
-          <Image src={arrow} alt="arrowright" width={50} height={10} />
-        </div>
+        <Link href="./add-movie" className="text-white w-max font-bold text-lg bg-jade px-10 py-4 rounded-md scale-transition ">
+          Add Movie
+        </Link>
       </div>
-      <Link href="./add-movie" className="text-white w-max font-bold text-lg bg-jade px-10 py-4 rounded-md scale-transition ">
-        Add Movie
-      </Link>
-    </div>
+    ) : (
+      <div className="h-screen bg-black flex justify-center items-center">
+        <h1 className="text-white text-3xl">WOMP WOMP, you are not authorized.</h1>
+      </div>
+    )
   )
 }
