@@ -1,5 +1,7 @@
 package com.server.cinema.database.customer;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,11 @@ public class CustomerController {
     @Autowired
     public CustomerController(final CustomerService customerService) {
         this.customerService = customerService;
+    }
+
+    @GetMapping("/subscribed_customers")
+    public List<String> getSubscribedCustomerEmails() {
+        return customerService.getSubscribedCustomerEmails();
     }
 
     @GetMapping("/first_name/{customerId}")

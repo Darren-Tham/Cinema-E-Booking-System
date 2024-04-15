@@ -1,5 +1,8 @@
 package com.server.cinema.database.customer;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,13 @@ public class CustomerService {
     public CustomerService(final CustomerDAO customerDAO, final EntityManager entityManager) {
         this.customerDAO = customerDAO;
         this.entityManager = entityManager;
+    }
+
+    public List<String> getSubscribedCustomerEmails() {
+        return customerDAO.findSubscribedCustomers()
+                .stream()
+                .map(Customer::getEmail)
+                .collect(Collectors.toList());
     }
 
     public String getFirstNameByCustomerId(final int customerId) {
