@@ -52,6 +52,9 @@ public class Movie {
     @Column(columnDefinition = "TEXT")
     private String synopsis;
 
+    @Column
+    private String ratingOutOf10;
+
     @Enumerated(EnumType.STRING)
     private MovieRatingCode ratingCode;
 
@@ -97,7 +100,8 @@ public class Movie {
                 imageLink,
                 synopsis,
                 ratingCodeStr,
-                statusStr);
+                statusStr,
+                ratingOutOf10);
     }
 
 }

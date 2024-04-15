@@ -7,5 +7,6 @@ public record MovieDTO(
         String imageLink,
         String synopsis,
         String ratingCode,
-        String status) {
+        String status,
+        String ratingOutOf10) {
 }
