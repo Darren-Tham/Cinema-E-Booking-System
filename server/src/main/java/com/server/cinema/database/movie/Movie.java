@@ -1,5 +1,6 @@
 package com.server.cinema.database.movie;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.server.cinema.database.movie.enums.MovieCategory;
@@ -18,6 +19,7 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -61,7 +63,7 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     private Set<MovieProducer> producers;
 
-    @ElementCollection(targetClass = MovieCategory.class)
+    @ElementCollection(targetClass = MovieCategory.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "movie_category", joinColumns = @JoinColumn(name = "movie_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "category")
@@ -93,7 +95,6 @@ public class Movie {
         final String statusStr = status == null
                 ? "NULL"
                 : status.toString();
-
         return new MovieDTO(id,
                 title,
                 trailerLink,
@@ -101,7 +102,8 @@ public class Movie {
                 synopsis,
                 ratingCodeStr,
                 statusStr,
-                ratingOutOf10);
+                ratingOutOf10,
+                categories);
     }
 
 }
