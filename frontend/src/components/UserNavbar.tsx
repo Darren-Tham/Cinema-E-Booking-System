@@ -47,7 +47,10 @@ export default function UserNavbar() {
               if (e.key !== "Enter") {
                 return
               }
-              router.push(`/search/${e.currentTarget.value}`)
+              let query = e.currentTarget.value.trim()
+              if (query !== "") {
+                router.push(`/search/${query}`)
+              }
             }}
           />
         </div>
