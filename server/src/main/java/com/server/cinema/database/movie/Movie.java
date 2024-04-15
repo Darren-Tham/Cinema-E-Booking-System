@@ -1,6 +1,5 @@
 package com.server.cinema.database.movie;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.server.cinema.database.movie.enums.MovieCategory;
