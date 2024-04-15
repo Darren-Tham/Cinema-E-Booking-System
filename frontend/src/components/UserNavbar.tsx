@@ -61,14 +61,11 @@ export default function UserNavbar() {
             <p className="text-white font-semibold text-lg mr-4">
               Hello, {displayName}
             </p>
-            {
-              isAdmin &&
+            {isAdmin && (
               <Link href="/admin-view">
-                <button className="back-button">
-                  Admin Portal
-                </button>
+                <button className="back-button">Admin Portal</button>
               </Link>
-            }
+            )}
             <button
               className="back-button"
               onClick={async () => {
