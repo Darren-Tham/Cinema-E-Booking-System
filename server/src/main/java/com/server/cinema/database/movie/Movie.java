@@ -52,7 +52,7 @@ public class Movie {
     @Column(columnDefinition = "TEXT")
     private String synopsis;
 
-    @Column
+    @Column(name = "rating_out_of_10")
     private String ratingOutOf10;
 
     @Enumerated(EnumType.STRING)
