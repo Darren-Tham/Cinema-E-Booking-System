@@ -9,6 +9,7 @@ export type MovieType = {
   imageLink: string
   status: string
   ratingOutOf10: string
+  categories: string[]
 }
 
 type Props = {

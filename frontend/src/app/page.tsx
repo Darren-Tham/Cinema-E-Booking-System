@@ -8,6 +8,21 @@ import UserNavbar from "@/components/UserNavbar"
 import MainMovieBanner from "@/components/MainMovieBanner"
 import FilterIcon from "@public/filter-icon.svg"
 
+const CATEGORIES = [
+  "Animation",
+  "Action",
+  "Adventure",
+  "Biography",
+  "Comedy",
+  "Drama",
+  "Family",
+  "History",
+  "Horror",
+  "Mystery",
+  "Sci-Fi",
+  "Thriller"
+]
+
 export default function Home() {
   const [movies, setMovies] = useState<MovieType[]>([])
   const [filterType, setFilterType] = useState("All")
@@ -37,18 +52,9 @@ export default function Home() {
             <option>All</option>
             <option>Now Playing</option>
             <option>Coming Soon</option>
-            <option>Animation</option>
-            <option>Action</option>
-            <option>Adventure</option>
-            <option>Biography</option>
-            <option>Comedy</option>
-            <option>Drama</option>
-            <option>Family</option>
-            <option>History</option>
-            <option>Horror</option>
-            <option>Mystery</option>
-            <option>Sci-Fi</option>
-            <option>Thriller</option>
+            {CATEGORIES.map(category => (
+              <option key={category}>{category}</option>
+            ))}
           </select>
         </div>
 
@@ -65,7 +71,19 @@ export default function Home() {
             movies={movies.filter(movie => movie.status === "COMING_SOON")}
           />
         )}
+        {CATEGORIES.includes(filterType) && (
+          <MoviesContainer
+            heading={filterType}
+            movies={movies.filter(movie =>
+              movie.categories.includes(formatFilterType(filterType))
+            )}
+          />
+        )}
       </div>
     </div>
   )
+}
+
+function formatFilterType(s: string) {
+  return s.toUpperCase().replace("-", "_")
 }
