@@ -74,13 +74,13 @@ const ManagePromotions: React.FC = () => {
               endDate: endDateRef.current.value
             }
 
-            // await fetch("http://localhost:8080/api/promotion/add", {
-            //   method: "POST",
-            //   headers: {
-            //     "Content-Type": "application/json"
-            //   },
-            //   body: JSON.stringify(promotion)
-            // })
+            await fetch("http://localhost:8080/api/promotion/add", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(promotion)
+            })
 
             const response = await fetch(
               "http://localhost:8080/api/customer/subscribed_customers"
