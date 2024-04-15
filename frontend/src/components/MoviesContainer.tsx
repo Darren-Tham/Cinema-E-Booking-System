@@ -16,16 +16,18 @@ export default function MoviesContainer({ heading, movies }: Readonly<Props>) {
   const [load, setLoad] = useState(false)
   const [playMovie, setPlayMovie] = useState(false)
   const [movieURL, setMovieURL] = useState("")
+  const [movieRating, setMovieRating] = useState("")
   const dialogRef = useRef<HTMLDialogElement | null>(null)
 
   useEffect(() => {
     setLoad(true)
   }, [])
 
-  function handleTrailerClick(trailerLink: string) {
+  function handleTrailerClick(trailerLink: string, movieRating: string) {
     dialogRef.current?.showModal()
     setMovieURL(trailerLink)
     setPlayMovie(true)
+    setMovieRating(movieRating)
   }
 
   return (
@@ -37,13 +39,15 @@ export default function MoviesContainer({ heading, movies }: Readonly<Props>) {
             <Movie
               key={movie.id}
               movie={movie}
-              handleTrailerClick={() => handleTrailerClick(movie.trailerLink)}
+              handleTrailerClick={() =>
+                handleTrailerClick(movie.trailerLink, movie.ratingOutOf10)
+              }
             />
           ))}
         </div>
       </div>
 
-      <dialog ref={dialogRef} className="bg-transparent">
+      <dialog ref={dialogRef} className="bg-transparent shadow-md">
         <div className="bg-jade flex flex-col p-2 rounded-md gap-2">
           <button
             className="self-end hover:scale-105 transition-transform duration-300"
@@ -54,6 +58,9 @@ export default function MoviesContainer({ heading, movies }: Readonly<Props>) {
           >
             <Image src={Cancel} alt="Cancel" width={35} />
           </button>
+          <h2 className="text-white font-bold self-center text-xl">
+            Rating: {movieRating}/10
+          </h2>
           {load && <ReactPlayer url={movieURL} playing={playMovie} />}
           <Link
             href="/theaters-and-times"

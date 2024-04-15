@@ -13,6 +13,7 @@ export default function Home() {
     async function getMovies() {
       const response = await fetch("http://localhost:8080/api/movie")
       const data = await response.json()
+      console.log(data)
       setMovies(data)
     }
     getMovies()
