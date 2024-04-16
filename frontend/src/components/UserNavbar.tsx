@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { destroyCookie, hasCookie } from "@/lib/Auth";
+import { destroyCookie, hasCookie, getUser } from "@/lib/Auth";
 
 export default function UserNavbar() {
   const router = useRouter();
@@ -51,7 +51,7 @@ export default function UserNavbar() {
               <Image src={ProfileIcon} alt="Profile" width={45} />
             </Link>
             <p className="text-white font-semibold text-lg mr-4">
-              Hello, User!
+              Hello, {displayName}
             </p>
             <button
               className="back-button"

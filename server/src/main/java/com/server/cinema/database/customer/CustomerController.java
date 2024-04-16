@@ -1,6 +1,5 @@
 package com.server.cinema.database.customer;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,10 +41,11 @@ public class CustomerController {
         final boolean emailExists = customerService.emailExists(email);
         return ResponseEntity.ok(emailExists);
     }
+
     @GetMapping("/login_credentials/{email}/{password}")
-    public ResponseEntity<Integer> login(@PathVariable final String email, @PathVariable final String password) {
-        final int customerId = customerService.getCustomerIdByEmailAndPassword(email, password);
-        return ResponseEntity.ok(customerId);
+    public ResponseEntity<String[]> login(@PathVariable final String email, @PathVariable final String password) {
+        final String[] res = { email, "" + customerService.getCustomerIdByEmailAndPassword(email, password) };
+        return ResponseEntity.ok(res);
     }
 
     @PostMapping("/add")
@@ -67,6 +67,13 @@ public class CustomerController {
             @PathVariable final String password) {
         customerService.changePassword(customerId, password);
         return ResponseEntity.ok("Password changed successfully.");
+    }
+
+    @PutMapping("/change_first_name/{customerId}/{firstName}")
+    public ResponseEntity<String> changeFirstName(@PathVariable final int customerId,
+            @PathVariable final String firstName) {
+        customerService.changeFirstName(customerId, firstName);
+        return ResponseEntity.ok("First name successfully changed.");
     }
 
 }
