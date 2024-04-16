@@ -10,14 +10,14 @@ export default function TheaterAndTimesContainer({
   times
 }: Readonly<Props>) {
   return (
-    <div>
+    <div className="px-2 py-2">
       <h1 className="font-bold text-3xl text-white mb-3">{heading}</h1>
-      <div className="bg-dark-jade flex gap-5 p-5 flex-wrap">
+      <div className="bg-dark-jade grid grid-flow-col grid-rows-2 gap-5 p-5 rounded-md">
         {times.map(time => (
           <Link
             href="/ticket-summary"
             key={time}
-            className="bg-jade px-10 py-2 text-white font-semibold text-xl rounded-md scale-transition"
+            className="justify-centent-center bg-jade px-5 py-2 text-white font-semibold text-xl rounded-md scale-transition"
           >
             {time}
           </Link>
