@@ -1,5 +1,6 @@
 package com.server.cinema.database.customer.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.server.cinema.database.customer.Customer;
@@ -11,5 +12,7 @@ public interface CustomerDAO {
     boolean emailExists(final String email);
 
     Optional<Customer> getCustomerByEmail(final String email);
+
+    List<Customer> findSubscribedCustomers();
 
 }

@@ -8,6 +8,8 @@ export type MovieType = {
   trailerLink: string;
   imageLink: string;
   status: string;
+  ratingOutOf10: string;
+  categories: string[];
 };
 
 type Props = {

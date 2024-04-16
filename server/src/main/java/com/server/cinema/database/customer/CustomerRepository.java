@@ -2,6 +2,7 @@ package com.server.cinema.database.customer;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     Optional<Customer> findByEmail(final String email);
 
+    @Query("SELECT c FROM Customer c WHERE c.isSubscribedForPromotions")
+    List<Customer> findSubscribedCustomers();
 }

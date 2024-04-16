@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,10 +25,13 @@ public class Promotion {
     private int id;
 
     @Column(nullable = false)
-    private int discountPercentage;
+    private String name;
 
     @Column(nullable = false)
     private String discountCode;
+
+    @Column(nullable = false)
+    private int discountPercentage;
 
     @Column(columnDefinition = "DATE", nullable = false)
     private String startDate;
@@ -38,4 +42,12 @@ public class Promotion {
     @OneToMany(mappedBy = "promotion")
     private Set<Booking> bookings;
 
+    public Promotion(final String name, final String discountCode, final int discountPercentage,
+            final String startDate, final String endDate) {
+        this.name = name;
+        this.discountCode = discountCode;
+        this.discountPercentage = discountPercentage;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }

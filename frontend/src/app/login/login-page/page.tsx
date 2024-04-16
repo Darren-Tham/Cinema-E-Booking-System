@@ -11,7 +11,7 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const passwordRef = useRef<HTMLInputElement | null>(null)
   const [loginFailed, setLoginFailed] = useState(false)
-
+  const [remember, setRemember] = useState(false)
   return (
     <div className="min-h-screen bg-black flex flex-col">
       <HomeNavbar />
@@ -52,6 +52,21 @@ export default function Login() {
               Forgot Password?
             </Link>
           </div>
+          <div className="flex items-center w-full">
+            <input
+              type="checkbox"
+              value=""
+              className="w-4 h-4 rounded"
+              checked={remember}
+              onChange={e => {
+                setRemember(e.target.checked)
+                console.log(remember)
+              }}
+            />
+            <label className="ml-1.5 text-sm font-medium text-white">
+              Remember Me
+            </label>
+          </div>
           <button
             className="action-button w-full"
             onClick={async () => {
@@ -65,20 +80,37 @@ export default function Login() {
                 return
               }
 
-              const response = await fetch(
-                `http://localhost:8080/api/customer/login_credentials/${email}/${password}`
+              const adminResponse = await fetch(
+                `http://localhost:8080/api/admin/login/${email}/${password}`
               )
-              if (response.ok) {
-                const data = await response.json()
-                initialSetUp(data) // Set Up Cookies Authentication
-                setLoginFailed(false)
-                router.push("/")
+              if (adminResponse.status == 200) {
+                const adminData = await adminResponse.json()
+                if (adminData.username == "admin") {
+                  const setUpAdminData = {
+                    "id": 1,
+                    "firstName": "Admin",
+                    "lastName": "",
+                    "email": adminData.username,
+                    "phoneNumber": "",
+                    "status": "",
+                    "isSubscribedForPromotions": true
+                  }
+                  initialSetUp(setUpAdminData, remember)
+
+                  router.push("/admin-view")
+                }
               } else {
-                setLoginFailed(true)
-                
-                // alert(
-                //   "Email or password credential is incorrect. Please try again. If you do not have an account, please create a new account."
-                // )
+                const response = await fetch(
+                  `http://localhost:8080/api/customer/login_credentials/${email}/${password}`
+                )
+                if (response.ok) {
+                  const data = await response.json()
+                  initialSetUp(data, remember) // Set Up Cookies Authentication
+                  setLoginFailed(false)
+                  router.push("/")
+                } else {
+                  setLoginFailed(true)
+                }
               }
             }}
           >
@@ -97,16 +129,20 @@ export default function Login() {
             * Required Field
           </p>
           {loginFailed && (
-            <div role="alert"> 
-            <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
-              Incorrect Credentials
+            <div role="alert">
+              <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                Incorrect Credentials
+              </div>
+              <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                <p>
+                  Email or password credential is incorrect. Please try again.
+                  If you do not have an account, please create a new account.
+                </p>
+              </div>
             </div>
-            <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
-              <p>Email or password credential is incorrect. Please try again. If you do not have an account, please create a new account.</p>
-            </div>
-          </div>)}
+          )}
         </div>
       </div>
-    </div>
+    </div >
   )
 }

@@ -1,42 +1,114 @@
-import InfoField from "@/components/InfoField"
-import Link from "next/link"
+"use client"
 
+import Image from "next/image"
+import Link from "next/link"
+import { useState, useEffect } from "react"
+import { Customer, getUser } from "@/lib/Auth"
+import FirstNameInput from "./FirstNameInput"
+import LastNameInput from "./LastNameInput"
+import PhoneNumberInput from "./PhoneNumberInput"
+import HomeAddressInput from "./HomeAddressInput"
+import CardsInput from "./CardsInput"
+import PasswordInput from "./PasswordInput"
+import PromotionButton from "./PromotionButton"
+import VerificationCodeInput from "./VerificationCodeInput"
+import { useAuth } from "@/lib/useAuth"
 export default function EditProfile() {
-  const buttonStyles =
-    "text-white w-max font-bold px-4 py-2 rounded-md hover:scale-105 transition-transform duration-300 mt-2 bg-light-jade  min-w-[200px] min-h-[50px] h-50px underline"
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [customer, setCustomer] = useState<Customer>()
+  const isUser = useAuth("user")
+  const boxStyles = "p-2 rounded-sm font-semibold"
+  const jadeBoxStyles = `${boxStyles} bg-light-jade`
+
+  useEffect(() => {
+    async function initInfo() {
+      const customer: Customer = (await getUser()).user
+      setCustomer(customer)
+    }
+
+    initInfo()
+  }, [])
 
   return (
-    <div className="flex flex-col bg-black h-screen items-center justify-center ">
-      <div className="flex flex-col p-8 bg-dark-jade items-center space-y-10 rounded-lg">
-        <h1 className="text-white text-4xl font-sans font-semibold mt-6">
-          Edit Profile
-        </h1>
-        <div className="flex">
-          <div>
-            <img
-              className="w-36 h-36 rounded-full bg-white hover:scale-105 transition-transform duration-300"
-              src="https://static.thenounproject.com/png/363633-200.png"
-              alt="pfp"
-            ></img>
+    isUser ? (
+      <>
+        <div className="flex flex-col bg-black h-screen items-center justify-center p-6">
+          <div
+            className={`flex flex-col bg-dark-jade items-center gap-10 rounded-lg p-8 overflow-auto ${dialogOpen ? "blur-md" : undefined
+              }`}
+          >
+            <h1 className="text-white text-4xl font-semibold">Edit Profile</h1>
+            <div className="flex">
+              <div>
+                <Image
+                  className="bg-white rounded-full"
+                  src="https://static.thenounproject.com/png/363633-200.png"
+                  alt="pfp"
+                  width={140}
+                  height={140}
+                  priority
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-3">
+                <div
+                  className="grid gap-x-6 gap-y-3"
+                  style={{ gridTemplateColumns: "repeat(3, auto)" }}
+                >
+                  <FirstNameInput
+                    customerId={customer?.id}
+                    email={customer?.email}
+                    setDialogOpen={setDialogOpen}
+                  />
+                  <LastNameInput
+                    customerId={customer?.id}
+                    email={customer?.email}
+                    setDialogOpen={setDialogOpen}
+                  />
+                  <div className={jadeBoxStyles}>Email</div>
+                  <div className="p-2 rounded-sm font-semibold bg-emerald-50">
+                    {customer?.email}
+                  </div>
+                  <div />
+                  <PhoneNumberInput
+                    customerId={customer?.id}
+                    email={customer?.email}
+                    setDialogOpen={setDialogOpen}
+                  />
+                </div>
+                <PasswordInput
+                  customerId={customer?.id}
+                  email={customer?.email}
+                  setDialogOpen={setDialogOpen}
+                />
+              </div>
+              <CardsInput
+                customerId={customer?.id}
+                email={customer?.email}
+                setDialogOpen={setDialogOpen}
+              />
+              <HomeAddressInput
+                customerId={customer?.id}
+                email={customer?.email}
+                setDialogOpen={setDialogOpen}
+              />
+            </div>
+            <VerificationCodeInput customerId={customer?.id} />
+            <PromotionButton customerId={customer?.id} email={customer?.email} />
+            <Link
+              href="/"
+              className={`${jadeBoxStyles} w-full hover:scale-[1.015] transition-transform duration-300 text-center`}
+            >
+              Back Home
+            </Link>
           </div>
         </div>
-        <div className="flex flex-col space-y-2 w-96">
-          <InfoField info="First Name" color="bg-light-jade" />
-          <InfoField info="Last Name" color="bg-emerald-50" />
-          <InfoField info="Email" color="bg-light-jade" />
-          <InfoField info="Password" color="bg-emerald-50" />
-          <InfoField info="Phone" color="bg-light-jade" />
-          <InfoField info="Credit Card" color="bg-emerald-50" />
-          <InfoField info="Billing" color="bg-light-jade" />
-        </div>
-      
-        <div className="flex gap-10">
-          <Link href="/">
-          <button className={buttonStyles}>Continue to Home</button>
-        </Link>
-        <button className={buttonStyles}>Confirm Changes</button>
-        </div>
+      </>
+    ) : (
+      <div className="h-screen bg-black flex justify-center items-center">
+        <h1 className="text-white text-3xl">WOMP WOMP, you are not authorized.</h1>
       </div>
-    </div>
+    )
   )
 }

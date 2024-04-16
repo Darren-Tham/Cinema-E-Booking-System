@@ -18,6 +18,7 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -52,13 +53,16 @@ public class Movie {
     @Column(columnDefinition = "TEXT")
     private String synopsis;
 
+    @Column(name = "rating_out_of_10")
+    private String ratingOutOf10;
+
     @Enumerated(EnumType.STRING)
     private MovieRatingCode ratingCode;
 
     @OneToMany(mappedBy = "movie")
     private Set<MovieProducer> producers;
 
-    @ElementCollection(targetClass = MovieCategory.class)
+    @ElementCollection(targetClass = MovieCategory.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "movie_category", joinColumns = @JoinColumn(name = "movie_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "category")
@@ -90,14 +94,15 @@ public class Movie {
         final String statusStr = status == null
                 ? "NULL"
                 : status.toString();
-
         return new MovieDTO(id,
                 title,
                 trailerLink,
                 imageLink,
                 synopsis,
                 ratingCodeStr,
-                statusStr);
+                statusStr,
+                ratingOutOf10,
+                categories);
     }
 
 }

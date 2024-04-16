@@ -1,12 +1,13 @@
+"use client";
 import Link from "next/link";
-
+import { useAuth } from "@/lib/useAuth";
 export default function checkoutInfo() {
   const h1Styles = "font-bold text-4xl text-white text-center p-10";
   const h2Styles = "text-lg text-white font-semibold";
   const inputStyles =
     "bg-light-jade outline-none flex-grow rounded h-8 max-w-80 p-2";
-
-  return (
+  const isUser = useAuth("user");
+  return isUser ? (
     <div className="grid place-items-center bg-black min-h-screen">
       <div className="flex gap-10">
         <div className="flex flex-col bg-dark-jade rounded-md pb-10 h-max">
@@ -17,9 +18,7 @@ export default function checkoutInfo() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center space-x-20 px-10 ">
               <h3 className={h2Styles}>Name *</h3>
-              <div className="flex items-end">
-                <input className={inputStyles} type="email" />
-              </div>
+              <input className={inputStyles} type="email" />
             </div>
             <div className="flex items-center space-x-5 px-10">
               <h3 className={h2Styles}>Email Address *</h3>
@@ -93,6 +92,12 @@ export default function checkoutInfo() {
           </Link>
         </div>
       </div>
+    </div>
+  ) : (
+    <div className="h-screen bg-black flex justify-center items-center">
+      <h1 className="text-white text-3xl">
+        WOMP WOMP, you are not authorized.
+      </h1>
     </div>
   );
 }

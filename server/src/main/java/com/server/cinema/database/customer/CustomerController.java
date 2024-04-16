@@ -1,5 +1,7 @@
 package com.server.cinema.database.customer;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.server.cinema.database.customer.dto.InactiveCustomerDTO;
+import com.server.cinema.database.customer.dto.LoginCustomerDTO;
+import com.server.cinema.database.customer.enums.UserState;
+
 @CrossOrigin
 @RestController
 @RequestMapping("api/customer")
@@ -22,6 +28,41 @@ public class CustomerController {
     @Autowired
     public CustomerController(final CustomerService customerService) {
         this.customerService = customerService;
+    }
+
+    @GetMapping("/subscribed_customers")
+    public List<String> getSubscribedCustomerEmails() {
+        return customerService.getSubscribedCustomerEmails();
+    }
+
+    @GetMapping("/first_name/{customerId}")
+    public ResponseEntity<String> getFirstNameByCustomerId(@PathVariable final int customerId) {
+        final String firstName = customerService.getFirstNameByCustomerId(customerId);
+        return ResponseEntity.ok(firstName);
+    }
+
+    @GetMapping("/last_name/{customerId}")
+    public ResponseEntity<String> getLastNameByCustomerId(@PathVariable final int customerId) {
+        final String lastName = customerService.getLastNameByCustomerId(customerId);
+        return ResponseEntity.ok(lastName);
+    }
+
+    @GetMapping("/phone_number/{customerId}")
+    public ResponseEntity<String> getPhoneNumberByCustomerId(@PathVariable final int customerId) {
+        final String phoneNumber = customerService.getPhoneNumberByCustomerId(customerId);
+        return ResponseEntity.ok(phoneNumber);
+    }
+
+    @GetMapping("/promotions/{customerId}")
+    public ResponseEntity<Boolean> getIsSubscribedForPromotionsByCustomerId(@PathVariable final int customerId) {
+        final boolean isSubscribedForPromotions = customerService.isSubscribedForPromotions(customerId);
+        return ResponseEntity.ok(isSubscribedForPromotions);
+    }
+
+    @GetMapping("/status/{customerId}")
+    public ResponseEntity<UserState> getStatus(@PathVariable final int customerId) {
+        final UserState status = customerService.getStatus(customerId);
+        return ResponseEntity.ok(status);
     }
 
     @GetMapping("/email/{customerId}")
@@ -42,10 +83,18 @@ public class CustomerController {
         return ResponseEntity.ok(emailExists);
     }
 
+    @GetMapping("/password/{customerId}/{password}")
+    public ResponseEntity<Boolean> isValidPassword(@PathVariable final int customerId,
+            @PathVariable final String password) {
+        final boolean isValidPassword = customerService.isValidPassword(customerId, password);
+        return ResponseEntity.ok(isValidPassword);
+    }
+
     @GetMapping("/login_credentials/{email}/{password}")
-    public ResponseEntity<String[]> login(@PathVariable final String email, @PathVariable final String password) {
-        final String[] res = { email, "" + customerService.getCustomerIdByEmailAndPassword(email, password) };
-        return ResponseEntity.ok(res);
+    public ResponseEntity<LoginCustomerDTO> login(@PathVariable final String email,
+            @PathVariable final String password) {
+        final LoginCustomerDTO customer = customerService.getCustomerByEmailAndPassword(email, password);
+        return ResponseEntity.ok(customer);
     }
 
     @PostMapping("/add")
@@ -74,6 +123,27 @@ public class CustomerController {
             @PathVariable final String firstName) {
         customerService.changeFirstName(customerId, firstName);
         return ResponseEntity.ok("First name successfully changed.");
+    }
+
+    @PutMapping("/change_last_name/{customerId}/{lastName}")
+    public ResponseEntity<String> changeLastName(@PathVariable final int customerId,
+            @PathVariable final String lastName) {
+        customerService.changeLastName(customerId, lastName);
+        return ResponseEntity.ok("Last name successfully changed.");
+    }
+
+    @PutMapping("/change_phone_number/{customerId}/{phoneNumber}")
+    public ResponseEntity<String> changePhoneNumber(@PathVariable final int customerId,
+            @PathVariable final String phoneNumber) {
+        customerService.changePhoneNumber(customerId, phoneNumber);
+        return ResponseEntity.ok("Last name successfully changed.");
+    }
+
+    @PutMapping("/change_promotion/{customerId}/{isSubscribedForPromotions}")
+    public ResponseEntity<String> changeIsSubscribedForPromotions(@PathVariable final int customerId,
+            @PathVariable final boolean isSubscribedForPromotions) {
+        customerService.changeSubscribedForPromotions(customerId, isSubscribedForPromotions);
+        return ResponseEntity.ok("Promotion subscription status successfully changed.");
     }
 
 }

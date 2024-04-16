@@ -34,6 +34,9 @@ public class Card {
     @Column(nullable = false)
     private String billingAddress;
 
+    @Column(nullable = false)
+    private String lastFourDigits;
+
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
@@ -43,11 +46,13 @@ public class Card {
             final String encryptedCardNumber,
             final String expirationDate,
             final String billingAddress,
+            final String lastFourDigits,
             final Customer customer) {
         this.cardType = cardType;
         this.encryptedCardNumber = encryptedCardNumber;
         this.expirationDate = expirationDate;
         this.billingAddress = billingAddress;
+        this.lastFourDigits = lastFourDigits;
         this.customer = customer;
     }
 
