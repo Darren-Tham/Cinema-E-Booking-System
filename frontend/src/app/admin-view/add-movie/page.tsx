@@ -45,14 +45,12 @@ export default function AddMovie() {
   async function handleClick() {
     const movie = {
       "title": title,
-      "trailer_link": trailerLink,
+      "trailerLink": trailerLink,
       "imageLink": imageLink,
       "synopsis": synopsis,
-      "rating_code": ratingCode,
-      "status": status,
-      "rating_out_of_10": ratingValue,
-
-
+      "ratingOutOf10": ratingValue,
+      "ratingCode": ratingCode,
+      "status": status
     }
     const response = await fetch("http://localhost:8080/api/movie/add",
       {
