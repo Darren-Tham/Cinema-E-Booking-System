@@ -13,6 +13,9 @@ export default function AddMovie() {
   const [ratingCode, setRatingCode] = useState("G")
   const [ratingValue, setRatingValue] = useState("")
   const [status, setStatus] = useState("COMING_SOON")
+  const [time, setTime] = useState("")
+  const [validInfo, setValidInfo] = useState(true)
+  const [date, setDate] = useState("")
 
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setRatingCode(e.target.value)
@@ -23,7 +26,10 @@ export default function AddMovie() {
   }
 
   const handleRatingValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setRatingValue(e.target.value)
+    if (!isNaN(Number(e.target.value)) && Number(e.target.value) >= 0 && Number(e.target.value) <= 10) {
+      setRatingValue(e.target.value)
+    }
+
   }
 
   const handleImageLink = (e: ChangeEvent<HTMLInputElement>) => {
@@ -42,26 +48,38 @@ export default function AddMovie() {
     setStatus(e.target.value)
   }
 
-  async function handleClick() {
-    const movie = {
-      "title": title,
-      "trailerLink": trailerLink,
-      "imageLink": imageLink,
-      "synopsis": synopsis,
-      "ratingOutOf10": ratingValue,
-      "ratingCode": ratingCode,
-      "status": status
-    }
-    const response = await fetch("http://localhost:8080/api/movie/add",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(movie)
-      }
-    )
+  const handleTime = (e: ChangeEvent<HTMLInputElement>) => {
+    setTime(e.target.value)
+  }
 
+  const handleDate = (e: ChangeEvent<HTMLInputElement>) => {
+    setDate(e.target.value)
+  }
+  async function handleClick() {
+    if (title.length == 0 || imageLink.length == 0 || trailerLink.length == 0 || synopsis.length == 0 || ratingValue.length == 0 || time.length == 0 || date.length == 0) {
+      setValidInfo(false)
+    }
+    else {
+      setValidInfo(true)
+      const movie = {
+        "title": title,
+        "trailerLink": trailerLink,
+        "imageLink": imageLink,
+        "synopsis": synopsis,
+        "ratingOutOf10": ratingValue,
+        "ratingCode": ratingCode,
+        "status": status
+      }
+      const response = await fetch("http://localhost:8080/api/movie/add",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(movie)
+        }
+      )
+    }
   }
 
   return (
@@ -123,6 +141,8 @@ export default function AddMovie() {
               id="end-date"
               type="date"
               className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 focus:border-blue-500 focus:ring-blue-500"
+              value={date}
+              onChange={handleDate}
             />
           </div>
           <div className="flex items-center min-w-0 gap-4">
@@ -133,9 +153,22 @@ export default function AddMovie() {
               id="end-date"
               type="time"
               className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 focus:border-blue-500 focus:ring-blue-500"
+              value={time}
+              onChange={handleTime}
             />
           </div>
-
+          {!validInfo && (
+            <div role="alert">
+              <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                Missing Info
+              </div>
+              <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                <p>
+                  Please fill out all the required fields.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
         <div className="flex justify-center mt-4">
           <button className={buttonStyles} onClick={handleClick}>Confirm and Add Movie</button>
