@@ -143,9 +143,17 @@ export default function Manage() {
             <Image src={arrow} alt="arrowright" width={50} height={10} />
           </div>
         </div>
-        <Link href="./add-movie" className="text-white w-max font-bold text-lg bg-jade px-10 py-3 rounded-md scale-transition ">
-          Add Movie
-        </Link>
+        <div className="flex flex-row gap-5">
+          <Link href="./add-movie" className="text-white w-max font-bold text-lg bg-jade px-10 py-3 rounded-md scale-transition ">
+            Add Movie
+          </Link>
+          <Link href="./schedule-movie" className="text-white w-max font-bold text-lg bg-jade px-10 py-3 rounded-md scale-transition ">
+            Schedule A Movie
+          </Link>
+
+        </div>
+        
+        
       </div>
     ) : (
       <div className="h-screen bg-black flex justify-center items-center">
