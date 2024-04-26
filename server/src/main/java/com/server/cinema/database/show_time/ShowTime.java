@@ -1,5 +1,6 @@
 package com.server.cinema.database.show_time;
 
+import java.util.Objects;
 import java.util.Set;
 
 import com.server.cinema.database.booking.Booking;
@@ -14,12 +15,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
 @NoArgsConstructor
 @Entity
+@Getter
+@Setter
 public class ShowTime {
 
     @Id
@@ -45,6 +48,23 @@ public class ShowTime {
         this.id = id;
         this.movie = movie;
         this.dateTime = dateTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ShowTime that = (ShowTime) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
 }

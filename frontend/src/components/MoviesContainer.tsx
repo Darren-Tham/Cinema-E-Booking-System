@@ -39,7 +39,7 @@ export default function MoviesContainer({ heading, movies }: Readonly<Props>) {
   return (
     <>
       <div className="w-max">
-        <h2 className="font-bold text-3xl text-white mb-4">{heading}</h2>
+        <h2 className="font-bold text-2xl text-white mb-4">{heading}</h2>
         <div className="flex gap-7">
           {movies.map(movie => (
             <Movie
