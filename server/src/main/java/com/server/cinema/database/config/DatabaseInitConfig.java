@@ -26,7 +26,8 @@ class DatabaseInitConfig {
             @Qualifier("movieDirectorDataManager") final InitRunnable movieDirectorRunnable,
             @Qualifier("movieCastMemberDataManager") final InitRunnable movieCastMemberRunnable,
             @Qualifier("customerDataManager") final InitRunnable customerDataManager,
-            @Qualifier("adminDataManager") final InitRunnable adminDataManager) {
+            @Qualifier("adminDataManager") final InitRunnable adminDataManager,
+            @Qualifier("showTimeDataManager") final InitRunnable showTimeDataManager) {
         this.runnables = List.of(
                 movieRunnable,
                 producerRunnable,
@@ -37,7 +38,8 @@ class DatabaseInitConfig {
                 movieDirectorRunnable,
                 movieCastMemberRunnable,
                 customerDataManager,
-                adminDataManager);
+                adminDataManager,
+                showTimeDataManager);
     }
 
     @Bean

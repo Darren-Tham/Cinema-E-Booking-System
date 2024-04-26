@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class ShowTime {
 
@@ -36,14 +35,17 @@ public class ShowTime {
     @Column(columnDefinition = "DATETIME", nullable = false)
     private String dateTime;
 
-    @Column(nullable = false)
-    private int durationInMinutes;
-
     @OneToMany(mappedBy = "showTime")
     private Set<Booking> bookings;
 
     @ManyToOne
-    @JoinColumn(name = "show_room_id", nullable = false)
+    @JoinColumn(name = "show_room_id")
     private ShowRoom showRoom;
+
+    public ShowTime(final int id, final Movie movie, final String dateTime) {
+        this.id = id;
+        this.movie = movie;
+        this.dateTime = dateTime;
+    }
 
 }
