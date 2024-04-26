@@ -1,41 +1,45 @@
 "use client"
+import Image from "next/image"
 import Link from "next/link"
 import { useAuth } from "@/lib/useAuth"
+import HomeNavbar from "@/components/HomeNavbar"
+import EncantoPoster from "@public/Encanto_poster.png"
+
 export default function OrderConfirmation() {
   const isUser = useAuth("user")
-  const h1Styles = "font-bold text-5xl text-white text-center"
-  const h1Styles2 = "text-1xl text-white text-center font-semibold"
-  const h1Styles3 = "font-bold text-5xl text-white text-center underline"
+  const h1Styles = "font-bold text-6xl text-white text-center"
+  const h1Styles2 = "text-xl font-semibold text-white"
+  const h1Styles3 = "font-bold text-5xl text-white underline"
   const buttonStyles =
     "text-white w-max font-bold px-4 py-2 rounded-md hover:scale-105 transition-transform duration-300 mt-2 bg-light-jade  min-w-[200px] min-h-[50px] underline"
 
   return (
     isUser ? (
       <div className="h-screen bg-black">
-        <div className="bg-dark-jade flex flex-col gap-4 items-center p-12">
+        <HomeNavbar/>
+        <div className="p-10">
           <h1 className={h1Styles}>Thank you for your order!</h1>
         </div>
-
-        <div className="flex justify-center items-center">
-          <div className="bg-dark-jade pt-12 px-12 pb-10 rounded-lg flex flex-col gap-4 items-center mt-2">
-            <h1 className={h1Styles3}>Order Details</h1>
-            <h1 className={h1Styles2}>Order Confirmation Number: 62P-452QR8</h1>
+        <div className=" grid grid-flow-row grid-cols-2 auto-fit py-8 gap-20">
+          <Image className="justify-self-end max-h-full max-w-full p-2 rounded-lg bg-light-jade" src={EncantoPoster} alt="Encanto Poster" />
+ 
+          <div className="tracking-wideer pt-10 px-12 pb-10 rounded-lg flex flex-col content-start">
+            <h1 className={h1Styles2}><b>Order Confirmation Number:</b> 62P-452QR8</h1>
             <div>
-              <p className={h1Styles2}>Date: Thursday, Febuary 22, 2024</p>
-              <p className={h1Styles2}>Location: University 16 Cinema</p>
-              <p className={h1Styles2}>Time 12:00pm</p>
-            </div>
-            <div>
-              <p className={h1Styles2}>Adult Ticket x 2</p>
-              <p className={h1Styles2}>Child Ticket x 1</p>
-              <p className={h1Styles2}>Promotion Discount: $0.00</p>
-              <p className={h1Styles2}>Total: $37.99</p>
-            </div>
-            <Link href="/" className="flex justify-center mt-4">
-              <button className={buttonStyles}>Continue to Home</button>
-            </Link>
+              <p className={h1Styles2}><b>Movie:</b> Encanto</p>
+              <p className={h1Styles2}><b>Date:</b> Thursday, Febuary 22, 2024</p>
+              <p className={h1Styles2}><b>Location:</b> University 16 Cinema</p>
+              <p className={h1Styles2}><b>Time:</b> 12:00pm</p>
+              <br></br>
+              <p className={h1Styles2}><b>Adult Ticket</b> x 2</p>
+              <p className={h1Styles2}><b>Child Ticket</b> x 1</p>
+              <p className={h1Styles2}><b>Promotion Discount:</b> $0.00</p>
+              <p className={h1Styles2}><b>Total:</b> $37.99</p>
           </div>
-        </div>
+        <div>
+      </div>
+      </div>
+      </div>      
       </div>
     ) : (
       <div className="h-screen bg-black flex justify-center items-center">
