@@ -1,71 +1,71 @@
-"use client"
+"use client";
 
 type Customer = {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-  phoneNumber: string
-  isSubscribedForPromotions: boolean
-}
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
+  isSubscribedForPromotions: boolean;
+};
 
 type Card = {
-  customerId: number
-  cardType: string
-  cardNumber: string
-  expirationDate: string
-  billingAddress: string
-}
+  customerId: number;
+  cardType: string;
+  cardNumber: string;
+  expirationDate: string;
+  billingAddress: string;
+};
 
 type HomeAddress = {
-  customerId: number
-  address: string
-  city: string
-  state: string
-  zipcode: string
-}
+  customerId: number;
+  address: string;
+  city: string;
+  state: string;
+  zipcode: string;
+};
 
-import Link from "next/link"
-import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react"
-import { useRouter } from "next/navigation"
-import HomeNavbar from "@/components/HomeNavbar"
+import Link from "next/link";
+import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import HomeNavbar from "@/components/HomeNavbar";
 
 export default function RegistrationPage() {
-  const router = useRouter()
+  const router = useRouter();
   const [showPersonalInformationForm, setShowPersonalInformationForm] =
-    useState(true)
+    useState(true);
   const [showPaymentInformationForm, setShowPaymentInformationForm] =
-    useState(false)
-  const [showHomeAddressForm, setShowHomeAddressForm] = useState(false)
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [email, setEmail] = useState("")
-  const passwordRef = useRef<HTMLInputElement | null>(null)
-  const confirmPasswordRef = useRef<HTMLInputElement | null>(null)
-  const [phoneNumber, setPhoneNumber] = useState("")
+    useState(false);
+  const [showHomeAddressForm, setShowHomeAddressForm] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [isSubscribedForPromotions, setIsSubscribedForPromotions] =
-    useState(true)
-  const creditCardTypeRef = useRef<HTMLSelectElement | null>(null)
-  const [creditCardNumber, setCreditCardNumber] = useState("")
-  const [expirationDate, setExpirationDate] = useState("")
-  const [cvv, setCVV] = useState("")
-  const billingAddressRef = useRef<HTMLInputElement | null>(null)
-  const homeAddressRef = useRef<HTMLInputElement | null>(null)
-  const cityRef = useRef<HTMLInputElement | null>(null)
-  const stateRef = useRef<HTMLSelectElement | null>(null)
-  const [zipcode, setZipcode] = useState("")
+    useState(true);
+  const creditCardTypeRef = useRef<HTMLSelectElement | null>(null);
+  const [creditCardNumber, setCreditCardNumber] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
+  const [cvv, setCVV] = useState("");
+  const billingAddressRef = useRef<HTMLInputElement | null>(null);
+  const homeAddressRef = useRef<HTMLInputElement | null>(null);
+  const cityRef = useRef<HTMLInputElement | null>(null);
+  const stateRef = useRef<HTMLSelectElement | null>(null);
+  const [zipcode, setZipcode] = useState("");
 
   function goToPersonalInformationForm() {
-    setShowPersonalInformationForm(true)
-    setShowPaymentInformationForm(false)
-    setShowHomeAddressForm(false)
+    setShowPersonalInformationForm(true);
+    setShowPaymentInformationForm(false);
+    setShowHomeAddressForm(false);
   }
 
   async function goToPaymentInformationForm() {
     if (await hasPersonalInformation()) {
-      setShowPersonalInformationForm(false)
-      setShowPaymentInformationForm(true)
-      setShowHomeAddressForm(false)
+      setShowPersonalInformationForm(false);
+      setShowPaymentInformationForm(true);
+      setShowHomeAddressForm(false);
     }
   }
 
@@ -73,56 +73,56 @@ export default function RegistrationPage() {
     if (!validPaymentInformation()) {
       alert(
         "Please either complete the payment information form correctly or delete all incomplete fields."
-      )
-      return
+      );
+      return;
     }
     if (await hasPersonalInformation()) {
-      setShowPersonalInformationForm(false)
-      setShowPaymentInformationForm(false)
-      setShowHomeAddressForm(true)
+      setShowPersonalInformationForm(false);
+      setShowPaymentInformationForm(false);
+      setShowHomeAddressForm(true);
     }
   }
 
   async function hasPersonalInformation() {
     if (firstName === "") {
-      alert("First name cannot be empty.")
-      return false
+      alert("First name cannot be empty.");
+      return false;
     }
     if (lastName === "") {
-      alert("Last name cannot be empty.")
-      return false
+      alert("Last name cannot be empty.");
+      return false;
     }
     if (email === "") {
-      alert("Email cannot be empty.")
-      return false
+      alert("Email cannot be empty.");
+      return false;
     }
     if (!email.includes("@")) {
-      alert("Email must contain the @ character.")
-      return false
+      alert("Email must contain the @ character.");
+      return false;
     }
     if (await emailExists()) {
-      alert("Email is already taken.")
-      return false
+      alert("Email is already taken.");
+      return false;
     }
-    const password = passwordRef.current?.value
-    const confirmPassword = confirmPasswordRef.current?.value
+    const password = passwordRef.current?.value;
+    const confirmPassword = confirmPasswordRef.current?.value;
     if (password === "") {
-      alert("Password cannot be empty.")
-      return false
+      alert("Password cannot be empty.");
+      return false;
     }
     if (password !== confirmPassword) {
-      alert("Passwords must match.")
-      return false
+      alert("Passwords must match.");
+      return false;
     }
     if (phoneNumber === "") {
-      alert("Phone number cannot be empty.")
-      return false
+      alert("Phone number cannot be empty.");
+      return false;
     }
-    return true
+    return true;
   }
 
   function validPaymentInformation() {
-    return paymentInformationComplete() || paymentInformationEmpty()
+    return paymentInformationComplete() || paymentInformationEmpty();
   }
 
   function paymentInformationComplete() {
@@ -132,7 +132,7 @@ export default function RegistrationPage() {
       /^(?:0[1-9]|1[0-2])\/\d{4}$/.test(expirationDate) &&
       cvv !== "" &&
       billingAddressRef.current?.value !== ""
-    )
+    );
   }
 
   function paymentInformationEmpty() {
@@ -142,11 +142,11 @@ export default function RegistrationPage() {
       expirationDate === "" &&
       cvv === "" &&
       billingAddressRef.current?.value === ""
-    )
+    );
   }
 
   function validHomeAddress() {
-    return homeAddressComplete() || homeAddressEmpty()
+    return homeAddressComplete() || homeAddressEmpty();
   }
 
   function homeAddressComplete() {
@@ -155,7 +155,7 @@ export default function RegistrationPage() {
       cityRef.current?.value !== "" &&
       stateRef.current?.value !== "" &&
       zipcode !== ""
-    )
+    );
   }
 
   function homeAddressEmpty() {
@@ -164,12 +164,12 @@ export default function RegistrationPage() {
       cityRef.current?.value === "" &&
       stateRef.current?.value === "" &&
       zipcode === ""
-    )
+    );
   }
 
   function getCustomer(): Customer {
     if (passwordRef.current === null) {
-      throw Error("passwordRef should not be null.")
+      throw Error("passwordRef should not be null.");
     }
     return {
       firstName,
@@ -177,91 +177,91 @@ export default function RegistrationPage() {
       email,
       password: passwordRef.current.value,
       phoneNumber,
-      isSubscribedForPromotions
-    }
+      isSubscribedForPromotions,
+    };
   }
 
   async function addCustomer() {
-    const customer = getCustomer()
+    const customer = getCustomer();
     const response = await fetch("http://localhost:8080/api/customer/add", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(customer)
-    })
-    const customerId = await response.text()
-    return parseInt(customerId)
+      body: JSON.stringify(customer),
+    });
+    const customerId = await response.text();
+    return parseInt(customerId);
   }
 
   function getCard(customerId: number): Card {
     if (creditCardTypeRef.current === null) {
-      throw Error("creditCardTypeRef should not be null.")
+      throw Error("creditCardTypeRef should not be null.");
     }
     if (billingAddressRef.current === null) {
-      throw Error("billingAddressRef should not be null.")
+      throw Error("billingAddressRef should not be null.");
     }
-    const { value: cardType } = creditCardTypeRef.current
-    const { value: billingAddress } = billingAddressRef.current
+    const { value: cardType } = creditCardTypeRef.current;
+    const { value: billingAddress } = billingAddressRef.current;
     return {
       customerId,
       cardType,
       cardNumber: creditCardNumber,
       expirationDate,
-      billingAddress
-    }
+      billingAddress,
+    };
   }
 
   async function addCard(customerId: number) {
-    const card = getCard(customerId)
+    const card = getCard(customerId);
     await fetch("http://localhost:8080/api/card/add", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(card)
-    })
+      body: JSON.stringify(card),
+    });
   }
 
   function getHomeAddress(customerId: number): HomeAddress {
     if (homeAddressRef.current === null) {
-      throw Error("homeAddressRef should not be null.")
+      throw Error("homeAddressRef should not be null.");
     }
     if (cityRef.current === null) {
-      throw Error("cityRef should not be null.")
+      throw Error("cityRef should not be null.");
     }
     if (stateRef.current === null) {
-      throw Error("stateRef should not be null.")
+      throw Error("stateRef should not be null.");
     }
     return {
       customerId,
       address: homeAddressRef.current.value,
       city: cityRef.current.value,
       state: stateRef.current.value,
-      zipcode: zipcode
-    }
+      zipcode: zipcode,
+    };
   }
 
   async function addHomeAddress(customerId: number) {
-    const homeAddress = getHomeAddress(customerId)
+    const homeAddress = getHomeAddress(customerId);
     await fetch("http://localhost:8080/api/home_address/add", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(homeAddress)
-    })
+      body: JSON.stringify(homeAddress),
+    });
   }
 
   async function emailExists() {
     const response = await fetch(
       `http://localhost:8080/api/customer/email_exists/${email}`
-    )
-    const data = await response.text()
-    return data === "true"
+    );
+    const data = await response.text();
+    return data === "true";
   }
 
-  const selectStyles = "rounded-sm font-semibold p-[0.375rem] w-full"
+  const selectStyles = "rounded-sm font-semibold p-[0.375rem] w-full";
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -300,7 +300,7 @@ export default function RegistrationPage() {
                   type="text"
                   className="input"
                   value={firstName}
-                  onChange={e => setValueWithNoSpaces(e, setFirstName)}
+                  onChange={(e) => setValueWithNoSpaces(e, setFirstName)}
                 />
               </div>
               <div className="flex flex-col w-1/2">
@@ -312,7 +312,7 @@ export default function RegistrationPage() {
                   type="text"
                   value={lastName}
                   className="input"
-                  onChange={e => setValueWithNoSpaces(e, setLastName)}
+                  onChange={(e) => setValueWithNoSpaces(e, setLastName)}
                 />
               </div>
             </div>
@@ -325,7 +325,7 @@ export default function RegistrationPage() {
                 type="text"
                 value={email}
                 className="input"
-                onChange={e => setValueWithNoSpaces(e, setEmail)}
+                onChange={(e) => setValueWithNoSpaces(e, setEmail)}
               />
             </div>
             <div className="flex flex-col">
@@ -359,7 +359,7 @@ export default function RegistrationPage() {
                 type="text"
                 value={phoneNumber}
                 className="input"
-                onChange={e => setValueWithOnlyDigits(e, setPhoneNumber)}
+                onChange={(e) => setValueWithOnlyDigits(e, setPhoneNumber)}
               />
             </div>
             <div className="flex items-center gap-2 mt-2 mb-1">
@@ -401,7 +401,7 @@ export default function RegistrationPage() {
             <div
               className="grid gap-3 items-center"
               style={{
-                gridTemplateColumns: "max-content auto"
+                gridTemplateColumns: "max-content auto",
               }}
             >
               <h2 className="label">Credit Card Type</h2>
@@ -422,7 +422,7 @@ export default function RegistrationPage() {
                 type="text"
                 value={creditCardNumber}
                 className="input"
-                onChange={e => setValueWithOnlyDigits(e, setCreditCardNumber)}
+                onChange={(e) => setValueWithOnlyDigits(e, setCreditCardNumber)}
               />
             </div>
             <div className="flex gap-3">
@@ -436,14 +436,14 @@ export default function RegistrationPage() {
                   value={expirationDate}
                   placeholder="MM/YYYY"
                   className="input"
-                  onChange={e => {
-                    const { value } = e.target
+                  onChange={(e) => {
+                    const { value } = e.target;
                     if (
                       /(?:\d|\/)*/.test(value) &&
                       value.length <= 7 &&
                       value.indexOf("/") === value.lastIndexOf("/")
                     ) {
-                      setExpirationDate(value)
+                      setExpirationDate(value);
                     }
                   }}
                 />
@@ -457,7 +457,7 @@ export default function RegistrationPage() {
                   type="text"
                   value={cvv}
                   className="input"
-                  onChange={e => setValueWithOnlyDigits(e, setCVV)}
+                  onChange={(e) => setValueWithOnlyDigits(e, setCVV)}
                 />
               </div>
             </div>
@@ -579,7 +579,7 @@ export default function RegistrationPage() {
                 type="text"
                 value={zipcode}
                 className="input"
-                onChange={e => setValueWithOnlyDigits(e, setZipcode)}
+                onChange={(e) => setValueWithOnlyDigits(e, setZipcode)}
               />
             </div>
             <div className="flex justify-between">
@@ -593,26 +593,26 @@ export default function RegistrationPage() {
               <button
                 type="submit"
                 className="action-button"
-                onClick={async e => {
-                  e.preventDefault()
+                onClick={async (e) => {
+                  e.preventDefault();
                   if (!validHomeAddress()) {
                     alert(
                       "Please either complete the home address information form correctly or delete all incomplete fields."
-                    )
-                    return
+                    );
+                    return;
                   }
 
-                  const customerId = await addCustomer()
+                  const customerId = await addCustomer();
                   if (paymentInformationComplete()) {
-                    await addCard(customerId)
+                    await addCard(customerId);
                   }
                   if (homeAddressComplete()) {
-                    await addHomeAddress(customerId)
+                    await addHomeAddress(customerId);
                   }
 
                   router.push(
                     `./registration-verification-code?id=${customerId}`
-                  )
+                  );
                 }}
               >
                 Submit
@@ -622,26 +622,26 @@ export default function RegistrationPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function getFormStyles(showForm: boolean) {
-  return `flex flex-col p-8 gap-3 w-96 ${showForm ? undefined : "hidden"}`
+  return `flex flex-col p-8 gap-3 w-96 ${showForm ? undefined : "hidden"}`;
 }
 
 function getButtonStepStyles(showForm: boolean) {
   return `text-white text-left p-6 font-semibold ${
     showForm ? "bg-jade" : "hover:bg-light-jade transition-colors duration-300"
-  }`
+  }`;
 }
 
 function setValueWithNoSpaces(
   e: ChangeEvent<HTMLInputElement>,
   setValue: Dispatch<SetStateAction<string>>
 ) {
-  const { value } = e.target
+  const { value } = e.target;
   if (!value.includes(" ")) {
-    setValue(value)
+    setValue(value);
   }
 }
 
@@ -649,8 +649,8 @@ function setValueWithOnlyDigits(
   e: ChangeEvent<HTMLInputElement>,
   setValue: Dispatch<SetStateAction<string>>
 ) {
-  const { value } = e.target
+  const { value } = e.target;
   if (/^\d*$/.test(value)) {
-    setValue(value)
+    setValue(value);
   }
 }
