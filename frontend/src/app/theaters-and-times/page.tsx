@@ -10,17 +10,24 @@ import { MovieType } from "@/components/Movie"
 import ReactPlayer from "react-player"
 import Cancel from "@public/red-cancel-icon.svg"
 
+type ShowTime = {
+  id: number
+  movieId: number
+  dateTime: string
+}
+
 export default function TheatersAndTimes() {
   const [load, setLoad] = useState(false)
   const searchParams = useSearchParams()
   const [movie, setMovie] = useState<MovieType>()
   const [reviews, setReviews] = useState<Review[]>([])
+  const [showTimes, setShowTimes] = useState<ShowTime[]>([])
   const dialogRef = useRef<HTMLDialogElement | null>(null)
   const iconWidth = 20
 
   useEffect(() => {
+    const movieId = searchParams.get("movieId")
     async function getMovie() {
-      const movieId = searchParams.get("movieId")
       if (movieId === null) {
         throw Error("Invalid movie id.")
       }
@@ -28,7 +35,17 @@ export default function TheatersAndTimes() {
       const data = await response.json()
       setMovie(data)
     }
+
+    async function getShowTimes() {
+      const response = await fetch(
+        `http://localhost:8080/api/show_time/movieId/${movieId}`
+      )
+      const data: ShowTime[] = await response.json()
+      setShowTimes(data)
+    }
+
     getMovie()
+    getShowTimes()
     setLoad(true)
   }, [])
 
@@ -66,6 +83,12 @@ export default function TheatersAndTimes() {
             <p className="text-white">
               <b>Cast:</b> {movie?.castMembers.join(", ")}
             </p>
+            <p className="text-white">
+              <b>Categories:</b>{" "}
+              {movie?.categories
+                .map(category => category[0] + category.slice(1).toLowerCase())
+                .join(", ")}
+            </p>
           </div>
           <div className="flex flex-col gap-4">
             <p className="text-white text-base max-w-full px-12 tracking-wider">
@@ -90,38 +113,28 @@ export default function TheatersAndTimes() {
         <div className="justify-content-center align-middle"></div>
         <div className="px-12 py-8 flex flex-col gap-8">
           <div className="px-2 py-2">
-            <h1 className="font-bold text-3xl text-white mb-3 text-center">
-              UGA Theatre
-            </h1>
-            <div className="flex gap-10">
-              <div className="flex justify-center items-center gap-2 bg-slate-700 px-8 rounded-md">
-                <p className="text-white font-semibold text-xl">04/26/2024</p>
-                <button>
-                  <Image
-                    src={CalendarIcon}
-                    alt="Calender Icon"
-                    width={iconWidth}
-                  />
-                </button>
-              </div>
-              <div className="bg-dark-jade flex flex-wrap gap-5 p-5 rounded-md flex-grow">
-                {[
-                  "11:00 AM",
-                  "12:00 PM",
-                  "1:30 PM",
-                  "4:00 PM",
-                  "6:00 PM",
-                  "8:45 PM"
-                ].map(time => (
+            <h1 className="font-bold text-3xl text-white mb-3">UGA Theatre</h1>
+            <div className="flex flex-col gap-2">
+              {showTimes
+                .toSorted((a, b) => a.dateTime.localeCompare(b.dateTime))
+                .map(showTime => (
                   <Link
                     href="/ticket-summary"
-                    key={time}
-                    className="bg-jade px-5 py-2 text-white font-semibold text-xl rounded-md scale-transition"
+                    key={showTime.id}
+                    className="text-white bg-jade font-semibold p-2 rounded-sm"
                   >
-                    {time}
+                    {new Date(
+                      showTime.dateTime.replace(" ", "T")
+                    ).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      month: "long",
+                      year: "numeric",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric"
+                    })}
                   </Link>
                 ))}
-              </div>
             </div>
           </div>
         </div>
