@@ -1,36 +1,42 @@
-"use client";
-import { useAuth } from "@/lib/useAuth";
-import { ChangeEvent, useState } from "react";
+"use client"
+import { useAuth } from "@/lib/useAuth"
+import { ChangeEvent, useState } from "react"
 export default function AddMovie() {
   const buttonStyles =
-    "text-white w-max font-bold px-4 py-2 rounded-md hover:scale-105 transition-transform duration-300 mt-2 bg-teal-950 border-2 min-w-[200px] min-h-[50px]";
+    "text-white w-max font-bold px-4 py-2 rounded-md hover:scale-105 transition-transform duration-300 mt-2 bg-teal-950 border-2 min-w-[200px] min-h-[50px]"
   const textBox =
-    "mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-full";
-  const isAdmin = useAuth("admin");
-  const [imageLink, setImageLink] = useState("");
-  const [trailerLink, setTrailerLink] = useState("");
-  const [title, setTitle] = useState("");
-  const [synopsis, setSynopsis] = useState("");
-  const [ratingCode, setRatingCode] = useState("G");
-  const [ratingValue, setRatingValue] = useState("");
-  const [status, setStatus] = useState("COMING_SOON");
-  const [validInfo, setValidInfo] = useState(true);
-  const [directors, setDirectors] = useState([] as string[]);
-  const [castmembers, setCastmembers] = useState([] as string[]);
-  const [categories, setCategories] = useState([] as string[]);
+    "mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-full"
+  const isAdmin = useAuth("admin")
+  const [imageLink, setImageLink] = useState("")
+  const [trailerLink, setTrailerLink] = useState("")
+  const [title, setTitle] = useState("")
+  const [synopsis, setSynopsis] = useState("")
+  const [ratingCode, setRatingCode] = useState("G")
+  const [ratingValue, setRatingValue] = useState("")
+  const [status, setStatus] = useState("COMING_SOON")
+  const [validInfo, setValidInfo] = useState(true)
+  const [directors, setDirectors] = useState([] as string[])
+  const [producers, setProducers] = useState([] as string[])
+  const [castmembers, setCastmembers] = useState([] as string[])
+  const [categories, setCategories] = useState([] as string[])
 
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setRatingCode(e.target.value);
-  };
+    setRatingCode(e.target.value)
+  }
   const handleDirectors = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setDirectors(e.target.value.split(","));
-  };
+    setDirectors(e.target.value.split(","))
+  }
+
+  const handleProducers = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setProducers(e.target.value.split(","))
+  }
+
   const handleCastmembers = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setCastmembers(e.target.value.split(","));
-  };
+    setCastmembers(e.target.value.split(","))
+  }
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
+    setTitle(e.target.value)
+  }
 
   const handleRatingValue = (e: ChangeEvent<HTMLInputElement>) => {
     if (
@@ -38,27 +44,27 @@ export default function AddMovie() {
       Number(e.target.value) >= 0 &&
       Number(e.target.value) <= 10
     ) {
-      setRatingValue(e.target.value);
+      setRatingValue(e.target.value)
     }
-  };
+  }
 
   const handleImageLink = (e: ChangeEvent<HTMLInputElement>) => {
-    setImageLink(e.target.value);
-  };
+    setImageLink(e.target.value)
+  }
 
   const handleTrailerLink = (e: ChangeEvent<HTMLInputElement>) => {
-    setTrailerLink(e.target.value);
-  };
+    setTrailerLink(e.target.value)
+  }
 
   const handleSynopsis = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setSynopsis(e.target.value);
-  };
+    setSynopsis(e.target.value)
+  }
   const handleCategories = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setCategories(e.target.value.split(","));
-  };
+    setCategories(e.target.value.split(","))
+  }
   const handleStatus = (e: ChangeEvent<HTMLSelectElement>) => {
-    setStatus(e.target.value);
-  };
+    setStatus(e.target.value)
+  }
 
   async function handleClick() {
     if (
@@ -71,9 +77,9 @@ export default function AddMovie() {
       directors.length == 0 ||
       castmembers.length == 0
     ) {
-      setValidInfo(false);
+      setValidInfo(false)
     } else {
-      setValidInfo(true);
+      setValidInfo(true)
       const movie = {
         title: title,
         trailerLink: trailerLink,
@@ -81,15 +87,15 @@ export default function AddMovie() {
         synopsis: synopsis,
         ratingOutOf10: ratingValue,
         ratingCode: ratingCode,
-        status: status,
-      };
+        status: status
+      }
       const response = await fetch("http://localhost:8080/api/movie/add", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(movie),
-      });
+        body: JSON.stringify(movie)
+      })
     }
   }
 
@@ -183,6 +189,19 @@ export default function AddMovie() {
         </div>
 
         <div className="flex flex-row items-center gap-6 w-full">
+          <label htmlFor="producers" className="block font-large text-white">
+            Producers:
+          </label>
+          <textarea
+            id="producers"
+            name="producers"
+            className="w-full h-20 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
+            placeholder="Enter producers..."
+            value={producers}
+            onChange={handleProducers}
+          />
+        </div>
+        <div className="flex flex-row items-center gap-6 w-full">
           <label htmlFor="directors" className="block font-large text-white">
             Directors:
           </label>
@@ -203,7 +222,7 @@ export default function AddMovie() {
             id="castmembers"
             name="castmembers"
             className="w-full h-20 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
-            placeholder="Enter castmembers..."
+            placeholder="Enter cast members..."
             value={castmembers}
             onChange={handleCastmembers}
           />
@@ -258,5 +277,5 @@ export default function AddMovie() {
         WOMP WOMP, you are not authorized.
       </h1>
     </div>
-  );
+  )
 }
