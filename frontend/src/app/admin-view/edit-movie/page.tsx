@@ -55,7 +55,9 @@ export default function EditMovie() {
         const time = tokens[1]
         showTimeDateTimes.push(`${date}T${time}`)
       })
-      setShowTimeDateTimes(showTimeDateTimes)
+      setShowTimeDateTimes(
+        showTimeDateTimes.toSorted((a, b) => a.localeCompare(b))
+      )
     }
 
     getMovie()
@@ -318,7 +320,11 @@ export default function EditMovie() {
                   alert("Show time already exists.")
                   return
                 }
-                setShowTimeDateTimes([...showTimeDateTimes, dateTime])
+                setShowTimeDateTimes(
+                  [...showTimeDateTimes, dateTime].toSorted((a, b) =>
+                    a.localeCompare(b)
+                  )
+                )
               }}
             >
               Add
@@ -328,36 +334,35 @@ export default function EditMovie() {
         <div>
           <p className={labelStyles}>Scheduled Movies</p>
           <div className="flex flex-col gap-2">
-            {showTimeDateTimes
-              .toSorted((a, b) => a.localeCompare(b))
-              .map((dateTime, i) => (
-                <div
-                  key={dateTime}
-                  className="grid"
-                  style={{ gridTemplateColumns: "80% 20%" }}
-                >
-                  <div className="bg-light-jade text-white font-bold p-2">
-                    {new Date(dateTime).toLocaleDateString("en-US", {
-                      weekday: "long",
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "numeric"
-                    })}
-                  </div>
-                  <button
-                    className="bg-red-500 text-white font-semibold"
-                    onClick={() => {
-                      const newShowTimeDateTimes = [...showTimeDateTimes]
-                      newShowTimeDateTimes.splice(i, 1)
-                      setShowTimeDateTimes(newShowTimeDateTimes)
-                    }}
-                  >
-                    Delete
-                  </button>
+            {showTimeDateTimes.map((dateTime, i) => (
+              <div
+                key={dateTime}
+                className="grid"
+                style={{ gridTemplateColumns: "80% 20%" }}
+              >
+                <div className="bg-light-jade text-white font-bold p-2">
+                  {new Date(dateTime).toLocaleDateString("en-US", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                    hour: "numeric",
+                    minute: "numeric"
+                  })}
                 </div>
-              ))}
+                <button
+                  type="button"
+                  className="bg-red-500 text-white font-semibold"
+                  onClick={() => {
+                    const newShowTimeDateTimes = [...showTimeDateTimes]
+                    newShowTimeDateTimes.splice(i, 1)
+                    setShowTimeDateTimes(newShowTimeDateTimes)
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
           </div>
         </div>
         <button

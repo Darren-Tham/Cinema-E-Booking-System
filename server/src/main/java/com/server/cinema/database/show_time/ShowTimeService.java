@@ -1,5 +1,7 @@
 package com.server.cinema.database.show_time;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,12 +33,14 @@ public class ShowTimeService {
     }
 
     @Transactional
-    public void updateShowTimes(final int movieId, Iterable<String> newDateTimes) {
+    public void updateShowTimes(final int movieId, Collection<String> dateTimeSet) {
         final Movie movie = entityManager.find(Movie.class, movieId);
-        Set<ShowTime> showTimes = movie.getShowTimes();
-        Set<String> dateTimes = showTimes.stream().map(ShowTime::getDateTime)
+
+        final Set<ShowTime> showTimes = movie.getShowTimes();
+        final Set<String> dateTimes = showTimes.stream().map(ShowTime::getDateTime)
                 .collect(Collectors.toSet());
-        for (String dateTime : newDateTimes) {
+
+        for (String dateTime : dateTimeSet) {
             if (!dateTimes.contains(dateTime)) {
                 final ShowTime showTime = new ShowTime();
                 showTime.setMovie(movie);
@@ -45,6 +49,13 @@ public class ShowTimeService {
                 entityManager.persist(showTime);
             }
         }
+
+        for (ShowTime showTime : showTimes) {
+            if (!dateTimeSet.contains(showTime.getDateTime())) {
+                entityManager.remove(showTime);
+            }
+        }
+
         entityManager.persist(movie);
     }
 }
