@@ -94,7 +94,7 @@ export default function Manage() {
   return (
     isAdmin ? (
       <div className="flex flex-col bg-black h-screen items-center space-y-10">
-        <div className="flex items-center bg-jade rounded-full p-2 mt-5">
+        <div className="flex items-center bg-jade rounded-full p-1 mt-5">
           <label htmlFor="search">
             <Image src={SearchIcon} alt="Search Icon" width={30} />
           </label>
@@ -104,10 +104,10 @@ export default function Manage() {
             className="input rounded-full w-96 bg-transparent text-white placeholder:text-neutral-200"
           />
         </div>
-        <h1 className="self-start text-white font-sans font-semibold ml-6 text-xl">
-          Movies Currently Showing and Coming Soon
+        <h1 className="self-center text-white font-sans font-semibold ml-6 text-3xl">
+          Movies Currently Showing and Coming 
         </h1>
-        <div className="flex flex-row w-full h-3/5 bg-teal-950 space-x-10 rounded">
+        <div className="flex flex-row w-full h-3/5 space-x-10 rounded  bg-teal-950 ">
           <div className="flex items-center">
             <Image src={arrow} alt="arrowleft" width={50} height={10} />
           </div>
@@ -123,7 +123,7 @@ export default function Manage() {
                   </h2>
                   <Link
                     href="./edit-movie"
-                    className="flex bg-dark-jade p-3 gap-3 h-3/6 w-full rounded justify-center scale-transition"
+                    className="flex bg-teal-800 p-2 gap-3 h-3/6 w-full rounded justify-center scale-transition"
                   >
                     <div className="flex flex-col aspect-auto justify-center">
                       <Image
@@ -143,7 +143,7 @@ export default function Manage() {
             <Image src={arrow} alt="arrowright" width={50} height={10} />
           </div>
         </div>
-        <Link href="./add-movie" className="text-white w-max font-bold text-lg bg-jade px-10 py-4 rounded-md scale-transition ">
+        <Link href="./add-movie" className="text-white w-max font-bold text-lg bg-jade px-10 py-3 rounded-md scale-transition ">
           Add Movie
         </Link>
       </div>

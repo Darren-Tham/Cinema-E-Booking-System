@@ -1,7 +1,6 @@
 import Image from "next/image"
 import HomeNavbar from "@/components/HomeNavbar"
-import EncantoBanner from "@public/encanto-banner.png"
-import EncantoPoster from "@public/encanto_poster.png"
+import EncantoPoster from "@public/Encanto_poster.png"
 import CalendarIcon from "@public/calendar-icon.svg"
 import DownArrowIcon from "@public/down-arrow-icon.svg"
 import PinLocationIcon from "@public/pin-location-icon.svg"
@@ -16,8 +15,10 @@ export default function TheatersAndTimes() {
     <div className="min-h-screen bg-black flex flex-col">
       <HomeNavbar />
       <div className="content-evenly justify-items-center  grid grid-flow-row grid-cols-2 auto-fit gap-4 py-8">
+        <Image className="justify-self-end max-h-full max-w-full p-2 rounded-lg bg-light-jade" src={EncantoPoster} alt="Encanto Poster" />
+
         <div className="content-center">
-          <Image className="max-h-full max-w-full" src={EncantoPoster} alt="Encanto Banner" />
+          <Image className="max-h-full max-w-full" src={EncantoPoster} alt="Encanto Poster" />
         </div>
       </div>
       <div className="grid grid-flow-row grid-cols-2 auto-fit gap-4">
