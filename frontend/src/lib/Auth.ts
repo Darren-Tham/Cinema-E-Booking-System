@@ -15,6 +15,7 @@ export type Customer = {
   status: string
   isSubscribedForPromotions: boolean
 }
+
 let remember = false
 const secretKey = "swe4050"
 const key = new TextEncoder().encode(secretKey)

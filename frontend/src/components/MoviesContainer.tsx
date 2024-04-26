@@ -17,17 +17,23 @@ export default function MoviesContainer({ heading, movies }: Readonly<Props>) {
   const [playMovie, setPlayMovie] = useState(false)
   const [movieURL, setMovieURL] = useState("")
   const [movieRating, setMovieRating] = useState("")
+  const [movieId, setMovieId] = useState(0)
   const dialogRef = useRef<HTMLDialogElement | null>(null)
 
   useEffect(() => {
     setLoad(true)
   }, [])
 
-  function handleTrailerClick(trailerLink: string, movieRating: string) {
+  function handleTrailerClick(
+    trailerLink: string,
+    movieRating: string,
+    movieId: number
+  ) {
     dialogRef.current?.showModal()
     setMovieURL(trailerLink)
     setPlayMovie(true)
     setMovieRating(movieRating)
+    setMovieId(movieId)
   }
 
   return (
@@ -40,7 +46,11 @@ export default function MoviesContainer({ heading, movies }: Readonly<Props>) {
               key={movie.id}
               movie={movie}
               handleTrailerClick={() =>
-                handleTrailerClick(movie.trailerLink, movie.ratingOutOf10)
+                handleTrailerClick(
+                  movie.trailerLink,
+                  movie.ratingOutOf10,
+                  movie.id
+                )
               }
             />
           ))}
@@ -63,7 +73,7 @@ export default function MoviesContainer({ heading, movies }: Readonly<Props>) {
           </h2>
           {load && <ReactPlayer url={movieURL} playing={playMovie} />}
           <Link
-            href="/theaters-and-times"
+            href={`/theaters-and-times?movieId=${movieId}`}
             className="bg-dark-jade text-white font-semibold py-2 px-6 w-max text-lg rounded-md self-center hover:scale-105 transition-transform duration-300"
           >
             Book Tickets

@@ -10,6 +10,11 @@ export type MovieType = {
   status: string
   ratingOutOf10: string
   categories: string[]
+  castMembers: string[]
+  directors: string[]
+  producers: string[]
+  synopsis: string
+  ratingCode: string
 }
 
 type Props = {
@@ -24,7 +29,7 @@ export default function Movie({ movie, handleTrailerClick }: Readonly<Props>) {
         <button className="absolute left-1 top-1" onClick={handleTrailerClick}>
           <Image src={PlayCircle} alt="Play Circle" />
         </button>
-        <Link href="/theaters-and-times">
+        <Link href={`/theaters-and-times?movieId=${movie.id}`}>
           <Image
             src={movie.imageLink}
             alt={movie.title}
