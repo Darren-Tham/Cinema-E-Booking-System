@@ -13,5 +13,8 @@ public record MovieDTO(
         String ratingCode,
         String status,
         String ratingOutOf10,
-        Set<MovieCategory> categories) {
+        Set<MovieCategory> categories,
+        Set<String> castMembers,
+        Set<String> directors,
+        Set<String> producers) {
 }

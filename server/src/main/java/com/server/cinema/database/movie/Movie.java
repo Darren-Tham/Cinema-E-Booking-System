@@ -1,6 +1,7 @@
 package com.server.cinema.database.movie;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.server.cinema.database.movie.enums.MovieCategory;
 import com.server.cinema.database.movie.enums.MovieRatingCode;
@@ -59,7 +60,7 @@ public class Movie {
     @Enumerated(EnumType.STRING)
     private MovieRatingCode ratingCode;
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
     private Set<MovieProducer> producers;
 
     @ElementCollection(targetClass = MovieCategory.class, fetch = FetchType.EAGER)
@@ -68,10 +69,10 @@ public class Movie {
     @Column(name = "category")
     private Set<MovieCategory> categories;
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
     private Set<MovieDirector> directors;
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
     private Set<MovieCastMember> castMembers;
 
     @OneToMany(mappedBy = "movie")
@@ -94,6 +95,15 @@ public class Movie {
         final String statusStr = status == null
                 ? "NULL"
                 : status.toString();
+        final Set<String> castMemberNames = castMembers.stream()
+                .map((final MovieCastMember movieClassMember) -> movieClassMember.getCastMember().getName())
+                .collect(Collectors.toSet());
+        final Set<String> directorNames = directors.stream()
+                .map((final MovieDirector movieDirector) -> movieDirector.getDirector().getName())
+                .collect(Collectors.toSet());
+        final Set<String> producerNames = producers.stream()
+                .map((final MovieProducer movieProducer) -> movieProducer.getProducer().getName())
+                .collect(Collectors.toSet());
         return new MovieDTO(id,
                 title,
                 trailerLink,
@@ -102,7 +112,10 @@ public class Movie {
                 ratingCodeStr,
                 statusStr,
                 ratingOutOf10,
-                categories);
+                categories,
+                castMemberNames,
+                directorNames,
+                producerNames);
     }
 
 }
