@@ -35,7 +35,7 @@ export default function UserNavbar() {
         >
           Cinema E-Booking System
         </Link>
-        <div className="flex items-center bg-jade rounded-full p-2">
+        <div className="flex items-center bg-jade rounded-full p-2 ml-10">
           <label htmlFor="search">
             <Image src={SearchIcon} alt="Search Icon" width={30} />
           </label>
