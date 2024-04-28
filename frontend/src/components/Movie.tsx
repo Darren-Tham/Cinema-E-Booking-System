@@ -39,7 +39,7 @@ export default function Movie({ movie, handleTrailerClick }: Readonly<Props>) {
           />
         </Link>
       </div>
-      <h2 className="text-white text-center font-semibold mt-1">
+      <h2 className="text-emerald-100 font-smibold text-center mt-1">
         {movie.title}
       </h2>
     </div>
