@@ -9,7 +9,7 @@ import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import APIFacade from "@/lib/APIFacade"
 import { Movie } from "@/lib/Types"
 
-export default function Manage() {
+export default function ManageMovies() {
   const [movies, setMovies] = useState<Movie[]>([])
 
   useEffect(() => {
