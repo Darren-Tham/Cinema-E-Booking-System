@@ -18,3 +18,11 @@ export type ShowTime = {
   movieId: number
   dateTime: string
 }
+
+export type Promotion = {
+  name: string
+  discountCode: string
+  discountPercentage: number
+  startDate: string
+  endDate: string
+}
