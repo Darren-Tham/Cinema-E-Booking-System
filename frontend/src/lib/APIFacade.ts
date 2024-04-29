@@ -1,4 +1,11 @@
-import { Email, Movie, Promotion, ShowTime } from "./Types"
+import {
+  CustomerCard,
+  Email,
+  Movie,
+  ProfileCard,
+  Promotion,
+  ShowTime
+} from "./Types"
 
 const URL = "http://localhost:8080/api"
 
@@ -36,6 +43,22 @@ export default class APIFacade {
 
   public static async sendEmail(email: Email) {
     return await APIEmailFacade.sendEmail(email)
+  }
+
+  public static async getCustomerCards(customerId: number) {
+    return await APICardFacade.getCustomerCards(customerId)
+  }
+
+  public static async updateCard(card: ProfileCard) {
+    return await APICardFacade.updateCard(card)
+  }
+
+  public static async deleteCard(cardId: number) {
+    await APICardFacade.deleteCard(cardId)
+  }
+
+  public static async addCard(card: CustomerCard) {
+    await APICardFacade.addCard(card)
   }
 }
 
@@ -111,6 +134,37 @@ class APIEmailFacade {
   }
 }
 
+class APICardFacade {
+  private static readonly CARD_URL = URL + "/cards"
+
+  public static async getCustomerCards(customerId: number) {
+    const response = await fetch(`${this.CARD_URL}/${customerId}`)
+    const data: ProfileCard[] = await response.json()
+    return data
+  }
+
+  public static async updateCard(card: ProfileCard) {
+    await fetch(
+      `${this.CARD_URL}/update`,
+      RequestInitHandler.putRequestInit(card)
+    )
+  }
+
+  public static async deleteCard(cardId: number) {
+    await fetch(
+      `${this.CARD_URL}/${cardId}`,
+      RequestInitHandler.deleteRequestInit()
+    )
+  }
+
+  public static async addCard(card: CustomerCard) {
+    await fetch(
+      `${this.CARD_URL}/add`,
+      RequestInitHandler.postRequestInit(card)
+    )
+  }
+}
+
 class RequestInitHandler {
   private static requestInit(method: "POST" | "PUT", body: any) {
     return {
@@ -128,5 +182,11 @@ class RequestInitHandler {
 
   public static putRequestInit(body: any) {
     return this.requestInit("PUT", body)
+  }
+
+  public static deleteRequestInit() {
+    return {
+      method: "DELETE"
+    }
   }
 }
