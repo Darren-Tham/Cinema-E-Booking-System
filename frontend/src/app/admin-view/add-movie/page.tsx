@@ -89,7 +89,7 @@ export default function AddMovie() {
         ratingCode: ratingCode,
         status: status
       }
-      const response = await fetch("http://localhost:8080/api/movie/add", {
+      await fetch("http://localhost:8080/api/movie/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
