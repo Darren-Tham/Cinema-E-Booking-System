@@ -20,7 +20,7 @@ import com.server.cinema.database.customer.enums.UserState;
 
 @CrossOrigin
 @RestController
-@RequestMapping("api/customer")
+@RequestMapping("api/customers")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -30,7 +30,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/subscribed_customers")
+    @GetMapping("/subscribed/emails")
     public List<String> getSubscribedCustomerEmails() {
         return customerService.getSubscribedCustomerEmails();
     }
