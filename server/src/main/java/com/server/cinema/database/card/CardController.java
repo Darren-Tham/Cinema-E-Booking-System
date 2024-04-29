@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.server.cinema.database.card.dto.CardDTOCustomerId;
-import com.server.cinema.database.card.dto.CardDTOCardId;
+import com.server.cinema.database.card.dto.CustomerCardDTO;
+import com.server.cinema.database.card.dto.ProfileCardDTO;
 
 @CrossOrigin
 @RestController
-@RequestMapping("api/card")
+@RequestMapping("api/cards")
 public class CardController {
 
     private final CardService cardService;
@@ -31,24 +31,23 @@ public class CardController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addCard(@RequestBody final CardDTOCustomerId card) {
+    public ResponseEntity<String> addCard(@RequestBody final CustomerCardDTO card) {
         cardService.addCard(card);
         return new ResponseEntity<>("Card successfully added.", HttpStatus.CREATED);
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<List<CardDTOCardId>> getCards(@PathVariable final int customerId) {
-        final List<CardDTOCardId> cards = cardService.getCards(customerId);
-        return ResponseEntity.ok(cards);
+    public List<ProfileCardDTO> getCustomerCards(@PathVariable final int customerId) {
+        return cardService.getCustomerCards(customerId);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateCard(@RequestBody final CardDTOCardId card) {
+    public ResponseEntity<String> updateCard(@RequestBody final ProfileCardDTO card) {
         cardService.updateCard(card);
         return ResponseEntity.ok("Card successfully updated.");
     }
 
-    @DeleteMapping("/delete/{cardId}")
+    @DeleteMapping("/{cardId}")
     public ResponseEntity<String> deleteCard(@PathVariable final int cardId) {
         cardService.deleteCard(cardId);
         return ResponseEntity.ok("Card successfully deleted.");

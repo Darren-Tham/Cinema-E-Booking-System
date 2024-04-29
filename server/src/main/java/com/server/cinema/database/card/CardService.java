@@ -9,8 +9,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.server.cinema.database.card.dto.CardDTOCustomerId;
-import com.server.cinema.database.card.dto.CardDTOCardId;
+import com.server.cinema.database.card.dto.CustomerCardDTO;
+import com.server.cinema.database.card.dto.ProfileCardDTO;
 import com.server.cinema.database.customer.Customer;
 
 import jakarta.persistence.EntityManager;
@@ -27,7 +27,7 @@ public class CardService {
     }
 
     @Transactional
-    public void addCard(final CardDTOCustomerId cardDTO) {
+    public void addCard(final CustomerCardDTO cardDTO) {
         final String cardNumber = cardDTO.cardNumber();
         final String encryptedCardNumber = BCrypt.hashpw(cardNumber, BCrypt.gensalt());
         Customer customer = entityManager.find(Customer.class, cardDTO.customerId());
@@ -50,9 +50,9 @@ public class CardService {
     }
 
     @Transactional
-    public List<CardDTOCardId> getCards(final int customerId) {
+    public List<ProfileCardDTO> getCustomerCards(final int customerId) {
         final Customer customer = entityManager.find(Customer.class, customerId);
-        return customer.getCards().stream().map((final Card card) -> new CardDTOCardId(
+        return customer.getCards().stream().map((final Card card) -> new ProfileCardDTO(
                 card.getId(),
                 card.getCardType(),
                 card.getExpirationDate(),
@@ -62,7 +62,7 @@ public class CardService {
     }
 
     @Transactional
-    public void updateCard(final CardDTOCardId cardDTO) {
+    public void updateCard(final ProfileCardDTO cardDTO) {
         final Card card = entityManager.find(Card.class, cardDTO.id());
         card.setCardType(cardDTO.cardType());
         card.setExpirationDate(formatExpirationDate(cardDTO.expirationDate()));
