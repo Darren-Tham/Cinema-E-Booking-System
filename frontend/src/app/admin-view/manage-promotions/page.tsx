@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react"
 import { useAuth } from "@/lib/useAuth"
+import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 
 type Promotion = {
   name: string
@@ -183,11 +184,7 @@ const ManagePromotions: React.FC = () => {
       </div>
     </div>
   ) : (
-    <div className="h-screen bg-black flex justify-center items-center">
-      <h1 className="text-white text-3xl">
-        WOMP WOMP, you are not authorized.
-      </h1>
-    </div>
+    <UnauthorizedScreen />
   )
 }
 
