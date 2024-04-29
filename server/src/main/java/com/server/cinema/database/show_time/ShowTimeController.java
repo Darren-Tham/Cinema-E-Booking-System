@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("api/show_time")
+@RequestMapping("api/showtimes")
 public class ShowTimeController {
 
     private final ShowTimeService showTimeService;
@@ -23,12 +23,12 @@ public class ShowTimeController {
         this.showTimeService = showTimeService;
     }
 
-    @GetMapping("/movieId/{movieId}")
+    @GetMapping("/movies/{movieId}")
     public List<ShowTimeDTO> getShowTimesByMovieId(@PathVariable final int movieId) {
         return showTimeService.getShowTimesByMovieId(movieId);
     }
 
-    @PutMapping("/update/movieId/{movieId}")
+    @PutMapping("/movies/{movieId}")
     public void updateShowTimes(@PathVariable final int movieId, @RequestBody List<String> dateTimes) {
         showTimeService.updateShowTimes(movieId, dateTimes);
     }

@@ -1,17 +1,14 @@
 "use client"
 import { MovieType } from "@/components/Movie"
+import UnauthorizedScreen from "@/components/UnauthorizedScreen"
+import APIFacade from "@/lib/APIFacade"
+import { Movie } from "@/lib/Types"
 import { useAuth } from "@/lib/useAuth"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 
-type ShowTime = {
-  id: number
-  movieId: number
-  dateTime: string
-}
-
-export default function EditMovie() {
+const EditMovie = () => {
   const searchParams = useSearchParams()
   const [movie, setMovie] = useState<MovieType>({
     id: 0,
@@ -27,7 +24,7 @@ export default function EditMovie() {
     synopsis: "",
     ratingCode: ""
   })
-  const [showTimeDateTimes, setShowTimeDateTimes] = useState<string[]>([])
+  const [dateTimes, setDateTimes] = useState<string[]>([])
   const dateRef = useRef<HTMLInputElement | null>(null)
   const timeRef = useRef<HTMLInputElement | null>(null)
   const isAdmin = useAuth("admin")
@@ -36,46 +33,166 @@ export default function EditMovie() {
   const divStyles = "flex flex-col gap-1"
 
   useEffect(() => {
-    const movieId = searchParams.get("movieId")
-    async function getMovie() {
-      const response = await fetch(`http://localhost:8080/api/movie/${movieId}`)
-      const data: MovieType = await response.json()
-      setMovie(data)
+    const fetchMovie = async (movieId: number) => {
+      const movie = await APIFacade.getMovieById(movieId)
+      setMovie(movie)
     }
 
-    async function getShowTimes() {
-      const response = await fetch(
-        `http://localhost:8080/api/show_time/movieId/${movieId}`
-      )
-      const data: ShowTime[] = await response.json()
-      const showTimeDateTimes: string[] = []
-      data.forEach(showTime => {
-        const tokens = showTime.dateTime.split(" ")
-        const date = tokens[0]
-        const time = tokens[1]
-        showTimeDateTimes.push(`${date}T${time}`)
+    const fetchShowTimesByMovieId = async (movieId: number) => {
+      const showtimes = await APIFacade.getShowTimesByMovieId(movieId)
+      const dateTimes = showtimes.map(({ dateTime }) => {
+        const substrings = dateTime.split(" ")
+        const date = substrings[0]
+        const time = substrings[1]
+        return `${date}T${time}`
       })
-      setShowTimeDateTimes(
-        showTimeDateTimes.toSorted((a, b) => a.localeCompare(b))
-      )
+      dateTimes.sort((a, b) => a.localeCompare(b))
+      setDateTimes(dateTimes)
     }
 
-    getMovie()
-    getShowTimes()
+    const movieIdParam = searchParams.get("movieId")
+    if (movieIdParam === null) {
+      throw Error("movieId should not be null.")
+    }
+
+    const movieId = +movieIdParam
+    if (isNaN(movieId)) {
+      throw Error("movieId should be a valid number.")
+    }
+
+    fetchMovie(movieId)
+    fetchShowTimesByMovieId(movieId)
   }, [])
 
-  function handleChange(
+  const arrayInputEmpty = (input: string[]) => {
+    return input.length === 1 && input[0] === ""
+  }
+
+  const isValidForm = () => {
+    if (movie.title === "") {
+      alert("Movie title cannot be empty.")
+      return false
+    }
+
+    if (movie.synopsis === "") {
+      alert("Movie synopsis cannot be empty.")
+      return false
+    }
+
+    if (movie.imageLink === "") {
+      alert("Movie image link cannot be empty.")
+      return false
+    }
+
+    if (movie.trailerLink === "") {
+      alert("Movie trailer link cannot be empty.")
+      return false
+    }
+
+    const ratingOutOf10 = +movie.ratingOutOf10
+    if (
+      movie.ratingOutOf10 === "" ||
+      isNaN(ratingOutOf10) ||
+      ratingOutOf10 < 0 ||
+      ratingOutOf10 > 10
+    ) {
+      alert("Movie rating out of 10 must be between 0 and 10.")
+      return false
+    }
+
+    if (arrayInputEmpty(movie.categories)) {
+      alert("Movie must have a category.")
+      return false
+    }
+
+    if (arrayInputEmpty(movie.directors)) {
+      alert("Movie must have a director.")
+      return false
+    }
+
+    if (arrayInputEmpty(movie.producers)) {
+      alert("Movie must have a producer.")
+      return false
+    }
+
+    if (arrayInputEmpty(movie.castMembers)) {
+      alert("Movie must have a cast member.")
+      return false
+    }
+
+    return true
+  }
+
+  const formatMovie = (movie: Movie) => {
+    movie.categories = movie.categories.map(category => category.toUpperCase())
+    movie.ratingCode = movie.ratingCode.replace("-", "_")
+    return movie
+  }
+
+  const formatDateTimes = (dateTimes: string[]) => {
+    return dateTimes.map(dateTime => dateTime.replace("T", " "))
+  }
+
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!isValidForm()) return
+    await APIFacade.updateMovie(formatMovie(movie))
+    await APIFacade.updateMovieShowtimes(movie.id, formatDateTimes(dateTimes))
+    window.location.reload()
+  }
+
+  const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) {
+  ) => {
     const { id, value } = e.target
     setMovie({ ...movie, [id]: value })
   }
 
-  function handleArrayChange(
+  const handleArrayChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  ) => {
     const { id, value } = e.target
     setMovie({ ...movie, [id]: value.split(",") })
+  }
+
+  const upperCaseToTitleCase = (s: string) =>
+    s[0] + s.substring(1).toLowerCase()
+
+  const formatCategories = () =>
+    movie.categories.map(category => upperCaseToTitleCase(category))
+
+  const handleAddShowTime = () => {
+    const date = dateRef.current?.value
+    const time = timeRef.current?.value
+    if (date === undefined || date === "") {
+      alert("Date cannot be empty.")
+      return
+    }
+
+    if (time === undefined || time === "") {
+      alert("Time cannot be empty.")
+      return
+    }
+
+    const dateTime = `${date}T${time}:00`
+    if (dateTimes.includes(dateTime)) {
+      alert("Show time already exists.")
+      return
+    }
+    setDateTimes(
+      [...dateTimes, dateTime].toSorted((a, b) => a.localeCompare(b))
+    )
+  }
+
+  const statusMap = (status: string | undefined) => {
+    switch (status) {
+      case "NOW_PLAYING":
+        return "Now Playing"
+      case "COMING_SOON":
+        return "Coming Soon"
+      default:
+        return ""
+    }
   }
 
   return isAdmin ? (
@@ -88,87 +205,7 @@ export default function EditMovie() {
       </Link>
       <form
         className="bg-dark-jade flex flex-col gap-4 p-4 rounded-md"
-        onSubmit={async e => {
-          e.preventDefault()
-          if (movie.title === "") {
-            alert("Movie title cannot be empty.")
-            return
-          }
-
-          if (movie.synopsis === "") {
-            alert("Movie synopsis cannot be empty.")
-            return
-          }
-
-          if (movie.imageLink === "") {
-            alert("Movie image link cannot be empty.")
-            return
-          }
-
-          if (movie.trailerLink === "") {
-            alert("Movie trailer link cannot be empty.")
-            return
-          }
-
-          const ratingOutOf10 = +movie.ratingOutOf10
-          if (
-            movie.ratingOutOf10 === "" ||
-            isNaN(ratingOutOf10) ||
-            ratingOutOf10 < 0 ||
-            ratingOutOf10 > 10
-          ) {
-            alert("Movie rating out of 10 must be between 0 and 10.")
-            return
-          }
-
-          if (arrayInputEmpty(movie.categories)) {
-            alert("Movie must have a category.")
-            return
-          }
-
-          if (arrayInputEmpty(movie.directors)) {
-            alert("Movie must have a director.")
-            return
-          }
-
-          if (arrayInputEmpty(movie.producers)) {
-            alert("Movie must have a producer.")
-            return
-          }
-
-          if (arrayInputEmpty(movie.castMembers)) {
-            alert("Movie must have a cast member.")
-            return
-          }
-
-          const movieDTO = movie
-          movieDTO.categories = movieDTO.categories.map(category =>
-            category.toUpperCase()
-          )
-          movieDTO.ratingCode = movieDTO.ratingCode.replace("-", "_")
-          await fetch("http://localhost:8080/api/movie/update", {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(movieDTO)
-          })
-
-          await fetch(
-            `http://localhost:8080/api/show_time/update/movieId/${movie.id}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify(
-                showTimeDateTimes.map(dateTime => dateTime.replace("T", " "))
-              )
-            }
-          )
-
-          window.location.reload()
-        }}
+        onSubmit={handleFormSubmit}
       >
         <div className={divStyles}>
           <label htmlFor="title" className={labelStyles}>
@@ -261,9 +298,7 @@ export default function EditMovie() {
           <input
             id="categories"
             className={inputStyles}
-            defaultValue={movie?.categories.map(category =>
-              upperCaseToTitleCase(category)
-            )}
+            defaultValue={formatCategories()}
             onChange={handleArrayChange}
           />
         </div>
@@ -302,30 +337,7 @@ export default function EditMovie() {
             <button
               type="button"
               className="bg-jade text-white font-semibold px-4 py-2"
-              onClick={() => {
-                const date = dateRef.current?.value
-                const time = timeRef.current?.value
-                if (date === undefined || date === "") {
-                  alert("Date cannot be empty.")
-                  return
-                }
-
-                if (time === undefined || time === "") {
-                  alert("Time cannot be empty.")
-                  return
-                }
-
-                const dateTime = `${date}T${time}:00`
-                if (showTimeDateTimes.includes(dateTime)) {
-                  alert("Show time already exists.")
-                  return
-                }
-                setShowTimeDateTimes(
-                  [...showTimeDateTimes, dateTime].toSorted((a, b) =>
-                    a.localeCompare(b)
-                  )
-                )
-              }}
+              onClick={handleAddShowTime}
             >
               Add
             </button>
@@ -334,7 +346,7 @@ export default function EditMovie() {
         <div>
           <p className={labelStyles}>Scheduled Movies</p>
           <div className="flex flex-col gap-2">
-            {showTimeDateTimes.map((dateTime, i) => (
+            {dateTimes.map((dateTime, i) => (
               <div
                 key={dateTime}
                 className="grid"
@@ -354,9 +366,9 @@ export default function EditMovie() {
                   type="button"
                   className="bg-red-500 text-white font-semibold"
                   onClick={() => {
-                    const newShowTimeDateTimes = [...showTimeDateTimes]
+                    const newShowTimeDateTimes = [...dateTimes]
                     newShowTimeDateTimes.splice(i, 1)
-                    setShowTimeDateTimes(newShowTimeDateTimes)
+                    setDateTimes(newShowTimeDateTimes)
                   }}
                 >
                   Delete
@@ -374,29 +386,8 @@ export default function EditMovie() {
       </form>
     </div>
   ) : (
-    <div className="h-screen bg-black flex justify-center items-center">
-      <h1 className="text-white text-3xl">
-        WOMP WOMP, you are not authorized.
-      </h1>
-    </div>
+    <UnauthorizedScreen />
   )
 }
 
-function upperCaseToTitleCase(s: string) {
-  return s[0] + s.substring(1).toLowerCase()
-}
-
-function statusMap(status: string | undefined) {
-  switch (status) {
-    case "NOW_PLAYING":
-      return "Now Playing"
-    case "COMING_SOON":
-      return "Coming Soon"
-    default:
-      return ""
-  }
-}
-
-function arrayInputEmpty(input: string[]) {
-  return input.length === 1 && input[0] === ""
-}
+export default EditMovie
