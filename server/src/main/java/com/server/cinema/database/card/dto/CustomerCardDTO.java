@@ -1,6 +1,6 @@
 package com.server.cinema.database.card.dto;
 
-public record CardDTOCustomerId(
+public record CustomerCardDTO(
         int customerId,
         String cardType,
         String cardNumber,
