@@ -32,3 +32,19 @@ export type Email = {
   subject: string
   text: string
 }
+
+export type ProfileCard = {
+  id: number
+  cardType: string
+  expirationDate: string
+  billingAddress: string
+  lastFourDigits: string
+}
+
+export type CustomerCard = {
+  customerId: number
+  cardType: string
+  cardNumber: string
+  expirationDate: string
+  billingAddress: string
+}
