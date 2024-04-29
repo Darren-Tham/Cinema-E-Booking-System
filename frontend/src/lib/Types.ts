@@ -26,3 +26,9 @@ export type Promotion = {
   startDate: string
   endDate: string
 }
+
+export type Email = {
+  receiverEmail: string
+  subject: string
+  text: string
+}
