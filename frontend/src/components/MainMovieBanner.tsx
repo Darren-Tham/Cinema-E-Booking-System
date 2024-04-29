@@ -17,28 +17,31 @@ export default function MainMovieBanner() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentMovie((curr) => (curr + 1) % movies.length)
-    }, 3000)
+    }, 5000)
     return () => clearInterval(interval)
   }, [movies])
   const width = 275
   const height = 200
   return (
-    <div className="flex flex-col justify-center mt-4">
-      <div className="flex flex-row justify-center h-96">
-      {movies.map((movie, index) => (
+    <div className="flex flex-col justify-center mt-12">
+      <h1 className={`mt-10 text-emerald-200 text-center text-3xl font-semibold mb-10`}>{movies[currentMovie]?.["title"]}</h1>
+
+      <div className="flex flex-row justify-between items-center h-96">
+        {movies.map((movie, index) => (
           <Image
             key={index}
             src={movie?.["imageLink"]}
             alt="Movie"
             width={width}
             height={height}
-            className={`absolute transition-opacity duration-1000 ${
+            className={`absolute left-56 transition-opacity duration-500 ${
               index === currentMovie ? "opacity-100" : "opacity-0"
-            } shadow-[0_35px_60px_-15px_rgba(255,2555,255,0.3)]`}
+            } shadow-[0_35px_60px_-15px_rgba(255,255,255,0.3)]`}
           />
         ))}
+         <p className="absolute text-white text-xl w-1/4 right-96">{movies[currentMovie]?.["synopsis"]}</p>
+
       </div>
-      <h1 className={`mt-10 text-white text-center text-xl`}>{movies[currentMovie]?.["title"]}</h1>
     </div>
 
 
