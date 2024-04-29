@@ -5,16 +5,19 @@ import Image from "next/image"
 import Link from "next/link"
 import { useAuth } from "@/lib/useAuth"
 import { MovieType } from "@/components/Movie"
+import UnauthorizedScreen from "@/components/UnauthorizedScreen"
+import APIFacade from "@/lib/APIFacade"
+import { Movie } from "@/lib/Types"
+
 export default function Manage() {
-  const [movies, setMovies] = useState<MovieType[]>([])
+  const [movies, setMovies] = useState<Movie[]>([])
 
   useEffect(() => {
-    async function getMovies() {
-      const response = await fetch("http://localhost:8080/api/movie")
-      const data = await response.json()
-      setMovies(data)
+    const fetchMovies = async () => {
+      const movies = await APIFacade.getAllMovies()
+      setMovies(movies)
     }
-    getMovies()
+    fetchMovies()
   }, [])
   const isAdmin = useAuth("admin")
 
@@ -45,11 +48,7 @@ export default function Manage() {
       </div>
     </div>
   ) : (
-    <div className="h-screen bg-black flex justify-center items-center">
-      <h1 className="text-white text-3xl">
-        WOMP WOMP, you are not authorized.
-      </h1>
-    </div>
+    <UnauthorizedScreen />
   )
 }
 
@@ -59,7 +58,7 @@ function renderMovies(heading: string, movies: MovieType[]) {
       <h2 className="font-bold text-2xl text-white mb-4">{heading}</h2>
       <div className="flex gap-7">
         {movies.map(movie => (
-          <div className="bg-jade p-2 flex flex-col justify-end">
+          <div key={movie.id} className="bg-jade p-2 flex flex-col justify-end">
             <div className="relative">
               <Link href={`./edit-movie?movieId=${movie.id}`}>
                 <Image
