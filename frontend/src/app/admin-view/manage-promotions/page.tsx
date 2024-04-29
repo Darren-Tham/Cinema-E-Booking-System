@@ -1,18 +1,12 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { FormEvent, useRef, useState } from "react"
 import { useAuth } from "@/lib/useAuth"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
+import { Email, Promotion } from "@/lib/Types"
+import APIFacade from "@/lib/APIFacade"
 
-type Promotion = {
-  name: string
-  discountCode: string
-  discountPercentage: number
-  startDate: string
-  endDate: string
-}
-
-const ManagePromotions: React.FC = () => {
+const ManagePromotions = () => {
   const [discountPercentage, setDiscountPercentage] = useState(0)
   const nameRef = useRef<HTMLInputElement | null>(null)
   const discountCodeRef = useRef<HTMLInputElement | null>(null)
@@ -20,93 +14,100 @@ const ManagePromotions: React.FC = () => {
   const endDateRef = useRef<HTMLInputElement | null>(null)
   const isAdmin = useAuth("admin")
 
+  const isValidForm = () => {
+    if (
+      nameRef.current === null ||
+      discountCodeRef.current === null ||
+      startDateRef.current === null ||
+      endDateRef.current === null
+    ) {
+      return false
+    }
+
+    if (nameRef.current.value === "") {
+      alert("Name cannot be empty.")
+      return false
+    }
+
+    if (discountCodeRef.current.value === "") {
+      alert("Discount code cannot be empty.")
+      return false
+    }
+
+    if (startDateRef.current.value === "") {
+      alert("Start date cannot be empty.")
+      return false
+    }
+
+    if (endDateRef.current.value === "") {
+      alert("End date cannot be empty.")
+      return false
+    }
+
+    if (
+      new Date(endDateRef.current.value) <= new Date(startDateRef.current.value)
+    ) {
+      alert("End date must be after the start date.")
+      return false
+    }
+
+    return true
+  }
+
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    })
+  }
+
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (
+      nameRef.current === null ||
+      discountCodeRef.current === null ||
+      startDateRef.current === null ||
+      endDateRef.current === null
+    ) {
+      return
+    }
+
+    if (!isValidForm()) return
+
+    const promotion: Promotion = {
+      name: nameRef.current.value,
+      discountCode: discountCodeRef.current.value,
+      discountPercentage,
+      startDate: startDateRef.current.value,
+      endDate: endDateRef.current.value
+    }
+
+    await APIFacade.addPromotion(promotion)
+    const subscribedCustomersEmails =
+      await APIFacade.getSubscribedCustomersEmails()
+    for (const receiverEmail of subscribedCustomersEmails) {
+      const email: Email = {
+        receiverEmail,
+        subject: `New Promotion: ${promotion.name}`,
+        text: `Use the code ${promotion.discountCode} to get ${
+          promotion.discountPercentage
+        }% off! Promotion starts on ${formatDate(
+          promotion.startDate
+        )}, and it ends on ${formatDate(promotion.endDate)}.`
+      }
+      await APIFacade.sendEmail(email)
+    }
+  }
+
   return isAdmin ? (
     <div className="flex bg-black min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-md bg-teal-950 p-4 rounded-md shadow-lg">
         <h1 className="text-white text-2xl font-bold mb-4 text-center">
           Promotions
         </h1>
-        <form
-          className="space-y-4"
-          onSubmit={async e => {
-            e.preventDefault()
-            if (
-              nameRef.current === null ||
-              discountCodeRef.current === null ||
-              startDateRef.current === null ||
-              endDateRef.current === null
-            ) {
-              return
-            }
-
-            if (nameRef.current.value === "") {
-              alert("Name cannot be empty.")
-              return
-            }
-
-            if (discountCodeRef.current.value === "") {
-              alert("Discount code cannot be empty.")
-              return
-            }
-
-            if (startDateRef.current.value === "") {
-              alert("Start date cannot be empty.")
-              return
-            }
-
-            if (endDateRef.current.value === "") {
-              alert("End date cannot be empty.")
-              return
-            }
-
-            if (
-              new Date(endDateRef.current.value) <=
-              new Date(startDateRef.current.value)
-            ) {
-              alert("End date must be after the start date.")
-              return
-            }
-
-            const promotion: Promotion = {
-              name: nameRef.current.value,
-              discountCode: discountCodeRef.current.value,
-              discountPercentage,
-              startDate: startDateRef.current.value,
-              endDate: endDateRef.current.value
-            }
-
-            await fetch("http://localhost:8080/api/promotion/add", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify(promotion)
-            })
-
-            const response = await fetch(
-              "http://localhost:8080/api/customer/subscribed_customers"
-            )
-            const data = await response.json()
-
-            for (const receiverEmail of data) {
-              await fetch("http://localhost:8080/api/email/profile", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                  receiverEmail,
-                  subject: `New Promotion: ${promotion.name}`,
-                  text: `Use the code ${promotion.discountCode} to get ${
-                    promotion.discountPercentage
-                  }% off! Promotion starts on ${formatDate(
-                    promotion.startDate
-                  )}, and it ends on ${formatDate(promotion.endDate)}.`
-                })
-              })
-            }
-          }}
-        >
+        <form className="space-y-4" onSubmit={handleFormSubmit}>
           <div className="flex flex-col">
             <label htmlFor="name" className="text-gray-100 font-semibold">
               Name
@@ -189,11 +190,3 @@ const ManagePromotions: React.FC = () => {
 }
 
 export default ManagePromotions
-
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric"
-  })
-}
