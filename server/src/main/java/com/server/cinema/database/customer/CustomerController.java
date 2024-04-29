@@ -35,10 +35,9 @@ public class CustomerController {
         return customerService.getSubscribedCustomerEmails();
     }
 
-    @GetMapping("/first_name/{customerId}")
-    public ResponseEntity<String> getFirstNameByCustomerId(@PathVariable final int customerId) {
-        final String firstName = customerService.getFirstNameByCustomerId(customerId);
-        return ResponseEntity.ok(firstName);
+    @GetMapping("/{customerId}/first-name")
+    public String getFirstNameByCustomerId(@PathVariable final int customerId) {
+        return customerService.getFirstNameByCustomerId(customerId);
     }
 
     @GetMapping("/last_name/{customerId}")
@@ -118,7 +117,7 @@ public class CustomerController {
         return ResponseEntity.ok("Password changed successfully.");
     }
 
-    @PutMapping("/change_first_name/{customerId}/{firstName}")
+    @PutMapping("/{customerId}/first-name/{firstName}")
     public ResponseEntity<String> changeFirstName(@PathVariable final int customerId,
             @PathVariable final String firstName) {
         customerService.changeFirstName(customerId, firstName);

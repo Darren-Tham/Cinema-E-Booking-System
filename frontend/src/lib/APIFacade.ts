@@ -41,6 +41,17 @@ export default class APIFacade {
     return await APICustomerFacade.getSubscribedCustomersEmails()
   }
 
+  public static async getCustomerFirstName(customerId: number) {
+    return await APICustomerFacade.getCustomerFirstName(customerId)
+  }
+
+  public static async updateCustomerFirstName(
+    customerId: number,
+    firstName: string
+  ) {
+    await APICustomerFacade.updateCustomerFirstName(customerId, firstName)
+  }
+
   public static async sendEmail(email: Email) {
     return await APIEmailFacade.sendEmail(email)
   }
@@ -123,6 +134,22 @@ class APICustomerFacade {
     const response = await fetch(`${this.CUSTOMER_URL}/subscribed/emails`)
     const data: string[] = await response.json()
     return data
+  }
+
+  public static async getCustomerFirstName(customerId: number) {
+    const response = await fetch(
+      `${this.CUSTOMER_URL}/${customerId}/first-name`
+    )
+    return await response.text()
+  }
+
+  public static async updateCustomerFirstName(
+    customerId: number,
+    firstName: string
+  ) {
+    await fetch(`${this.CUSTOMER_URL}/${customerId}/first-name/${firstName}`, {
+      method: "PUT"
+    })
   }
 }
 

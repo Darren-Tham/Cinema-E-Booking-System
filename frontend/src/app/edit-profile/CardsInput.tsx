@@ -23,14 +23,6 @@ type Props = {
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-type Card = {
-  id: number
-  cardType: string
-  expirationDate: string
-  billingAddress: string
-  lastFourDigits: string
-}
-
 type Refs = {
   dialogRef: RefObject<HTMLDialogElement>
   cardTypeRef: RefObject<HTMLSelectElement>
@@ -54,7 +46,7 @@ export default function CardsInput({
   useEffect(() => {
     const fetchCustomerCards = async () => {
       if (customerId === undefined) {
-        throw Error("customerId is undefined.")
+        return
       }
 
       const customerCards = await APIFacade.getCustomerCards(customerId)

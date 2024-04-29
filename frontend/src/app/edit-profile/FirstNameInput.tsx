@@ -3,6 +3,8 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import PencilIcon from "@public/pencil-icon.svg"
+import APIFacade from "@/lib/APIFacade"
+import { Email } from "@/lib/Types"
 
 type Props = {
   customerId: number | undefined
@@ -20,17 +22,48 @@ export default function FirstNameInput({
   const [firstName, setFirstName] = useState("")
 
   useEffect(() => {
-    async function initFirstName() {
-      if (customerId === undefined) {
-        return
-      }
-      const response = await fetch(
-        `http://localhost:8080/api/customer/first_name/${customerId}`
-      )
-      setFirstName(await response.text())
+    const fetchFirstName = async () => {
+      if (customerId === undefined) return
+      const firstName = await APIFacade.getCustomerFirstName(customerId)
+      setFirstName(firstName)
     }
-    initFirstName()
+
+    fetchFirstName()
   }, [customerId])
+
+  const updateFirstName = async () => {
+    const updatedFirstName = inputRef.current?.value.trim()
+
+    if (updatedFirstName === undefined) {
+      throw Error("The updated first name is undefined.")
+    }
+
+    if (customerId === undefined) {
+      throw Error("The customer's id is undefined.")
+    }
+
+    if (email === undefined) {
+      throw Error("Customer's email is undefined.")
+    }
+
+    if (updatedFirstName === firstName) {
+      alert(
+        "The updated first name should not be the same as the current first name."
+      )
+      return
+    }
+
+    await APIFacade.updateCustomerFirstName(customerId, firstName)
+
+    const emailDTO: Email = {
+      receiverEmail: email,
+      subject: "Cinema E-Booking System First Name Update",
+      text: "The first name of your account has been updated. If this was unexpected, please change your password to protect your account."
+    }
+    await APIFacade.sendEmail(emailDTO)
+
+    window.location.reload()
+  }
 
   return (
     <>
@@ -79,31 +112,7 @@ export default function FirstNameInput({
             </button>
             <button
               className="bg-light-jade font-bold p-2 hover:scale-[1.015] transition-transform duration-300 rounded-sm"
-              onClick={async () => {
-                const updatedFirstName = inputRef.current?.value.trim()
-                if (updatedFirstName === firstName) {
-                  alert(
-                    "The updated first name is the same as the current first name!"
-                  )
-                } else {
-                  await fetch(
-                    `http://localhost:8080/api/customer/change_first_name/${customerId}/${updatedFirstName}`,
-                    { method: "PUT" }
-                  )
-                  await fetch("http://localhost:8080/api/email/profile", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                      receiverEmail: email,
-                      subject: "Cinema E-Booking System First Name Update",
-                      text: "The first name of your account has been updated. If this was unexpected, please change your password to protect your account."
-                    })
-                  })
-                  window.location.reload()
-                }
-              }}
+              onClick={updateFirstName}
             >
               Submit
             </button>
