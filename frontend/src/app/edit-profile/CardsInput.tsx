@@ -14,6 +14,8 @@ import {
   SetStateAction,
   Fragment
 } from "react"
+import APIFacade from "@/lib/APIFacade"
+import { CustomerCard, Email, ProfileCard } from "@/lib/Types"
 
 type Props = {
   customerId: number | undefined
@@ -41,7 +43,7 @@ export default function CardsInput({
   email,
   setDialogOpen
 }: Readonly<Props>) {
-  const [cards, setCards] = useState<Card[]>([])
+  const [customerCards, setCustomerCards] = useState<ProfileCard[]>([])
   const cardsRef = useRef<Refs[]>([])
   const addDialogRef = useRef<HTMLDialogElement | null>(null)
   const addCreditCardTypeRef = useRef<HTMLSelectElement | null>(null)
@@ -50,31 +52,190 @@ export default function CardsInput({
   const addBillingAddressRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
-    async function initCards() {
+    const fetchCustomerCards = async () => {
       if (customerId === undefined) {
-        return
+        throw Error("customerId is undefined.")
       }
-      const cardsResponse = await fetch(
-        `http://localhost:8080/api/card/${customerId}`
-      )
-      if (cardsResponse.ok) {
-        const cards: Card[] = await cardsResponse.json()
-        setCards(cards)
-        const refs: Refs[] = []
 
-        for (let i = 0; i < cards.length; i++) {
-          refs.push({
-            dialogRef: createRef(),
-            cardTypeRef: createRef(),
-            expirationDateRef: createRef(),
-            billingAddressRef: createRef()
-          })
-        }
-        cardsRef.current = refs
-      }
+      const customerCards = await APIFacade.getCustomerCards(customerId)
+      setCustomerCards(customerCards)
+      return customerCards
     }
-    initCards()
+
+    const customerCards = fetchCustomerCards()
+    const refs: Refs[] = []
+    for (const _ in customerCards) {
+      refs.push({
+        dialogRef: createRef(),
+        cardTypeRef: createRef(),
+        expirationDateRef: createRef(),
+        billingAddressRef: createRef()
+      })
+    }
+    cardsRef.current = refs
   }, [customerId])
+
+  const expirationDateIsFormatted = (expirationDate: string) => {
+    return /^(?:0[1-9]|1[0-2])\/\d{4}$/.test(expirationDate)
+  }
+
+  const isValidCardUpdateInfo = (
+    card: ProfileCard,
+    cardType: string,
+    expirationDate: string,
+    billingAddress: string
+  ) => {
+    if (
+      cardType === card.cardType &&
+      expirationDate === formatExpirationDate(card.expirationDate) &&
+      billingAddress === card.billingAddress
+    ) {
+      alert(
+        "Updated card information is the same as the current card information."
+      )
+      return false
+    }
+    if (billingAddress === "") {
+      alert("Billing address cannot be empty.")
+      return false
+    }
+
+    if (!expirationDateIsFormatted(expirationDate)) {
+      alert("Expiration date is not formatted correctly.")
+      return false
+    }
+
+    return true
+  }
+
+  const updateCard = async (card: ProfileCard, i: number) => {
+    const cardType = cardsRef.current[i].cardTypeRef.current?.value
+    const expirationDate = cardsRef.current[i].expirationDateRef.current?.value
+    const billingAddress =
+      cardsRef.current[i].billingAddressRef.current?.value.trim()
+
+    if (cardType === undefined) {
+      throw Error("cardType is undefined.")
+    }
+
+    if (expirationDate === undefined) {
+      throw Error("expirationDate is undefined.")
+    }
+
+    if (billingAddress === undefined) {
+      throw Error("billingAddress is undefined.")
+    }
+
+    if (email === undefined) {
+      throw Error("Customer's email is undefined.")
+    }
+
+    if (!isValidCardUpdateInfo(card, cardType, expirationDate, billingAddress))
+      return
+
+    const updatedCard: ProfileCard = {
+      id: card.id,
+      cardType,
+      expirationDate,
+      billingAddress,
+      lastFourDigits: card.lastFourDigits
+    }
+    await APIFacade.updateCard(updatedCard)
+
+    const emailDTO: Email = {
+      receiverEmail: email,
+      subject: "Cinema E-Booking System Credit Card Update",
+      text: `The credit card ending in ${card.lastFourDigits} in your account has been updated. If this was unexpected, please change your password to protect your account.`
+    }
+    await APIFacade.sendEmail(emailDTO)
+
+    window.location.reload()
+  }
+
+  const deleteCard = async (card: ProfileCard) => {
+    if (email === undefined) {
+      throw Error("Customer's email is undefined.")
+    }
+
+    await APIFacade.deleteCard(card.id)
+    const emailDTO: Email = {
+      receiverEmail: email,
+      subject: "Cinema E-Booking System Credit Card Delete",
+      text: `The credit card ending in ${card.lastFourDigits} in your account has been deleted. If this was unexpected, please change your password to protect your account.`
+    }
+    await APIFacade.sendEmail(emailDTO)
+    window.location.reload()
+  }
+
+  const isValidCardAddInfo = (
+    creditCardType: string,
+    billingAddress: string
+  ) => {
+    if (creditCardType === "") {
+      alert("Please select a credit card type.")
+      return false
+    }
+
+    if (addCreditCardNumber === "") {
+      alert("Credit card number cannot be empty.")
+      return false
+    }
+
+    if (!expirationDateIsFormatted(addExpirationDate)) {
+      alert("Expiration date should be formatted and inputted correctly.")
+      return false
+    }
+
+    if (billingAddress === "") {
+      alert("Billing address cannot be empty.")
+      return false
+    }
+
+    return true
+  }
+
+  const addCard = async () => {
+    const creditCardType = addCreditCardTypeRef.current?.value
+    const billingAddress = addBillingAddressRef.current?.value
+
+    if (creditCardType === undefined) {
+      throw Error("creditCardType is undefined.")
+    }
+
+    if (billingAddress === undefined) {
+      throw Error("billingAddress is undefined.")
+    }
+
+    if (customerId === undefined) {
+      throw Error("The customer's id is undefined.")
+    }
+
+    if (email === undefined) {
+      throw Error("Customer's email is undefined.")
+    }
+
+    if (!isValidCardAddInfo(creditCardType, billingAddress)) return
+
+    const card: CustomerCard = {
+      customerId,
+      cardType: creditCardType,
+      cardNumber: addCreditCardNumber,
+      expirationDate: addExpirationDate,
+      billingAddress
+    }
+    await APIFacade.addCard(card)
+
+    const emailDTO: Email = {
+      receiverEmail: email,
+      subject: "Cinema E-Booking System Credit Card Add",
+      text: `The credit card ending in ${addCreditCardNumber.substring(
+        addCreditCardNumber.length - 4
+      )} in your account has been added to your account. If this was unexpected, please change your password to protect your account.`
+    }
+    await APIFacade.sendEmail(emailDTO)
+
+    window.location.reload()
+  }
 
   return (
     <>
@@ -83,7 +244,7 @@ export default function CardsInput({
           <div className="p-2 rounded-sm font-semibold bg-light-jade w-full">
             Credit Cards
           </div>
-          {cards.length !== 3 && (
+          {customerCards.length !== 3 && (
             <button
               className="scale-transition"
               onClick={() => {
@@ -95,7 +256,7 @@ export default function CardsInput({
             </button>
           )}
         </div>
-        {cards.map((card, i) => (
+        {customerCards.map((card, i) => (
           <Fragment key={card.id}>
             <dialog
               ref={cardsRef.current[i].dialogRef}
@@ -157,60 +318,7 @@ export default function CardsInput({
                   </button>
                   <button
                     className="bg-light-jade font-bold p-2 hover:scale-[1.015] transition-transform duration-300 rounded-sm"
-                    onClick={async () => {
-                      const cardType =
-                        cardsRef.current[i].cardTypeRef.current?.value
-                      const expirationDate =
-                        cardsRef.current[i].expirationDateRef.current?.value
-                      const billingAddress =
-                        cardsRef.current[
-                          i
-                        ].billingAddressRef.current?.value.trim()
-                      if (
-                        cardType === card.cardType &&
-                        expirationDate ===
-                          formatExpirationDate(card.expirationDate) &&
-                        billingAddress === card.billingAddress
-                      ) {
-                        alert(
-                          "Updated card information is the same as the current card information."
-                        )
-                      } else if (billingAddress === "") {
-                        alert("Billing address cannot be empty.")
-                      } else if (
-                        expirationDate === undefined ||
-                        !/^(?:0[1-9]|1[0-2])\/\d{4}$/.test(expirationDate)
-                      ) {
-                        alert("Expiration date is not formatted correctly.")
-                      } else {
-                        await fetch("http://localhost:8080/api/card/update", {
-                          method: "PUT",
-                          headers: {
-                            "Content-Type": "application/json"
-                          },
-                          body: JSON.stringify({
-                            id: card.id,
-                            cardType,
-                            expirationDate,
-                            billingAddress,
-                            lastFourDigits: card.lastFourDigits
-                          })
-                        })
-                        await fetch("http://localhost:8080/api/email/profile", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json"
-                          },
-                          body: JSON.stringify({
-                            receiverEmail: email,
-                            subject:
-                              "Cinema E-Booking System Credit Card Update",
-                            text: `The credit card ending in ${card.lastFourDigits} in your account has been updated. If this was unexpected, please change your password to protect your account.`
-                          })
-                        })
-                        window.location.reload()
-                      }
-                    }}
+                    onClick={() => updateCard(card, i)}
                   >
                     Submit
                   </button>
@@ -243,24 +351,7 @@ export default function CardsInput({
                 </button>
                 <button
                   className="scale-transition w-max"
-                  onClick={async () => {
-                    await fetch(
-                      `http://localhost:8080/api/card/delete/${card.id}`,
-                      { method: "DELETE" }
-                    )
-                    await fetch("http://localhost:8080/api/email/profile", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json"
-                      },
-                      body: JSON.stringify({
-                        receiverEmail: email,
-                        subject: "Cinema E-Booking System Credit Card Delete",
-                        text: `The credit card ending in ${card.lastFourDigits} in your account has been deleted. If this was unexpected, please change your password to protect your account.`
-                      })
-                    })
-                    window.location.reload()
-                  }}
+                  onClick={() => deleteCard(card)}
                 >
                   <Image src={RedDeleteIcon} alt="Delete Icon" width={30} />
                 </button>
@@ -350,51 +441,7 @@ export default function CardsInput({
             </button>
             <button
               className="bg-light-jade font-bold p-2 hover:scale-[1.015] transition-transform duration-300 rounded-sm"
-              onClick={async () => {
-                const creditCardType = addCreditCardTypeRef.current?.value
-                const billingAddress = addBillingAddressRef.current?.value
-                if (creditCardType === "") {
-                  alert("Please select a credit card type.")
-                } else if (addCreditCardNumber === "") {
-                  alert("Credit card number cannot be empty.")
-                } else if (
-                  !/^(?:0[1-9]|1[0-2])\/\d{4}$/.test(addExpirationDate)
-                ) {
-                  alert(
-                    "Expiration date needs to be formatted and inputted correctly."
-                  )
-                } else if (billingAddress === "") {
-                  alert("Billing address cannot be empty.")
-                } else {
-                  await fetch("http://localhost:8080/api/card/add", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                      customerId,
-                      cardType: creditCardType,
-                      cardNumber: addCreditCardNumber,
-                      expirationDate: addExpirationDate,
-                      billingAddress
-                    })
-                  })
-                  await fetch("http://localhost:8080/api/email/profile", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                      receiverEmail: email,
-                      subject: "Cinema E-Booking System Credit Card Add",
-                      text: `The credit card ending in ${addCreditCardNumber.substring(
-                        addCreditCardNumber.length - 4
-                      )} in your account has been added to your account. If this was unexpected, please change your password to protect your account.`
-                    })
-                  })
-                  window.location.reload()
-                }
-              }}
+              onClick={addCard}
             >
               Submit
             </button>
