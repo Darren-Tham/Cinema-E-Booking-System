@@ -11,7 +11,8 @@ const config: Config = {
       colors: {
         black: "#040D12",
         "dark-jade": "#183D3D",
-        jade: "#5C8374",
+        //jade: "#5C8374",
+        jade: "#095544",
         "light-jade": "#93B1A6",
         "bright-jade": "#CEF5E6",
         "murky-jade": "#223131",

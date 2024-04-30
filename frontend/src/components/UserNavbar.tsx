@@ -31,7 +31,7 @@ export default function UserNavbar() {
       <div className="flex gap-5 items-center">
         <Link
           href="/"
-          className="font-bold text-white text-2xl scale-transition"
+          className="font-bold text-[#2CC295] text-2xl scale-transition"
         >
           Cinema E-Booking System
         </Link>
@@ -61,16 +61,16 @@ export default function UserNavbar() {
             <Link href="/edit-profile" className="scale-transition">
               <Image src={ProfileIcon} alt="Profile" width={45} />
             </Link>
-            <p className="text-white font-semibold text-lg mr-4">
+            <p className="text-[#2CC295] font-semibold text-lg mr-4">
               Hello, {displayName}
             </p>
             {isAdmin && (
               <Link href="/admin-view">
-                <button className="back-button">Admin Portal</button>
+                <button className="back-button text-[#2CC295] border-[#2CC295]">Admin Portal</button>
               </Link>
             )}
             <button
-              className="back-button"
+              className="back-button text-[#2CC295] border-[#2CC295]"
               onClick={async () => {
                 setIsLoggedIn(false)
                 destroyCookie()
