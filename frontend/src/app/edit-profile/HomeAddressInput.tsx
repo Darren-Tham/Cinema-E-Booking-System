@@ -31,27 +31,22 @@ export default function HomeAddressInput({
 
   useEffect(() => {
     const fetchHomeAddress = async () => {
-      if (customerId === undefined) return
-      const homeAddress = await APIFacade.getCustomerHomeAddress(customerId)
+      const homeAddress = await APIFacade.getCustomerHomeAddress(customer.id)
       setHomeAddress(homeAddress)
       setEditZipcode(homeAddress.zipcode)
     }
 
     fetchHomeAddress()
-  }, [customerId])
+  }, [customer])
 
   const deleteHomeAddress = async () => {
     if (homeAddress === undefined) {
       throw Error("Customer's home address is undefined.")
     }
 
-    if (email === undefined) {
-      throw Error("Customer's email is undefined.")
-    }
-
     await APIFacade.deleteHomeAddress(homeAddress.id)
     const emailDTO: Email = {
-      receiverEmail: email,
+      receiverEmail: customer.email,
       subject: "Cinema E-Booking System Home Address Delete",
       text: "The home address in your account has been deleted. If this was unexpected, please change your password to protect your account."
     }
