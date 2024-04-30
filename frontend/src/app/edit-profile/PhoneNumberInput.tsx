@@ -3,34 +3,46 @@
 import Image from "next/image"
 import PencilIcon from "@public/pencil-icon.svg"
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import { Customer, Email } from "@/lib/Types"
+import APIFacade from "@/lib/APIFacade"
 
 type Props = {
-  customerId: number | undefined
-  email: string | undefined
+  customer: Customer
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function PhoneNumberInput({
-  customerId,
-  email,
-  setDialogOpen
-}: Readonly<Props>) {
+const PhoneNumberInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
   const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState("")
-  const dialogRef = useRef<HTMLDialogElement | null>(null)
+  const dialogRef = useRef<HTMLDialogElement>(null!)
   const [phoneNumber, setPhoneNumber] = useState("")
 
   useEffect(() => {
-    async function initPhoneNumber() {
-      if (customerId === undefined) {
-        return
-      }
-      const response = await fetch(
-        `http://localhost:8080/api/customer/phone_number/${customerId}`
-      )
-      setPhoneNumber(await response.text())
+    const fetchPhoneNumber = async () => {
+      const phoneNumber = await APIFacade.getCustomerPhoneNumber(customer.id)
+      setPhoneNumber(phoneNumber)
     }
-    initPhoneNumber()
-  }, [customerId])
+    fetchPhoneNumber()
+  }, [customer])
+
+  const changePhoneNumber = async () => {
+    if (updatedPhoneNumber === phoneNumber) {
+      alert(
+        "The updated phone number should not be the same as the current phone number!"
+      )
+      return
+    }
+
+    await APIFacade.updateCustomerPhoneNumber(customer.id, updatedPhoneNumber)
+
+    const email: Email = {
+      receiverEmail: customer.email,
+      subject: "Cinema E-Booking System Phone Number Update",
+      text: "The phone number of your account has been updated. If this was unexpected, please change your password to protect your account."
+    }
+    await APIFacade.sendEmail(email)
+
+    window.location.reload()
+  }
 
   return (
     <>
@@ -43,7 +55,7 @@ export default function PhoneNumberInput({
       <button
         className="self-center scale-transition w-max"
         onClick={() => {
-          dialogRef.current?.showModal()
+          dialogRef.current.showModal()
           setDialogOpen(true)
         }}
       >
@@ -77,7 +89,7 @@ export default function PhoneNumberInput({
             <button
               className="border-[3px] text-white font-bold p-2 hover:scale-[1.015] transition-transform duration-300"
               onClick={() => {
-                dialogRef.current?.close()
+                dialogRef.current.close()
                 setDialogOpen(false)
               }}
             >
@@ -85,30 +97,7 @@ export default function PhoneNumberInput({
             </button>
             <button
               className="bg-light-jade font-bold p-2 hover:scale-[1.015] transition-transform duration-300 rounded-sm"
-              onClick={async () => {
-                if (updatedPhoneNumber === phoneNumber) {
-                  alert(
-                    "The updated phone number is the same as the current first name!"
-                  )
-                } else {
-                  await fetch(
-                    `http://localhost:8080/api/customer/change_phone_number/${customerId}/${updatedPhoneNumber}`,
-                    { method: "PUT" }
-                  )
-                  await fetch("http://localhost:8080/api/email/profile", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                      receiverEmail: email,
-                      subject: "Cinema E-Booking System Phone Number Update",
-                      text: "The phone number of your account has been updated. If this was unexpected, please change your password to protect your account."
-                    })
-                  })
-                  window.location.reload()
-                }
-              }}
+              onClick={changePhoneNumber}
             >
               Submit
             </button>
@@ -118,3 +107,5 @@ export default function PhoneNumberInput({
     </>
   )
 }
+
+export default PhoneNumberInput

@@ -46,7 +46,7 @@ public class CustomerController {
         return ResponseEntity.ok(lastName);
     }
 
-    @GetMapping("/phone_number/{customerId}")
+    @GetMapping("/{customerId}/phone-number")
     public ResponseEntity<String> getPhoneNumberByCustomerId(@PathVariable final int customerId) {
         final String phoneNumber = customerService.getPhoneNumberByCustomerId(customerId);
         return ResponseEntity.ok(phoneNumber);
@@ -131,7 +131,7 @@ public class CustomerController {
         return ResponseEntity.ok("Last name successfully changed.");
     }
 
-    @PutMapping("/change_phone_number/{customerId}/{phoneNumber}")
+    @PutMapping("/{customerId}/phone-number/{phoneNumber}")
     public ResponseEntity<String> changePhoneNumber(@PathVariable final int customerId,
             @PathVariable final String phoneNumber) {
         customerService.changePhoneNumber(customerId, phoneNumber);

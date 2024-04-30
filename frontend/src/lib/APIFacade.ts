@@ -78,6 +78,17 @@ export default class APIFacade {
     await APICustomerFacade.updateCustomerPassword(customerId, password)
   }
 
+  public static async getCustomerPhoneNumber(customerId: number) {
+    return APICustomerFacade.getCustomerPhoneNumber(customerId)
+  }
+
+  public static async updateCustomerPhoneNumber(
+    customerId: number,
+    phoneNumber: string
+  ) {
+    return APICustomerFacade.updateCustomerPhoneNumber(customerId, phoneNumber)
+  }
+
   public static async sendEmail(email: Email) {
     return await APIEmailFacade.sendEmail(email)
   }
@@ -217,8 +228,25 @@ class APICustomerFacade {
     customerId: number,
     password: string
   ) {
-    const response = await fetch(
+    await fetch(
       `${this.CUSTOMER_URL}/${customerId}/password/${password}`,
+      RequestInitHandler.putRequestInitNoBody()
+    )
+  }
+
+  public static async getCustomerPhoneNumber(customerId: number) {
+    const response = await fetch(
+      `${this.CUSTOMER_URL}/${customerId}/phone-number`
+    )
+    return await response.text()
+  }
+
+  public static async updateCustomerPhoneNumber(
+    customerId: number,
+    phoneNumber: string
+  ) {
+    await fetch(
+      `${this.CUSTOMER_URL}/${customerId}/phone-number/${phoneNumber}`,
       RequestInitHandler.putRequestInitNoBody()
     )
   }
