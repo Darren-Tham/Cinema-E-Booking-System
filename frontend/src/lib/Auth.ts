@@ -3,18 +3,9 @@
 import { SignJWT, jwtVerify } from "jose"
 import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
+import { Customer } from "./Types"
 
 // some code are adapted from next.js documentation
-
-export type Customer = {
-  id: number
-  firstName: string
-  lastName: string
-  email: string
-  phoneNumber: string
-  status: string
-  isSubscribedForPromotions: boolean
-}
 
 let remember = false
 const secretKey = "swe4050"

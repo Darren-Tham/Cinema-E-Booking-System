@@ -64,3 +64,13 @@ export type CustomerHomeAddress = {
   state: string
   zipcode: string
 }
+
+export type Customer = {
+  id: number
+  firstName: string
+  lastName: string
+  email: string
+  phoneNumber: string
+  status: string
+  isSubscribedForPromotions: boolean
+}
