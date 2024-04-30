@@ -5,6 +5,8 @@ import Image from "next/image"
 import PencilIcon from "@public/pencil-icon.svg"
 import BluePlusIcon from "@public/blue-plus-icon.svg"
 import RedDeleteIcon from "@public/red-delete-icon.svg"
+import { Email, ProfileHomeAddress } from "@/lib/Types"
+import APIFacade from "@/lib/APIFacade"
 
 type Props = {
   customerId: number | undefined
@@ -12,20 +14,12 @@ type Props = {
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-type HomeAddress = {
-  id: number
-  address: string
-  city: string
-  state: string
-  zipcode: string
-}
-
 export default function HomeAddressInput({
   customerId,
   email,
   setDialogOpen
 }: Readonly<Props>) {
-  const [homeAddress, setHomeAddress] = useState<HomeAddress>()
+  const [homeAddress, setHomeAddress] = useState<ProfileHomeAddress>()
   const editDialogRef = useRef<HTMLDialogElement | null>(null)
   const addDialogRef = useRef<HTMLDialogElement | null>(null)
   const editAddressInputRef = useRef<HTMLInputElement | null>(null)
@@ -38,21 +32,55 @@ export default function HomeAddressInput({
   const [addZipcode, setAddZipcode] = useState("")
 
   useEffect(() => {
-    async function initHomeAddress() {
-      if (customerId === undefined) {
-        return
-      }
-      const homeAddressResponse = await fetch(
-        `http://localhost:8080/api/home_address/${customerId}`
-      )
-      if (homeAddressResponse.ok) {
-        const homeAddress = await homeAddressResponse.json()
-        setHomeAddress(homeAddress)
-        setEditZipcode(homeAddress.zipcode)
-      }
+    const fetchHomeAddress = async () => {
+      if (customerId === undefined) return
+      const homeAddress = await APIFacade.getCustomerHomeAddress(customerId)
+      setHomeAddress(homeAddress)
+      setEditZipcode(homeAddress.zipcode)
     }
-    initHomeAddress()
+
+    fetchHomeAddress()
   }, [customerId])
+
+  const deleteHomeAddress = async () => {
+    if (homeAddress === undefined) {
+      throw Error("Customer's home address is undefined.")
+    }
+
+    if (email === undefined) {
+      throw Error("Customer's email is undefined.")
+    }
+
+    await APIFacade.deleteHomeAddress(homeAddress.id)
+    const emailDTO: Email = {
+      receiverEmail: email,
+      subject: "Cinema E-Booking System Home Address Delete",
+      text: "The home address in your account has been deleted. If this was unexpected, please change your password to protect your account."
+    }
+    await APIFacade.sendEmail(emailDTO)
+
+    window.location.reload()
+  }
+
+  const updateHomeAddress = async () => {
+    const address = editAddressInputRef.current?.value.trim()
+    const city = editCityInputRef.current?.value.trim()
+    const state = editStateSelectRef.current?.value
+
+    if (address === undefined) {
+      throw Error("The customer's address is undefined.")
+    }
+
+    if (city === undefined) {
+      throw Error("The customer's city is undefined.")
+    }
+
+    if (state === undefined) {
+      throw Error("The customer's state is undefined.")
+    }
+
+    window.location.reload()
+  }
 
   return (
     <>
@@ -100,24 +128,7 @@ export default function HomeAddressInput({
               </button>
               <button
                 className="scale-transition w-max"
-                onClick={async () => {
-                  await fetch(
-                    `http://localhost:8080/api/home_address/delete/${homeAddress.id}`,
-                    { method: "DELETE" }
-                  )
-                  await fetch("http://localhost:8080/api/email/profile", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                      receiverEmail: email,
-                      subject: "Cinema E-Booking System Home Address Delete",
-                      text: "The home address in your account has been deleted. If this was unexpected, please change your password to protect your account."
-                    })
-                  })
-                  window.location.reload()
-                }}
+                onClick={deleteHomeAddress}
               >
                 <Image src={RedDeleteIcon} alt="Delete Icon" width={30} />
               </button>

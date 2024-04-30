@@ -3,6 +3,7 @@ import {
   Email,
   Movie,
   ProfileCard,
+  ProfileHomeAddress,
   Promotion,
   ShowTime
 } from "./Types"
@@ -70,6 +71,14 @@ export default class APIFacade {
 
   public static async addCard(card: CustomerCard) {
     await APICardFacade.addCard(card)
+  }
+
+  public static async getCustomerHomeAddress(customerId: number) {
+    return await APIHomeAddressFacade.getCustomerHomeAddress(customerId)
+  }
+
+  public static async deleteHomeAddress(homeAddressId: number) {
+    await APIHomeAddressFacade.deleteHomeAddress(homeAddressId)
   }
 }
 
@@ -188,6 +197,23 @@ class APICardFacade {
     await fetch(
       `${this.CARD_URL}/add`,
       RequestInitHandler.postRequestInit(card)
+    )
+  }
+}
+
+class APIHomeAddressFacade {
+  private static readonly HOME_ADDRESS_URL = URL + "/home-addresses"
+
+  public static async getCustomerHomeAddress(customerId: number) {
+    const response = await fetch(`${this.HOME_ADDRESS_URL}/${customerId}`)
+    const data: ProfileHomeAddress = await response.json()
+    return data
+  }
+
+  public static async deleteHomeAddress(homeAddressId: number) {
+    await fetch(
+      `${this.HOME_ADDRESS_URL}/${homeAddressId}`,
+      RequestInitHandler.deleteRequestInit()
     )
   }
 }

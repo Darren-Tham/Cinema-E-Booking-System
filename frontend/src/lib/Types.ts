@@ -48,3 +48,19 @@ export type CustomerCard = {
   expirationDate: string
   billingAddress: string
 }
+
+export type ProfileHomeAddress = {
+  id: number
+  address: string
+  city: string
+  state: string
+  zipcode: string
+}
+
+export type CustomerHomeAddress = {
+  customerId: number
+  address: string
+  city: string
+  state: string
+  zipcode: string
+}
