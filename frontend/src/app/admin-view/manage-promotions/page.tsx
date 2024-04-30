@@ -8,22 +8,13 @@ import APIFacade from "@/lib/APIFacade"
 
 const ManagePromotions = () => {
   const [discountPercentage, setDiscountPercentage] = useState(0)
-  const nameRef = useRef<HTMLInputElement | null>(null)
-  const discountCodeRef = useRef<HTMLInputElement | null>(null)
-  const startDateRef = useRef<HTMLInputElement | null>(null)
-  const endDateRef = useRef<HTMLInputElement | null>(null)
+  const nameRef = useRef<HTMLInputElement>(null!)
+  const discountCodeRef = useRef<HTMLInputElement>(null!)
+  const startDateRef = useRef<HTMLInputElement>(null!)
+  const endDateRef = useRef<HTMLInputElement>(null!)
   const isAdmin = useAuth("admin")
 
   const isValidForm = () => {
-    if (
-      nameRef.current === null ||
-      discountCodeRef.current === null ||
-      startDateRef.current === null ||
-      endDateRef.current === null
-    ) {
-      return false
-    }
-
     if (nameRef.current.value === "") {
       alert("Name cannot be empty.")
       return false
@@ -64,16 +55,6 @@ const ManagePromotions = () => {
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    if (
-      nameRef.current === null ||
-      discountCodeRef.current === null ||
-      startDateRef.current === null ||
-      endDateRef.current === null
-    ) {
-      return
-    }
-
     if (!isValidForm()) return
 
     const promotion: Promotion = {
