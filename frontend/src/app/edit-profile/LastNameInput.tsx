@@ -3,34 +3,45 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import PencilIcon from "@public/pencil-icon.svg"
+import { Customer, Email } from "@/lib/Types"
+import APIFacade from "@/lib/APIFacade"
 
 type Props = {
-  customerId: number | undefined
-  email: string | undefined
+  customer: Customer
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function LastNameInput({
-  customerId,
-  email,
-  setDialogOpen
-}: Readonly<Props>) {
-  const dialogRef = useRef<HTMLDialogElement | null>(null)
-  const inputRef = useRef<HTMLInputElement | null>(null)
+const LastNameInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
+  const dialogRef = useRef<HTMLDialogElement>(null!)
+  const inputRef = useRef<HTMLInputElement>(null!)
   const [lastName, setLastName] = useState("")
 
   useEffect(() => {
-    async function initLastName() {
-      if (customerId === undefined) {
-        return
-      }
-      const response = await fetch(
-        `http://localhost:8080/api/customer/last_name/${customerId}`
-      )
-      setLastName(await response.text())
+    const fetchLastName = async () => {
+      const lastName = await APIFacade.getCustomerLastName(customer.id)
+      setLastName(lastName)
     }
-    initLastName()
-  }, [customerId])
+
+    fetchLastName()
+  }, [customer])
+
+  const updateLastName = async () => {
+    const updatedLastName = inputRef.current.value.trim()
+    if (updatedLastName === lastName) {
+      alert("The updated last name is the same as the current last name!")
+      return
+    }
+
+    await APIFacade.updateCustomerLastName(customer.id, updatedLastName)
+
+    const email: Email = {
+      receiverEmail: customer.email,
+      subject: "Cinema E-Booking System Last Name Update",
+      text: "The last name of your account has been updated. If this was unexpected, please change your password to protect your account."
+    }
+    await APIFacade.sendEmail(email)
+    window.location.reload()
+  }
 
   return (
     <>
@@ -43,7 +54,7 @@ export default function LastNameInput({
       <button
         className="self-center scale-transition w-max"
         onClick={() => {
-          dialogRef.current?.showModal()
+          dialogRef.current.showModal()
           setDialogOpen(true)
         }}
       >
@@ -71,7 +82,7 @@ export default function LastNameInput({
             <button
               className="border-[3px] text-white font-bold p-2 hover:scale-[1.015] transition-transform duration-300"
               onClick={() => {
-                dialogRef.current?.close()
+                dialogRef.current.close()
                 setDialogOpen(false)
               }}
             >
@@ -79,31 +90,7 @@ export default function LastNameInput({
             </button>
             <button
               className="bg-light-jade font-bold p-2 hover:scale-[1.015] transition-transform duration-300 rounded-sm"
-              onClick={async () => {
-                const updatedLastName = inputRef.current?.value.trim()
-                if (updatedLastName === lastName) {
-                  alert(
-                    "The updated last name is the same as the current first name!"
-                  )
-                } else {
-                  await fetch(
-                    `http://localhost:8080/api/customer/change_last_name/${customerId}/${updatedLastName}`,
-                    { method: "PUT" }
-                  )
-                  await fetch("http://localhost:8080/api/email/profile", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                      receiverEmail: email,
-                      subject: "Cinema E-Booking System Last Name Update",
-                      text: "The last name of your account has been updated. If this was unexpected, please change your password to protect your account."
-                    })
-                  })
-                  window.location.reload()
-                }
-              }}
+              onClick={updateLastName}
             >
               Submit
             </button>
@@ -113,3 +100,5 @@ export default function LastNameInput({
     </>
   )
 }
+
+export default LastNameInput

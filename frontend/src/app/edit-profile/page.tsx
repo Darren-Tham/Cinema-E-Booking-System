@@ -64,8 +64,7 @@ const EditProfile = () => {
                   setDialogOpen={setDialogOpen}
                 />
                 <LastNameInput
-                  customerId={customer?.id}
-                  email={customer?.email}
+                  customer={customer}
                   setDialogOpen={setDialogOpen}
                 />
                 <div className={jadeBoxStyles}>Email</div>
@@ -87,8 +86,7 @@ const EditProfile = () => {
             </div>
             <CardsInput customer={customer} setDialogOpen={setDialogOpen} />
             <HomeAddressInput
-              customerId={customer?.id}
-              email={customer?.email}
+              customer={customer}
               setDialogOpen={setDialogOpen}
             />
           </div>

@@ -53,6 +53,17 @@ export default class APIFacade {
     await APICustomerFacade.updateCustomerFirstName(customerId, firstName)
   }
 
+  public static async getCustomerLastName(customerId: number) {
+    return await APICustomerFacade.getCustomerLastName(customerId)
+  }
+
+  public static async updateCustomerLastName(
+    customerId: number,
+    lastName: string
+  ) {
+    await APICustomerFacade.updateCustomerLastName(customerId, lastName)
+  }
+
   public static async sendEmail(email: Email) {
     return await APIEmailFacade.sendEmail(email)
   }
@@ -100,7 +111,7 @@ class APIMovieFacade {
   public static async updateMovie(movie: Movie) {
     await fetch(
       `${this.MOVIE_URL}/update`,
-      RequestInitHandler.putRequestInit(movie)
+      RequestInitHandler.putRequestInitWithBody(movie)
     )
   }
 }
@@ -120,7 +131,7 @@ class APIShowtimeFacade {
   ) {
     await fetch(
       `${this.SHOWTIME_URL}/movies/${movieId}`,
-      RequestInitHandler.putRequestInit(dateTimes)
+      RequestInitHandler.putRequestInitWithBody(dateTimes)
     )
   }
 }
@@ -131,7 +142,7 @@ class APIPromotionFacade {
   public static async addPromotion(promotion: Promotion) {
     await fetch(
       `${this.PROMOTION_URL}`,
-      RequestInitHandler.postRequestInit(promotion)
+      RequestInitHandler.postRequestInitWithBody(promotion)
     )
   }
 }
@@ -156,9 +167,25 @@ class APICustomerFacade {
     customerId: number,
     firstName: string
   ) {
-    await fetch(`${this.CUSTOMER_URL}/${customerId}/first-name/${firstName}`, {
-      method: "PUT"
-    })
+    await fetch(
+      `${this.CUSTOMER_URL}/${customerId}/first-name/${firstName}`,
+      RequestInitHandler.putRequestInitNoBody()
+    )
+  }
+
+  public static async getCustomerLastName(customerId: number) {
+    const response = await fetch(`${this.CUSTOMER_URL}/${customerId}/last-name`)
+    return await response.text()
+  }
+
+  public static async updateCustomerLastName(
+    customerId: number,
+    lastName: string
+  ) {
+    await fetch(
+      `${this.CUSTOMER_URL}/${customerId}/last-name/${lastName}`,
+      RequestInitHandler.putRequestInitNoBody()
+    )
   }
 }
 
@@ -166,7 +193,10 @@ class APIEmailFacade {
   private static readonly EMAIL_URL = URL + "/email"
 
   public static async sendEmail(email: Email) {
-    await fetch(`${this.EMAIL_URL}`, RequestInitHandler.postRequestInit(email))
+    await fetch(
+      `${this.EMAIL_URL}`,
+      RequestInitHandler.postRequestInitWithBody(email)
+    )
   }
 }
 
@@ -182,21 +212,21 @@ class APICardFacade {
   public static async updateCard(card: ProfileCard) {
     await fetch(
       `${this.CARD_URL}/update`,
-      RequestInitHandler.putRequestInit(card)
+      RequestInitHandler.putRequestInitWithBody(card)
     )
   }
 
   public static async deleteCard(cardId: number) {
     await fetch(
       `${this.CARD_URL}/${cardId}`,
-      RequestInitHandler.deleteRequestInit()
+      RequestInitHandler.deleteRequestInitNoBody()
     )
   }
 
   public static async addCard(card: CustomerCard) {
     await fetch(
       `${this.CARD_URL}/add`,
-      RequestInitHandler.postRequestInit(card)
+      RequestInitHandler.postRequestInitWithBody(card)
     )
   }
 }
@@ -213,7 +243,7 @@ class APIHomeAddressFacade {
   public static async deleteHomeAddress(homeAddressId: number) {
     await fetch(
       `${this.HOME_ADDRESS_URL}/${homeAddressId}`,
-      RequestInitHandler.deleteRequestInit()
+      RequestInitHandler.deleteRequestInitNoBody()
     )
   }
 }
@@ -229,15 +259,21 @@ class RequestInitHandler {
     }
   }
 
-  public static postRequestInit(body: any) {
+  public static postRequestInitWithBody(body: any) {
     return this.requestInit("POST", body)
   }
 
-  public static putRequestInit(body: any) {
+  public static putRequestInitWithBody(body: any) {
     return this.requestInit("PUT", body)
   }
 
-  public static deleteRequestInit() {
+  public static putRequestInitNoBody() {
+    return {
+      method: "PUT"
+    }
+  }
+
+  public static deleteRequestInitNoBody() {
     return {
       method: "DELETE"
     }
