@@ -109,6 +109,10 @@ export default class APIFacade {
     return await APICustomerFacade.getCustomerIdByEmail(email)
   }
 
+  public static async getCustomerEmailById(customerId: number) {
+    return await APICustomerFacade.getCustomerEmailById(customerId)
+  }
+
   public static async getCustomer(email: string, password: string) {
     return await APICustomerFacade.getCustomer(email, password)
   }
@@ -300,6 +304,11 @@ class APICustomerFacade {
   public static async getCustomerIdByEmail(email: string) {
     const response = await fetch(`${this.CUSTOMER_URL}/${email}/id`)
     return response.ok ? +(await response.text()) : undefined
+  }
+
+  public static async getCustomerEmailById(customerId: number) {
+    const response = await fetch(`${this.CUSTOMER_URL}/${customerId}/email`)
+    return await response.text()
   }
 
   public static async getCustomer(email: string, password: string) {

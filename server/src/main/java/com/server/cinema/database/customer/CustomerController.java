@@ -58,7 +58,7 @@ public class CustomerController {
         return customerService.getStatus(customerId);
     }
 
-    @GetMapping("/email/{customerId}")
+    @GetMapping("/{customerId}/email")
     public String getEmailByCustomerId(@PathVariable final int customerId) {
         return customerService.getEmailByCustomerId(customerId);
     }
