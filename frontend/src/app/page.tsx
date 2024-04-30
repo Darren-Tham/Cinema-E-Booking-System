@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import UserNavbar from "@/components/UserNavbar"
 import MainMovieBanner from "@/components/MainMovieBanner"
 import FilterIcon from "@public/filter-icon.svg"
+import APIFacade from "@/lib/APIFacade"
 
 const CATEGORIES = [
   "Animation",
@@ -23,18 +24,21 @@ const CATEGORIES = [
   "Thriller"
 ]
 
-export default function Home() {
+const Home = () => {
   const [movies, setMovies] = useState<MovieType[]>([])
   const [filterType, setFilterType] = useState("All")
 
   useEffect(() => {
-    async function getMovies() {
-      const response = await fetch("http://localhost:8080/api/movies")
-      const data = await response.json()
-      setMovies(data)
+    const fetchMovies = async () => {
+      const movies = await APIFacade.getAllMovies()
+      setMovies(movies)
     }
-    getMovies()
+    fetchMovies()
   }, [])
+
+  const formatFilterType = (s: string) => {
+    return s.toUpperCase().replace("-", "_")
+  }
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -83,6 +87,4 @@ export default function Home() {
   )
 }
 
-function formatFilterType(s: string) {
-  return s.toUpperCase().replace("-", "_")
-}
+export default Home
