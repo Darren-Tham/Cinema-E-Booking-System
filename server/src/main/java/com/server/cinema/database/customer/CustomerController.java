@@ -82,7 +82,7 @@ public class CustomerController {
         return ResponseEntity.ok(emailExists);
     }
 
-    @GetMapping("/password/{customerId}/{password}")
+    @GetMapping("/{customerId}/{password}/check")
     public ResponseEntity<Boolean> isValidPassword(@PathVariable final int customerId,
             @PathVariable final String password) {
         final boolean isValidPassword = customerService.isValidPassword(customerId, password);
@@ -110,7 +110,7 @@ public class CustomerController {
         return ResponseEntity.ok(msg);
     }
 
-    @PutMapping("/change_password/{customerId}/{password}")
+    @PutMapping("/{customerId}/password/{password}")
     public ResponseEntity<String> changePassword(@PathVariable final int customerId,
             @PathVariable final String password) {
         customerService.changePassword(customerId, password);
