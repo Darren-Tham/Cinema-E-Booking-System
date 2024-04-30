@@ -89,6 +89,20 @@ export default class APIFacade {
     return APICustomerFacade.updateCustomerPhoneNumber(customerId, phoneNumber)
   }
 
+  public static async isCustomerSubscribedForPromotions(customerId: number) {
+    return APICustomerFacade.isCustomerSubscribedForPromotions(customerId)
+  }
+
+  public static async updateCustomerSubscribedForPromotions(
+    customerId: number,
+    isSubscribedForPromotions: boolean
+  ) {
+    await APICustomerFacade.updateCustomerSubscribedForPromotions(
+      customerId,
+      isSubscribedForPromotions
+    )
+  }
+
   public static async sendEmail(email: Email) {
     return await APIEmailFacade.sendEmail(email)
   }
@@ -247,6 +261,24 @@ class APICustomerFacade {
   ) {
     await fetch(
       `${this.CUSTOMER_URL}/${customerId}/phone-number/${phoneNumber}`,
+      RequestInitHandler.putRequestInitNoBody()
+    )
+  }
+
+  public static async isCustomerSubscribedForPromotions(customerId: number) {
+    const response = await fetch(
+      `${this.CUSTOMER_URL}/${customerId}/is-subscribed-for-promotions`
+    )
+    const data = await response.text()
+    return data === "true"
+  }
+
+  public static async updateCustomerSubscribedForPromotions(
+    customerId: number,
+    isSubscribedForPromotions: boolean
+  ) {
+    await fetch(
+      `${this.CUSTOMER_URL}/${customerId}/is-subscribed-for-promotions/${isSubscribedForPromotions}`,
       RequestInitHandler.putRequestInitNoBody()
     )
   }

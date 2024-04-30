@@ -52,7 +52,7 @@ public class CustomerController {
         return ResponseEntity.ok(phoneNumber);
     }
 
-    @GetMapping("/promotions/{customerId}")
+    @GetMapping("/{customerId}/is-subscribed-for-promotions")
     public ResponseEntity<Boolean> getIsSubscribedForPromotionsByCustomerId(@PathVariable final int customerId) {
         final boolean isSubscribedForPromotions = customerService.isSubscribedForPromotions(customerId);
         return ResponseEntity.ok(isSubscribedForPromotions);
@@ -138,7 +138,7 @@ public class CustomerController {
         return ResponseEntity.ok("Last name successfully changed.");
     }
 
-    @PutMapping("/change_promotion/{customerId}/{isSubscribedForPromotions}")
+    @PutMapping("/{customerId}/is-subscribed-for-promotions/{isSubscribedForPromotions}")
     public ResponseEntity<String> changeIsSubscribedForPromotions(@PathVariable final int customerId,
             @PathVariable final boolean isSubscribedForPromotions) {
         customerService.changeSubscribedForPromotions(customerId, isSubscribedForPromotions);
