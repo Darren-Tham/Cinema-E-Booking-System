@@ -130,7 +130,7 @@ const Login = () => {
               Remember Me
             </label>
           </div>
-          <button className="action-button w-full" onClick={handleFormSubmit}>
+          <button className="action-button w-full shadow-md" onClick={handleFormSubmit}>
             Log In
           </button>
           <div className="flex justify-center">
