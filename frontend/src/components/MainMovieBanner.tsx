@@ -24,7 +24,10 @@ export default function MainMovieBanner() {
   const height = 200
   return (
     <div className="flex flex-col justify-center mt-12">
-      <h1 className={`mt-10 text-emerald-200 text-center text-3xl font-semibold mb-10`}>{movies[currentMovie]?.["title"]}</h1>
+      <div className="flex justify-center">
+        <h1 className={`mt-10 text-[#2CC295] text-center text-3xl font-semibold mb-10 w-fit`}>{movies[currentMovie]?.["title"]}</h1>
+
+      </div>
 
       <div className="flex flex-row justify-between items-center h-96">
         {movies.map((movie, index) => (
@@ -36,7 +39,7 @@ export default function MainMovieBanner() {
             height={height}
             className={`absolute left-56 transition-opacity duration-500 ${
               index === currentMovie ? "opacity-100" : "opacity-0"
-            } shadow-[0_35px_60px_-15px_rgba(255,255,255,0.3)]`}
+            } shadow-[0_35px_60px_-10px_rgba(255,255,255,0.3)]`}
           />
         ))}
          <p className="absolute text-white text-xl w-1/4 right-96">{movies[currentMovie]?.["synopsis"]}</p>
