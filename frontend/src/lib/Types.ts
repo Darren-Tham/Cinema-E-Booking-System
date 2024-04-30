@@ -74,3 +74,8 @@ export type Customer = {
   status: string
   isSubscribedForPromotions: boolean
 }
+
+export type Admin = {
+  id: number
+  username: string
+}

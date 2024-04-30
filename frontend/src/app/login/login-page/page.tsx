@@ -3,15 +3,89 @@
 import HomeNavbar from "@/components/HomeNavbar"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useRef, useState } from "react"
+import { ChangeEvent, useRef, useState } from "react"
 import { initialSetUp } from "../../../lib/Auth"
+import APIFacade from "@/lib/APIFacade"
+import { Customer } from "@/lib/Types"
 
-export default function Login() {
+type Form = {
+  email: string
+  password: string
+  rememberMe: boolean
+}
+
+const Login = () => {
   const router = useRouter()
+  const [form, setForm] = useState<Form>({
+    email: "",
+    password: "",
+    rememberMe: false
+  })
   const [email, setEmail] = useState("")
   const passwordRef = useRef<HTMLInputElement | null>(null)
   const [loginFailed, setLoginFailed] = useState(false)
   const [remember, setRemember] = useState(false)
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value: email } = e.target
+    if (email.includes(" ")) return
+    setForm({ ...form, email })
+  }
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, password: e.target.value })
+  }
+
+  const handleRememberMe = (e: ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, rememberMe: e.target.checked })
+  }
+
+  const isValidForm = () => {
+    if (form.email === "") {
+      alert("Email cannot be empty.")
+      return false
+    }
+
+    if (form.password === "") {
+      alert("Password cannot be empty.")
+      return false
+    }
+
+    return true
+  }
+
+  const adminLogin = async () => {
+    const admin = await APIFacade.getAdmin(form.email, form.password)
+    if (admin === undefined) return
+    const user: Customer = {
+      id: admin.id,
+      firstName: "",
+      lastName: "",
+      email: admin.username,
+      phoneNumber: "",
+      status: "",
+      isSubscribedForPromotions: false
+    }
+    initialSetUp(user, form.rememberMe)
+    router.push("/admin-view")
+  }
+
+  const customerLogin = async () => {
+    const customer = await APIFacade.getCustomer(form.email, form.password)
+    if (customer === undefined) {
+      setLoginFailed(true)
+      return
+    }
+    initialSetUp(customer, form.rememberMe)
+    router.push("/")
+  }
+
+  const handleFormSubmit = async () => {
+    if (!isValidForm()) return
+    adminLogin()
+    customerLogin()
+  }
+
   return (
     <div className="min-h-screen bg-black flex flex-col">
       <HomeNavbar />
@@ -25,14 +99,9 @@ export default function Login() {
             <input
               type="text"
               id="email"
-              value={email}
+              value={form.email}
               className="input"
-              onChange={e => {
-                const { value } = e.target
-                if (!value.includes(" ")) {
-                  setEmail(value)
-                }
-              }}
+              onChange={handleEmailChange}
             />
           </div>
           <div className="flex flex-col gap-1 w-full">
@@ -43,7 +112,8 @@ export default function Login() {
               type="password"
               id="password"
               className="input"
-              ref={passwordRef}
+              value={form.password}
+              onChange={handlePasswordChange}
             />
             <Link
               href="./forgot-password"
@@ -55,65 +125,14 @@ export default function Login() {
           <div className="flex items-center w-full">
             <input
               type="checkbox"
-              value=""
               className="w-4 h-4 rounded"
-              checked={remember}
-              onChange={e => {
-                setRemember(e.target.checked)
-                console.log(remember)
-              }}
+              onChange={handleRememberMe}
             />
             <label className="ml-1.5 text-sm font-medium text-white">
               Remember Me
             </label>
           </div>
-          <button
-            className="action-button w-full"
-            onClick={async () => {
-              const password = passwordRef.current?.value
-              if (email === "") {
-                alert("Email cannot be empty.")
-                return
-              }
-              if (password === "") {
-                alert("Password cannot be empty.")
-                return
-              }
-
-              const adminResponse = await fetch(
-                `http://localhost:8080/api/admin/login/${email}/${password}`
-              )
-              if (adminResponse.status == 200) {
-                const adminData = await adminResponse.json()
-                if (adminData.username == "admin") {
-                  const setUpAdminData = {
-                    id: 1,
-                    firstName: "Admin",
-                    lastName: "",
-                    email: adminData.username,
-                    phoneNumber: "",
-                    status: "",
-                    isSubscribedForPromotions: true
-                  }
-                  initialSetUp(setUpAdminData, remember)
-
-                  router.push("/admin-view")
-                }
-              } else {
-                const response = await fetch(
-                  `http://localhost:8080/api/customers/login_credentials/${email}/${password}`
-                )
-                if (response.ok) {
-                  const data = await response.json()
-                  initialSetUp(data, remember) // Set Up Cookies Authentication
-                  setLoginFailed(false)
-                  router.push("/")
-                } else {
-                  setLoginFailed(true)
-                }
-              }
-            }}
-          >
+          <button className="action-button w-full" onClick={handleFormSubmit}>
             Log In
           </button>
           <div className="flex justify-center">
@@ -146,3 +165,5 @@ export default function Login() {
     </div>
   )
 }
+
+export default Login

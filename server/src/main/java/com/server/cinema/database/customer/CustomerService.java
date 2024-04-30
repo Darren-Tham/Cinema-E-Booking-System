@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.server.cinema.database.customer.dao.CustomerDAO;
 import com.server.cinema.database.customer.dto.InactiveCustomerDTO;
-import com.server.cinema.database.customer.dto.LoginCustomerDTO;
+import com.server.cinema.database.customer.dto.CustomerDTO;
 import com.server.cinema.database.customer.enums.UserState;
 import com.server.cinema.database.customer.exception.CustomerNotFoundException;
 import com.server.cinema.database.customer.exception.LoginCredentialsInvalidException;
@@ -96,12 +96,12 @@ public class CustomerService {
         return BCrypt.checkpw(password, customer.getEncryptedPassword());
     }
 
-    public LoginCustomerDTO getCustomerByEmailAndPassword(final String email, final String password) {
+    public CustomerDTO getCustomerByEmailAndPassword(final String email, final String password) {
         final Customer customer = customerDAO.getCustomerByEmail(email)
                 .orElseThrow(() -> new CustomerNotFoundException(
                         String.format("Customer with email `%s` does not exist.", email)));
         if (BCrypt.checkpw(password, customer.getEncryptedPassword())) {
-            return new LoginCustomerDTO(
+            return new CustomerDTO(
                     customer.getId(),
                     customer.getFirstName(),
                     customer.getLastName(),

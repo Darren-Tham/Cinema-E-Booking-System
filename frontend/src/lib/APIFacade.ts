@@ -1,4 +1,6 @@
 import {
+  Admin,
+  Customer,
   CustomerCard,
   Email,
   Movie,
@@ -107,6 +109,10 @@ export default class APIFacade {
     return await APICustomerFacade.getCustomerIdByEmail(email)
   }
 
+  public static async getCustomer(email: string, password: string) {
+    return await APICustomerFacade.getCustomer(email, password)
+  }
+
   public static async sendEmail(email: Email) {
     return await APIEmailFacade.sendEmail(email)
   }
@@ -133,6 +139,10 @@ export default class APIFacade {
 
   public static async deleteHomeAddress(homeAddressId: number) {
     await APIHomeAddressFacade.deleteHomeAddress(homeAddressId)
+  }
+
+  public static async getAdmin(username: string, password: string) {
+    return await APIAdminFacade.getAdmin(username, password)
   }
 }
 
@@ -291,6 +301,16 @@ class APICustomerFacade {
     const response = await fetch(`${this.CUSTOMER_URL}/${email}/id`)
     return response.ok ? +(await response.text()) : undefined
   }
+
+  public static async getCustomer(email: string, password: string) {
+    const response = await fetch(`${this.CUSTOMER_URL}/${email}/${password}`)
+    if (response.ok) {
+      const data: Customer = await response.json()
+      return data
+    } else {
+      return undefined
+    }
+  }
 }
 
 class APIEmailFacade {
@@ -349,6 +369,20 @@ class APIHomeAddressFacade {
       `${this.HOME_ADDRESS_URL}/${homeAddressId}`,
       RequestInitHandler.deleteRequestInitNoBody()
     )
+  }
+}
+
+class APIAdminFacade {
+  private static readonly ADMIN_URL = URL + "/admins"
+
+  public static async getAdmin(username: string, password: string) {
+    const response = await fetch(`${this.ADMIN_URL}/${username}/${password}`)
+    if (response.ok) {
+      const data: Admin = await response.json()
+      return data
+    } else {
+      return undefined
+    }
   }
 }
 

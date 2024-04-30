@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.server.cinema.database.admin.dto.AdminDTO;
-
 @CrossOrigin
 @RestController
-@RequestMapping("api/admin")
+@RequestMapping("api/admins")
 public class AdminController {
 
     private final AdminService adminService;
@@ -23,17 +21,10 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @GetMapping("/login/{username}/{password}")
-    public ResponseEntity<AdminDTO> getAdminCredentials(@PathVariable final String username,
+    @GetMapping("/{username}/{password}")
+    public AdminDTO getAdmin(@PathVariable final String username,
             @PathVariable final String password) {
-        AdminDTO admin = null;
-        if (adminService.getAdminCredentials(username, password)) {
-            admin = new AdminDTO(1, password, username);
-            return ResponseEntity.ok(admin);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
+        return adminService.getAdmin(username, password);
     }
 
 }

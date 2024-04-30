@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.server.cinema.database.customer.dto.InactiveCustomerDTO;
-import com.server.cinema.database.customer.dto.LoginCustomerDTO;
+import com.server.cinema.database.customer.dto.CustomerDTO;
 import com.server.cinema.database.customer.enums.UserState;
 
 @CrossOrigin
@@ -21,7 +21,7 @@ import com.server.cinema.database.customer.enums.UserState;
 @RequestMapping("api/customers")
 public class CustomerController {
 
-private final CustomerService customerService;
+    private final CustomerService customerService;
 
     @Autowired
     public CustomerController(final CustomerService customerService) {
@@ -79,8 +79,8 @@ private final CustomerService customerService;
         return customerService.isValidPassword(customerId, password);
     }
 
-    @GetMapping("/login_credentials/{email}/{password}")
-    public LoginCustomerDTO login(@PathVariable final String email,
+    @GetMapping("/{email}/{password}")
+    public CustomerDTO login(@PathVariable final String email,
             @PathVariable final String password) {
         return customerService.getCustomerByEmailAndPassword(email, password);
     }
