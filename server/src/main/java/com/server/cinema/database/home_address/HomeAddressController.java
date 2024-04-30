@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.server.cinema.database.home_address.dto.HomeAddressDTOCustomerId;
-import com.server.cinema.database.home_address.dto.HomeAddressDTOAddressId;
+import com.server.cinema.database.home_address.dto.CustomerHomeAddressDTO;
+import com.server.cinema.database.home_address.dto.ProfileHomeAddressDTO;
 
 @CrossOrigin
 @RestController
-@RequestMapping("api/home_address")
+@RequestMapping("api/home-addresses")
 public class HomeAddressController {
 
     private final HomeAddressService homeAddressService;
@@ -29,24 +29,23 @@ public class HomeAddressController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addHomeAddress(@RequestBody final HomeAddressDTOCustomerId homeAddress) {
+    public ResponseEntity<String> addHomeAddress(@RequestBody final CustomerHomeAddressDTO homeAddress) {
         homeAddressService.addHomeAddress(homeAddress);
         return new ResponseEntity<>("Home address successfully added.", HttpStatus.CREATED);
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<HomeAddressDTOAddressId> getHomeAddress(@PathVariable final int customerId) {
-        final HomeAddressDTOAddressId homeAddress = homeAddressService.getHomeAddress(customerId);
-        return ResponseEntity.ok(homeAddress);
+    public ProfileHomeAddressDTO getHomeAddress(@PathVariable final int customerId) {
+        return homeAddressService.getHomeAddress(customerId);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateHomeAddress(@RequestBody final HomeAddressDTOAddressId homeAddress) {
+    public ResponseEntity<String> updateHomeAddress(@RequestBody final ProfileHomeAddressDTO homeAddress) {
         homeAddressService.updateHomeAddress(homeAddress);
         return ResponseEntity.ok("Home address successfully updated.");
     }
 
-    @DeleteMapping("/delete/{homeAddressId}")
+    @DeleteMapping("{homeAddressId}")
     public ResponseEntity<String> deleteHomeAddress(@PathVariable final int homeAddressId) {
         homeAddressService.removeHomeAddress(homeAddressId);
         return ResponseEntity.ok("Home address successfully deleted.");

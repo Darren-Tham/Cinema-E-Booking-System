@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.server.cinema.database.customer.Customer;
-import com.server.cinema.database.home_address.dto.HomeAddressDTOCustomerId;
-import com.server.cinema.database.home_address.dto.HomeAddressDTOAddressId;
+import com.server.cinema.database.home_address.dto.CustomerHomeAddressDTO;
+import com.server.cinema.database.home_address.dto.ProfileHomeAddressDTO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -21,7 +21,7 @@ public class HomeAddressService {
     }
 
     @Transactional
-    public void addHomeAddress(final HomeAddressDTOCustomerId homeAddressDTO) {
+    public void addHomeAddress(final CustomerHomeAddressDTO homeAddressDTO) {
         Customer customer = entityManager.find(Customer.class, homeAddressDTO.customerId());
         final HomeAddress homeAddress = new HomeAddress(
                 homeAddressDTO.address(),
@@ -32,14 +32,14 @@ public class HomeAddressService {
         customer.setHomeAddress(homeAddress);
     }
 
-    public HomeAddressDTOAddressId getHomeAddress(final int customerId) {
+    public ProfileHomeAddressDTO getHomeAddress(final int customerId) {
         final Customer customer = entityManager.find(Customer.class, customerId);
         final HomeAddress homeAddress = customer.getHomeAddress();
         if (homeAddress == null) {
             final String msg = String.format("Customer with id %d does not have a home address.", customer.getId());
             throw new HomeAddressNotFoundException(msg);
         } else {
-            return new HomeAddressDTOAddressId(
+            return new ProfileHomeAddressDTO(
                     homeAddress.getId(),
                     homeAddress.getAddress(),
                     homeAddress.getCity(),
@@ -49,7 +49,7 @@ public class HomeAddressService {
     }
 
     @Transactional
-    public void updateHomeAddress(final HomeAddressDTOAddressId homeAddressDTO) {
+    public void updateHomeAddress(final ProfileHomeAddressDTO homeAddressDTO) {
         final HomeAddress homeAddress = entityManager.find(HomeAddress.class, homeAddressDTO.id());
         homeAddress.setAddress(homeAddressDTO.address());
         homeAddress.setCity(homeAddressDTO.city());

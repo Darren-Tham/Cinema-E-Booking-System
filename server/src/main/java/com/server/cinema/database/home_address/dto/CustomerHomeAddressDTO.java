@@ -1,6 +1,6 @@
 package com.server.cinema.database.home_address.dto;
 
-public record HomeAddressDTOCustomerId(
+public record CustomerHomeAddressDTO(
         int customerId,
         String address,
         String city,
