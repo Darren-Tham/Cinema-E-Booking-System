@@ -5,30 +5,28 @@ import Image from "next/image"
 import PencilIcon from "@public/pencil-icon.svg"
 import BluePlusIcon from "@public/blue-plus-icon.svg"
 import RedDeleteIcon from "@public/red-delete-icon.svg"
-import { Email, ProfileHomeAddress } from "@/lib/Types"
+import { Customer, Email, ProfileHomeAddress } from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"
 
 type Props = {
-  customerId: number | undefined
-  email: string | undefined
+  customer: Customer
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function HomeAddressInput({
-  customerId,
-  email,
+  customer,
   setDialogOpen
 }: Readonly<Props>) {
   const [homeAddress, setHomeAddress] = useState<ProfileHomeAddress>()
-  const editDialogRef = useRef<HTMLDialogElement | null>(null)
-  const addDialogRef = useRef<HTMLDialogElement | null>(null)
-  const editAddressInputRef = useRef<HTMLInputElement | null>(null)
-  const editCityInputRef = useRef<HTMLInputElement | null>(null)
-  const editStateSelectRef = useRef<HTMLSelectElement | null>(null)
+  const editDialogRef = useRef<HTMLDialogElement>(null!)
+  const addDialogRef = useRef<HTMLDialogElement>(null!)
+  const editAddressInputRef = useRef<HTMLInputElement>(null!)
+  const editCityInputRef = useRef<HTMLInputElement>(null!)
+  const editStateSelectRef = useRef<HTMLSelectElement>(null!)
   const [editZipcode, setEditZipcode] = useState("")
-  const addAddressInputRef = useRef<HTMLInputElement | null>(null)
-  const addCityInputref = useRef<HTMLInputElement | null>(null)
-  const addStateSelectRef = useRef<HTMLSelectElement | null>(null)
+  const addAddressInputRef = useRef<HTMLInputElement>(null!)
+  const addCityInputref = useRef<HTMLInputElement>(null!)
+  const addStateSelectRef = useRef<HTMLSelectElement>(null!)
   const [addZipcode, setAddZipcode] = useState("")
 
   useEffect(() => {
