@@ -1,13 +1,26 @@
 "use client"
 
 import HomeNavbar from "@/components/HomeNavbar"
+import APIFacade from "@/lib/APIFacade"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useRef } from "react"
 
-export default function ForgotPassword() {
+const ForgotPassword = () => {
   const router = useRouter()
-  const inputRef = useRef<HTMLInputElement | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null!)
+
+  const handleClick = async () => {
+    const email = inputRef.current.value.trim()
+    const customerId = await APIFacade.getCustomerIdByEmail(email)
+    if (customerId === undefined) {
+      alert(
+        "The email inputted is not associated with any account in our system. Please enter a new email address or create a new account."
+      )
+    } else {
+      router.push(`./reset-password?id=${customerId}`)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -24,24 +37,7 @@ export default function ForgotPassword() {
             </label>
             <input type="text" id="username" className="input" ref={inputRef} />
           </div>
-          <button
-            className="action-button w-full"
-            onClick={async () => {
-              const email = inputRef.current?.value
-              const response = await fetch(
-                `http://localhost:8080/api/customer/id/${email}`
-              )
-              if (response.ok) {
-                const data = await response.text()
-                const customerId = parseInt(data)
-                router.push(`./reset-password?id=${customerId}`)
-              } else {
-                alert(
-                  "The email inputted is not associated with any account in our system. Please try again or create a new account."
-                )
-              }
-            }}
-          >
+          <button className="action-button w-full" onClick={handleClick}>
             Send Reset Code
           </button>
           <div className="flex justify-center">
@@ -55,3 +51,5 @@ export default function ForgotPassword() {
     </div>
   )
 }
+
+export default ForgotPassword

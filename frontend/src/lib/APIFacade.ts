@@ -103,6 +103,10 @@ export default class APIFacade {
     )
   }
 
+  public static async getCustomerIdByEmail(email: string) {
+    return await APICustomerFacade.getCustomerIdByEmail(email)
+  }
+
   public static async sendEmail(email: Email) {
     return await APIEmailFacade.sendEmail(email)
   }
@@ -281,6 +285,11 @@ class APICustomerFacade {
       `${this.CUSTOMER_URL}/${customerId}/is-subscribed-for-promotions/${isSubscribedForPromotions}`,
       RequestInitHandler.putRequestInitNoBody()
     )
+  }
+
+  public static async getCustomerIdByEmail(email: string) {
+    const response = await fetch(`${this.CUSTOMER_URL}/${email}/id`)
+    return response.ok ? +(await response.text()) : undefined
   }
 }
 

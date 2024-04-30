@@ -63,7 +63,7 @@ public class CustomerController {
         return customerService.getEmailByCustomerId(customerId);
     }
 
-    @GetMapping("/id/{email}")
+    @GetMapping("/{email}/id")
     public int getCustomerIdByEmail(@PathVariable final String email) {
         return customerService.getCustomerIdByEmail(email);
     }
