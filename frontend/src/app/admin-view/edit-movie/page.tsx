@@ -25,8 +25,8 @@ const EditMovie = () => {
     ratingCode: ""
   })
   const [dateTimes, setDateTimes] = useState<string[]>([])
-  const dateRef = useRef<HTMLInputElement | null>(null)
-  const timeRef = useRef<HTMLInputElement | null>(null)
+  const dateRef = useRef<HTMLInputElement>(null!)
+  const timeRef = useRef<HTMLInputElement>(null!)
   const isAdmin = useAuth("admin")
   const labelStyles = "text-white font-semibold text-lg"
   const inputStyles = "rounded-sm outline-none p-2 text-sm w-[30rem]"
@@ -162,8 +162,8 @@ const EditMovie = () => {
     movie.categories.map(category => upperCaseToTitleCase(category))
 
   const handleAddShowTime = () => {
-    const date = dateRef.current?.value
-    const time = timeRef.current?.value
+    const date = dateRef.current.value
+    const time = timeRef.current.value
     if (date === undefined || date === "") {
       alert("Date cannot be empty.")
       return
