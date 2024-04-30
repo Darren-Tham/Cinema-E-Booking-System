@@ -12,6 +12,7 @@ type Form = {
   email: string
   password: string
   rememberMe: boolean
+  loginFailed: boolean
 }
 
 const Login = () => {
@@ -19,12 +20,9 @@ const Login = () => {
   const [form, setForm] = useState<Form>({
     email: "",
     password: "",
-    rememberMe: false
+    rememberMe: false,
+    loginFailed: false
   })
-  const [email, setEmail] = useState("")
-  const passwordRef = useRef<HTMLInputElement | null>(null)
-  const [loginFailed, setLoginFailed] = useState(false)
-  const [remember, setRemember] = useState(false)
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value: email } = e.target
@@ -73,7 +71,7 @@ const Login = () => {
   const customerLogin = async () => {
     const customer = await APIFacade.getCustomer(form.email, form.password)
     if (customer === undefined) {
-      setLoginFailed(true)
+      setForm({ ...form, loginFailed: true })
       return
     }
     initialSetUp(customer, form.rememberMe)
@@ -147,7 +145,7 @@ const Login = () => {
           <p className="text-white font-semibold text-sm self-start">
             * Required Field
           </p>
-          {loginFailed && (
+          {form.loginFailed && (
             <div role="alert">
               <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
                 Incorrect Credentials
