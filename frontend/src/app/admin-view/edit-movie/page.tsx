@@ -164,12 +164,12 @@ const EditMovie = () => {
   const handleAddShowTime = () => {
     const date = dateRef.current.value
     const time = timeRef.current.value
-    if (date === undefined || date === "") {
+    if (date === "") {
       alert("Date cannot be empty.")
       return
     }
 
-    if (time === undefined || time === "") {
+    if (time === "") {
       alert("Time cannot be empty.")
       return
     }
