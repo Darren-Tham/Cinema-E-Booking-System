@@ -60,8 +60,7 @@ const EditProfile = () => {
                 style={{ gridTemplateColumns: "repeat(3, auto)" }}
               >
                 <FirstNameInput
-                  customerId={customer?.id}
-                  email={customer?.email}
+                  customer={customer}
                   setDialogOpen={setDialogOpen}
                 />
                 <LastNameInput

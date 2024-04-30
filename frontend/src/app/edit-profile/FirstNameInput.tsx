@@ -4,47 +4,32 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import PencilIcon from "@public/pencil-icon.svg"
 import APIFacade from "@/lib/APIFacade"
-import { Email } from "@/lib/Types"
+import { Customer, Email } from "@/lib/Types"
 
 type Props = {
-  customerId: number | undefined
-  email: string | undefined
+  customer: Customer
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function FirstNameInput({
-  customerId,
-  email,
+  customer,
   setDialogOpen
 }: Readonly<Props>) {
-  const dialogRef = useRef<HTMLDialogElement | null>(null)
-  const inputRef = useRef<HTMLInputElement | null>(null)
+  const dialogRef = useRef<HTMLDialogElement>(null!)
+  const inputRef = useRef<HTMLInputElement>(null!)
   const [firstName, setFirstName] = useState("")
 
   useEffect(() => {
     const fetchFirstName = async () => {
-      if (customerId === undefined) return
-      const firstName = await APIFacade.getCustomerFirstName(customerId)
+      const firstName = await APIFacade.getCustomerFirstName(customer.id)
       setFirstName(firstName)
     }
 
     fetchFirstName()
-  }, [customerId])
+  }, [customer])
 
   const updateFirstName = async () => {
-    const updatedFirstName = inputRef.current?.value.trim()
-
-    if (updatedFirstName === undefined) {
-      throw Error("The updated first name is undefined.")
-    }
-
-    if (customerId === undefined) {
-      throw Error("The customer's id is undefined.")
-    }
-
-    if (email === undefined) {
-      throw Error("Customer's email is undefined.")
-    }
+    const updatedFirstName = inputRef.current.value.trim()
 
     if (updatedFirstName === firstName) {
       alert(
@@ -53,14 +38,14 @@ export default function FirstNameInput({
       return
     }
 
-    await APIFacade.updateCustomerFirstName(customerId, firstName)
+    await APIFacade.updateCustomerFirstName(customer.id, firstName)
 
-    const emailDTO: Email = {
-      receiverEmail: email,
+    const email: Email = {
+      receiverEmail: customer.email,
       subject: "Cinema E-Booking System First Name Update",
       text: "The first name of your account has been updated. If this was unexpected, please change your password to protect your account."
     }
-    await APIFacade.sendEmail(emailDTO)
+    await APIFacade.sendEmail(email)
 
     window.location.reload()
   }
@@ -76,7 +61,7 @@ export default function FirstNameInput({
       <button
         className="self-center scale-transition w-max"
         onClick={() => {
-          dialogRef.current?.showModal()
+          dialogRef.current.showModal()
           setDialogOpen(true)
         }}
       >
@@ -104,7 +89,7 @@ export default function FirstNameInput({
             <button
               className="border-[3px] text-white font-bold p-2 hover:scale-[1.015] transition-transform duration-300"
               onClick={() => {
-                dialogRef.current?.close()
+                dialogRef.current.close()
                 setDialogOpen(false)
               }}
             >
