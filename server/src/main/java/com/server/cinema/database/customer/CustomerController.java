@@ -51,7 +51,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}/is-subscribed-for-promotions")
-    public boolean getIsSubscribedForPromotionsByCustomerId(@PathVariable final int customerId) {
+    public boolean isCustomerSubscribedForPromotions(@PathVariable final int customerId) {
         return customerService.isSubscribedForPromotions(customerId);
     }
 
