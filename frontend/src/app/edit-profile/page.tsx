@@ -73,14 +73,12 @@ const EditProfile = () => {
                 </div>
                 <div />
                 <PhoneNumberInput
-                  customerId={customer?.id}
-                  email={customer?.email}
+                  customer={customer}
                   setDialogOpen={setDialogOpen}
                 />
               </div>
               <PasswordInput
-                customerId={customer?.id}
-                email={customer?.email}
+                customer={customer}
                 setDialogOpen={setDialogOpen}
               />
             </div>
@@ -90,8 +88,8 @@ const EditProfile = () => {
               setDialogOpen={setDialogOpen}
             />
           </div>
-          <VerificationCodeInput customerId={customer?.id} />
-          <PromotionButton customerId={customer?.id} email={customer?.email} />
+          {/* <VerificationCodeInput customerId={customer?.id} /> */}
+          <PromotionButton customer={customer} />
           <Link
             href="/"
             className={`${jadeBoxStyles} w-full hover:scale-[1.015] transition-transform duration-300 text-center`}
