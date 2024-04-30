@@ -287,7 +287,7 @@ export default function HomeAddressInput({
                       "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                      receiverEmail: email,
+                      receiverEmail: customer.email,
                       subject: "Cinema E-Booking System Home Address Update",
                       text: "The home address in your account has been updated. If this was unexpected, please change your password to protect your account."
                     })
@@ -442,7 +442,7 @@ export default function HomeAddressInput({
                       "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                      customerId,
+                      customerId: customer.id,
                       address,
                       city,
                       state,
@@ -455,7 +455,7 @@ export default function HomeAddressInput({
                       "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                      receiverEmail: email,
+                      receiverEmail: customer.email,
                       subject: "Cinema E-Booking System Home Address Add",
                       text: "A home address has been added to your account. If this was unexpected, please change your password to protect your account."
                     })
