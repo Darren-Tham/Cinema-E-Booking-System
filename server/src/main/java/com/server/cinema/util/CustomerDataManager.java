@@ -25,19 +25,19 @@ public class CustomerDataManager
     }
 
     public void init() {
-        final String email = "exampleemail@gmail.com";
+        final String email = "darrent9859@gmail.com";
         if (customerRepository.findByEmail(email).isPresent()) {
             return;
         }
 
-        final String encryptedPassword = BCrypt.hashpw("swe12345", BCrypt.gensalt());
+        final String encryptedPassword = BCrypt.hashpw("swe", BCrypt.gensalt());
         final String encryptedCardNumber = BCrypt.hashpw("5555555555555555", BCrypt.gensalt());
         final Customer customer = new Customer(
-                "FirstName",
-                "LastName",
+                "Darren",
+                "Thammavong",
                 email,
                 encryptedPassword,
-                "6789998212",
+                "6789252555",
                 UserState.ACTIVE,
                 true);
         final Card card = new Card("Visa", encryptedCardNumber, "2026/12/01", "123 Example St.", "5555", customer);
