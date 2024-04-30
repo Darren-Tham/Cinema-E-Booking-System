@@ -31,14 +31,16 @@ export default function TheatersAndTimes() {
       if (movieId === null) {
         throw Error("Invalid movie id.")
       }
-      const response = await fetch(`http://localhost:8080/api/movie/${movieId}`)
+      const response = await fetch(
+        `http://localhost:8080/api/movies/${movieId}`
+      )
       const data = await response.json()
       setMovie(data)
     }
 
     async function getShowTimes() {
       const response = await fetch(
-        `http://localhost:8080/api/show_time/movieId/${movieId}`
+        `http://localhost:8080/api/showtimes/movieId/${movieId}`
       )
       const data: ShowTime[] = await response.json()
       setShowTimes(data)
@@ -183,7 +185,7 @@ type Review = {
 
 async function getReviews(movieId: number): Promise<Review[]> {
   const response = await fetch(
-    `http://localhost:8080/api/review/movieId/${movieId}`
+    `http://localhost:8080/api/reviews/movieId/${movieId}`
   )
   return await response.json()
 }

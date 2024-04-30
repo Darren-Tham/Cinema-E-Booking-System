@@ -21,7 +21,7 @@ import com.server.cinema.database.customer.enums.UserState;
 @RequestMapping("api/customers")
 public class CustomerController {
 
-    private final CustomerService customerService;
+private final CustomerService customerService;
 
     @Autowired
     public CustomerController(final CustomerService customerService) {

@@ -183,7 +183,7 @@ export default function RegistrationPage() {
 
   async function addCustomer() {
     const customer = getCustomer()
-    const response = await fetch("http://localhost:8080/api/customer/add", {
+    const response = await fetch("http://localhost:8080/api/customers/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -214,7 +214,7 @@ export default function RegistrationPage() {
 
   async function addCard(customerId: number) {
     const card = getCard(customerId)
-    await fetch("http://localhost:8080/api/card/add", {
+    await fetch("http://localhost:8080/api/cards/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -244,7 +244,7 @@ export default function RegistrationPage() {
 
   async function addHomeAddress(customerId: number) {
     const homeAddress = getHomeAddress(customerId)
-    await fetch("http://localhost:8080/api/home_address/add", {
+    await fetch("http://localhost:8080/api/home-addresses/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -255,7 +255,7 @@ export default function RegistrationPage() {
 
   async function emailExists() {
     const response = await fetch(
-      `http://localhost:8080/api/customer/email_exists/${email}`
+      `http://localhost:8080/api/customers/email_exists/${email}`
     )
     const data = await response.text()
     return data === "true"

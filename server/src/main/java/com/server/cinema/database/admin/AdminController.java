@@ -24,10 +24,10 @@ public class AdminController {
     }
 
     @GetMapping("/login/{username}/{password}")
-    public ResponseEntity<AdminDTO> isAdminCredentialsCorrect(@PathVariable final String username,
+    public ResponseEntity<AdminDTO> getAdminCredentials(@PathVariable final String username,
             @PathVariable final String password) {
         AdminDTO admin = null;
-        if (adminService.adminCredentialsCorrect(username, password)) {
+        if (adminService.getAdminCredentials(username, password)) {
             admin = new AdminDTO(1, password, username);
             return ResponseEntity.ok(admin);
         } else {

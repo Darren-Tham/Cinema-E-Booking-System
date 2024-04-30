@@ -1,6 +1,7 @@
 "use client"
 
 import HomeNavbar from "@/components/HomeNavbar"
+import APIFacade from "@/lib/APIFacade"
 import {
   resendVerificationCode,
   sendAndSetNewVerificationCode
@@ -16,7 +17,7 @@ export default function ResetPassword() {
   const param = searchParams.get("id")
   const [verificationCode, setVerificationCode] = useState("")
   const verificationCodeRef = useRef<HTMLInputElement | null>(null)
-  const passwordRef = useRef<HTMLInputElement | null>(null)
+  const passwordRef = useRef<HTMLInputElement>(null!)
   const confirmPasswordRef = useRef<HTMLInputElement | null>(null)
 
   if (param === null) {
@@ -83,7 +84,7 @@ export default function ResetPassword() {
           <button
             className="action-button w-full"
             onClick={async () => {
-              const password = passwordRef.current?.value
+              const password = passwordRef.current.value
               if (
                 verificationCodeRef.current?.value.trim() !== verificationCode
               ) {
@@ -95,6 +96,7 @@ export default function ResetPassword() {
               } else if (password !== confirmPasswordRef.current?.value) {
                 alert("Passwords must match.")
               } else {
+                await APIFacade.updateCustomerPassword(customerId, password)
                 await fetch(
                   `http://localhost:8080/api/customer/change_password/${customerId}/${password}`,
                   {

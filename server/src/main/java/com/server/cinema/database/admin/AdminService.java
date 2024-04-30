@@ -6,21 +6,22 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.server.cinema.database.admin.dao.AdminDAO;
+import com.server.cinema.database.admin.dto.AdminDTO;
 
 @Service
 public class AdminService {
 
-    private final AdminDAO adminDAO;
+    private final AdminRepository adminRepository;
 
     @Autowired
-    public AdminService(final AdminDAO adminDAO) {
-        this.adminDAO = adminDAO;
+    public AdminService(final AdminRepository adminRepository) {
+        this.adminRepository = adminRepository;
     }
 
-    public boolean adminCredentialsCorrect(final String username, final String password) {
-        Optional<Admin> admin = adminDAO.findByUsername(username);
-        return admin.isPresent() && BCrypt.checkpw(password, admin.get().getEncryptedPassword());
+    public AdminDTO getAdminCredentials(final String username, final String password) {
+        return adminRepository.findByUsername(username).map(
+                (final Admin admin) -> new AdminDTO(admin.getId(), admin.getEncryptedPassword(), admin.getUsername()))
+                .orElseThrow();
     }
 
 }

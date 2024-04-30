@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("api/review")
+@RequestMapping("api/reviews")
 public class ReviewController {
 
     private final ReviewService reviewService;

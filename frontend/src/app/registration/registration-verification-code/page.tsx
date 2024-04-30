@@ -33,7 +33,7 @@ export default function RegistrationVerificationCode() {
 
   async function setStatusToActive() {
     await fetch(
-      `http://localhost:8080/api/customer/set_active_status/${customerId}`,
+      `http://localhost:8080/api/customers/set_active_status/${customerId}`,
       {
         method: "PUT"
       }

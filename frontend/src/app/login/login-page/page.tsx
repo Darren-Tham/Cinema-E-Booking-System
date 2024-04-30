@@ -87,13 +87,13 @@ export default function Login() {
                 const adminData = await adminResponse.json()
                 if (adminData.username == "admin") {
                   const setUpAdminData = {
-                    "id": 1,
-                    "firstName": "Admin",
-                    "lastName": "",
-                    "email": adminData.username,
-                    "phoneNumber": "",
-                    "status": "",
-                    "isSubscribedForPromotions": true
+                    id: 1,
+                    firstName: "Admin",
+                    lastName: "",
+                    email: adminData.username,
+                    phoneNumber: "",
+                    status: "",
+                    isSubscribedForPromotions: true
                   }
                   initialSetUp(setUpAdminData, remember)
 
@@ -101,7 +101,7 @@ export default function Login() {
                 }
               } else {
                 const response = await fetch(
-                  `http://localhost:8080/api/customer/login_credentials/${email}/${password}`
+                  `http://localhost:8080/api/customers/login_credentials/${email}/${password}`
                 )
                 if (response.ok) {
                   const data = await response.json()
@@ -143,6 +143,6 @@ export default function Login() {
           )}
         </div>
       </div>
-    </div >
+    </div>
   )
 }

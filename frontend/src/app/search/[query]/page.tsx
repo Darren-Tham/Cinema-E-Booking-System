@@ -18,7 +18,7 @@ export default function SearchQuery({ params: { query } }: Readonly<Props>) {
   useEffect(() => {
     async function getMovies() {
       const response = await fetch(
-        `http://localhost:8080/api/movie/search?query=${query}`
+        `http://localhost:8080/api/movies/search?query=${query}`
       )
       const data = await response.json()
       setMovies(data)

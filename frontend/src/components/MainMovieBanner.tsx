@@ -8,7 +8,7 @@ export default function MainMovieBanner() {
   const [currentMovie, setCurrentMovie] = useState(0)
   useEffect(() => {
     async function getMovies() {
-      const response = await fetch("http://localhost:8080/api/movie")
+      const response = await fetch("http://localhost:8080/api/movies")
       const data = await response.json()
       setMovies(data)
     }
@@ -16,7 +16,7 @@ export default function MainMovieBanner() {
   }, [])
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentMovie((curr) => (curr + 1) % movies.length)
+      setCurrentMovie(curr => (curr + 1) % movies.length)
     }, 5000)
     return () => clearInterval(interval)
   }, [movies])
@@ -25,8 +25,11 @@ export default function MainMovieBanner() {
   return (
     <div className="flex flex-col justify-center mt-12">
       <div className="flex justify-center">
-        <h1 className={`mt-10 text-[#2CC295] text-center text-3xl font-semibold mb-10 w-fit`}>{movies[currentMovie]?.["title"]}</h1>
-
+        <h1
+          className={`mt-10 text-[#2CC295] text-center text-3xl font-semibold mb-10 w-fit`}
+        >
+          {movies[currentMovie]?.["title"]}
+        </h1>
       </div>
 
       <div className="flex flex-row justify-between items-center h-96">
@@ -42,11 +45,10 @@ export default function MainMovieBanner() {
             } shadow-[0_35px_60px_-10px_rgba(255,255,255,0.3)]`}
           />
         ))}
-         <p className="absolute text-white text-xl w-1/4 right-96">{movies[currentMovie]?.["synopsis"]}</p>
-
+        <p className="absolute text-white text-xl w-1/4 right-96">
+          {movies[currentMovie]?.["synopsis"]}
+        </p>
       </div>
     </div>
-
-
   )
 }
