@@ -15,11 +15,10 @@ import {
   Fragment
 } from "react"
 import APIFacade from "@/lib/APIFacade"
-import { CustomerCard, Email, ProfileCard } from "@/lib/Types"
+import { Customer, CustomerCard, Email, ProfileCard } from "@/lib/Types"
 
 type Props = {
-  customerId: number | undefined
-  email: string | undefined
+  customer: Customer
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
@@ -31,25 +30,20 @@ type Refs = {
 }
 
 export default function CardsInput({
-  customerId,
-  email,
+  customer,
   setDialogOpen
 }: Readonly<Props>) {
   const [customerCards, setCustomerCards] = useState<ProfileCard[]>([])
   const cardsRef = useRef<Refs[]>([])
-  const addDialogRef = useRef<HTMLDialogElement | null>(null)
-  const addCreditCardTypeRef = useRef<HTMLSelectElement | null>(null)
+  const addDialogRef = useRef<HTMLDialogElement>(null!)
+  const addCreditCardTypeRef = useRef<HTMLSelectElement>(null!)
   const [addCreditCardNumber, setAddCreditCardNumber] = useState("")
   const [addExpirationDate, setAddExpirationDate] = useState("")
-  const addBillingAddressRef = useRef<HTMLInputElement | null>(null)
+  const addBillingAddressRef = useRef<HTMLInputElement>(null!)
 
   useEffect(() => {
     const fetchCustomerCards = async () => {
-      if (customerId === undefined) {
-        return
-      }
-
-      const customerCards = await APIFacade.getCustomerCards(customerId)
+      const customerCards = await APIFacade.getCustomerCards(customer.id)
       setCustomerCards(customerCards)
       return customerCards
     }
@@ -65,7 +59,7 @@ export default function CardsInput({
       })
     }
     cardsRef.current = refs
-  }, [customerId])
+  }, [customer])
 
   const expirationDateIsFormatted = (expirationDate: string) => {
     return /^(?:0[1-9]|1[0-2])\/\d{4}$/.test(expirationDate)
@@ -118,10 +112,6 @@ export default function CardsInput({
       throw Error("billingAddress is undefined.")
     }
 
-    if (email === undefined) {
-      throw Error("Customer's email is undefined.")
-    }
-
     if (!isValidCardUpdateInfo(card, cardType, expirationDate, billingAddress))
       return
 
@@ -134,28 +124,24 @@ export default function CardsInput({
     }
     await APIFacade.updateCard(updatedCard)
 
-    const emailDTO: Email = {
-      receiverEmail: email,
+    const email: Email = {
+      receiverEmail: customer.email,
       subject: "Cinema E-Booking System Credit Card Update",
       text: `The credit card ending in ${card.lastFourDigits} in your account has been updated. If this was unexpected, please change your password to protect your account.`
     }
-    await APIFacade.sendEmail(emailDTO)
+    await APIFacade.sendEmail(email)
 
     window.location.reload()
   }
 
   const deleteCard = async (card: ProfileCard) => {
-    if (email === undefined) {
-      throw Error("Customer's email is undefined.")
-    }
-
     await APIFacade.deleteCard(card.id)
-    const emailDTO: Email = {
-      receiverEmail: email,
+    const email: Email = {
+      receiverEmail: customer.email,
       subject: "Cinema E-Booking System Credit Card Delete",
       text: `The credit card ending in ${card.lastFourDigits} in your account has been deleted. If this was unexpected, please change your password to protect your account.`
     }
-    await APIFacade.sendEmail(emailDTO)
+    await APIFacade.sendEmail(email)
     window.location.reload()
   }
 
@@ -198,18 +184,10 @@ export default function CardsInput({
       throw Error("billingAddress is undefined.")
     }
 
-    if (customerId === undefined) {
-      throw Error("The customer's id is undefined.")
-    }
-
-    if (email === undefined) {
-      throw Error("Customer's email is undefined.")
-    }
-
     if (!isValidCardAddInfo(creditCardType, billingAddress)) return
 
     const card: CustomerCard = {
-      customerId,
+      customerId: customer.id,
       cardType: creditCardType,
       cardNumber: addCreditCardNumber,
       expirationDate: addExpirationDate,
@@ -217,14 +195,14 @@ export default function CardsInput({
     }
     await APIFacade.addCard(card)
 
-    const emailDTO: Email = {
-      receiverEmail: email,
+    const email: Email = {
+      receiverEmail: customer.email,
       subject: "Cinema E-Booking System Credit Card Add",
       text: `The credit card ending in ${addCreditCardNumber.substring(
         addCreditCardNumber.length - 4
       )} in your account has been added to your account. If this was unexpected, please change your password to protect your account.`
     }
-    await APIFacade.sendEmail(emailDTO)
+    await APIFacade.sendEmail(email)
 
     window.location.reload()
   }
