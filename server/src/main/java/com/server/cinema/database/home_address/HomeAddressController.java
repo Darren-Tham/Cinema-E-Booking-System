@@ -29,9 +29,8 @@ public class HomeAddressController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addHomeAddress(@RequestBody final CustomerHomeAddressDTO homeAddress) {
+    public void addHomeAddress(@RequestBody final CustomerHomeAddressDTO homeAddress) {
         homeAddressService.addHomeAddress(homeAddress);
-        return new ResponseEntity<>("Home address successfully added.", HttpStatus.CREATED);
     }
 
     @GetMapping("/{customerId}")

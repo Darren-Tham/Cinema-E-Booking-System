@@ -31,9 +31,8 @@ public class CardController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addCard(@RequestBody final CustomerCardDTO card) {
+    public void addCard(@RequestBody final CustomerCardDTO card) {
         cardService.addCard(card);
-        return new ResponseEntity<>("Card successfully added.", HttpStatus.CREATED);
     }
 
     @GetMapping("/{customerId}")

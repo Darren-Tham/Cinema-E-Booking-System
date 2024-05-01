@@ -75,6 +75,15 @@ export type Customer = {
   isSubscribedForPromotions: boolean
 }
 
+export type NewCustomer = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  phoneNumber: string
+  isSubscribedForPromotions: boolean
+}
+
 export type Admin = {
   id: number
   username: string

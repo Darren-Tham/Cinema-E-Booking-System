@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.server.cinema.database.customer.dao.CustomerDAO;
-import com.server.cinema.database.customer.dto.InactiveCustomerDTO;
+import com.server.cinema.database.customer.dto.NewCustomerDTO;
 import com.server.cinema.database.customer.dto.CustomerDTO;
 import com.server.cinema.database.customer.enums.UserState;
 import com.server.cinema.database.customer.exception.CustomerNotFoundException;
@@ -70,7 +70,7 @@ public class CustomerService {
         return customerDAO.emailExists(email);
     }
 
-    public int addInactiveCustomer(final InactiveCustomerDTO customerDTO) {
+    public int addNewCustomer(final NewCustomerDTO customerDTO) {
         final String encryptedPassword = BCrypt.hashpw(customerDTO.password(), BCrypt.gensalt());
         Customer customer = new Customer(
                 customerDTO.firstName(),

@@ -1,267 +1,149 @@
 "use client"
 
-type Customer = {
+export const enum FormType {
+  Personal,
+  Payment,
+  HomeAddress
+}
+
+export type Form = {
   firstName: string
   lastName: string
   email: string
   password: string
+  confirmPassword: string
   phoneNumber: string
   isSubscribedForPromotions: boolean
-}
-
-type Card = {
-  customerId: number
   cardType: string
   cardNumber: string
   expirationDate: string
+  cvv: string
   billingAddress: string
-}
-
-type HomeAddress = {
-  customerId: number
-  address: string
+  homeAddress: string
   city: string
   state: string
   zipcode: string
 }
 
-import Link from "next/link"
-import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState } from "react"
 import HomeNavbar from "@/components/HomeNavbar"
+import PersonalInformationFormComponent from "./PersonalInformationFormComponent"
+import PaymentInformationFormComponent from "./PaymentInformationFormComponent"
+import HomeAddressInformationFormComponent from "./HomeAddressInformationFormComponent"
+import APIFacade from "@/lib/APIFacade"
 
-export default function RegistrationPage() {
-  const router = useRouter()
-  const [showPersonalInformationForm, setShowPersonalInformationForm] =
-    useState(true)
-  const [showPaymentInformationForm, setShowPaymentInformationForm] =
-    useState(false)
-  const [showHomeAddressForm, setShowHomeAddressForm] = useState(false)
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [email, setEmail] = useState("")
-  const passwordRef = useRef<HTMLInputElement | null>(null)
-  const confirmPasswordRef = useRef<HTMLInputElement | null>(null)
-  const [phoneNumber, setPhoneNumber] = useState("")
-  const [isSubscribedForPromotions, setIsSubscribedForPromotions] =
-    useState(true)
-  const creditCardTypeRef = useRef<HTMLSelectElement | null>(null)
-  const [creditCardNumber, setCreditCardNumber] = useState("")
-  const [expirationDate, setExpirationDate] = useState("")
-  const [cvv, setCVV] = useState("")
-  const billingAddressRef = useRef<HTMLInputElement | null>(null)
-  const homeAddressRef = useRef<HTMLInputElement | null>(null)
-  const cityRef = useRef<HTMLInputElement | null>(null)
-  const stateRef = useRef<HTMLSelectElement | null>(null)
-  const [zipcode, setZipcode] = useState("")
+const RegistrationPage = () => {
+  const [formType, setFormType] = useState(FormType.Personal)
+  const [form, setForm] = useState<Form>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    phoneNumber: "",
+    isSubscribedForPromotions: true,
+    cardType: "",
+    cardNumber: "",
+    expirationDate: "",
+    cvv: "",
+    billingAddress: "",
+    homeAddress: "",
+    city: "",
+    state: "",
+    zipcode: ""
+  })
 
-  function goToPersonalInformationForm() {
-    setShowPersonalInformationForm(true)
-    setShowPaymentInformationForm(false)
-    setShowHomeAddressForm(false)
+  const goToPersonalInformationForm = () => {
+    setFormType(FormType.Personal)
   }
 
-  async function goToPaymentInformationForm() {
-    if (await hasPersonalInformation()) {
-      setShowPersonalInformationForm(false)
-      setShowPaymentInformationForm(true)
-      setShowHomeAddressForm(false)
-    }
+  const goToPaymentInformationForm = async () => {
+    if (!(await hasPersonalInformation())) return
+    setFormType(FormType.Payment)
   }
 
-  async function goToHomeAddressForm() {
+  const goToHomeAddressForm = async () => {
     if (!validPaymentInformation()) {
       alert(
         "Please either complete the payment information form correctly or delete all incomplete fields."
       )
       return
     }
-    if (await hasPersonalInformation()) {
-      setShowPersonalInformationForm(false)
-      setShowPaymentInformationForm(false)
-      setShowHomeAddressForm(true)
-    }
+    if (!(await hasPersonalInformation())) return
+    setFormType(FormType.HomeAddress)
   }
 
-  async function hasPersonalInformation() {
-    if (firstName === "") {
+  const hasPersonalInformation = async () => {
+    if (form.firstName === "") {
       alert("First name cannot be empty.")
       return false
     }
-    if (lastName === "") {
+    if (form.lastName === "") {
       alert("Last name cannot be empty.")
       return false
     }
-    if (email === "") {
+    if (form.email === "") {
       alert("Email cannot be empty.")
       return false
     }
-    if (!email.includes("@")) {
+    if (!form.email.includes("@")) {
       alert("Email must contain the @ character.")
       return false
     }
-    if (await emailExists()) {
+    if (await APIFacade.customerEmailExists(form.email)) {
       alert("Email is already taken.")
       return false
     }
-    const password = passwordRef.current?.value
-    const confirmPassword = confirmPasswordRef.current?.value
-    if (password === "") {
+    if (form.password === "") {
       alert("Password cannot be empty.")
       return false
     }
-    if (password !== confirmPassword) {
+    if (form.password !== form.confirmPassword) {
       alert("Passwords must match.")
       return false
     }
-    if (phoneNumber === "") {
+    if (form.phoneNumber === "") {
       alert("Phone number cannot be empty.")
       return false
     }
     return true
   }
 
-  function validPaymentInformation() {
+  const validPaymentInformation = () => {
     return paymentInformationComplete() || paymentInformationEmpty()
   }
 
-  function paymentInformationComplete() {
+  const paymentInformationComplete = () => {
     return (
-      creditCardTypeRef.current?.value !== "" &&
-      creditCardNumber !== "" &&
-      /^(?:0[1-9]|1[0-2])\/\d{4}$/.test(expirationDate) &&
-      cvv !== "" &&
-      billingAddressRef.current?.value !== ""
+      form.cardType !== "" &&
+      form.cardNumber !== "" &&
+      /^(?:0[1-9]|1[0-2])\/\d{4}$/.test(form.expirationDate) &&
+      form.cvv !== "" &&
+      form.billingAddress !== ""
     )
   }
 
-  function paymentInformationEmpty() {
+  const paymentInformationEmpty = () => {
     return (
-      creditCardTypeRef.current?.value === "" &&
-      creditCardNumber === "" &&
-      expirationDate === "" &&
-      cvv === "" &&
-      billingAddressRef.current?.value === ""
+      form.cardType === "" &&
+      form.cardNumber === "" &&
+      form.expirationDate === "" &&
+      form.cvv === "" &&
+      form.billingAddress === ""
     )
   }
 
-  function validHomeAddress() {
-    return homeAddressComplete() || homeAddressEmpty()
+  const getFormStyles = (showForm: boolean) => {
+    return `flex flex-col p-8 gap-3 w-96 ${showForm ? undefined : "hidden"}`
   }
 
-  function homeAddressComplete() {
-    return (
-      homeAddressRef.current?.value !== "" &&
-      cityRef.current?.value !== "" &&
-      stateRef.current?.value !== "" &&
-      zipcode !== ""
-    )
+  const getButtonStepStyles = (showForm: boolean) => {
+    return `text-white text-left p-6 font-semibold ${
+      showForm
+        ? "bg-jade"
+        : "hover:bg-light-jade transition-colors duration-300"
+    }`
   }
-
-  function homeAddressEmpty() {
-    return (
-      homeAddressRef.current?.value === "" &&
-      cityRef.current?.value === "" &&
-      stateRef.current?.value === "" &&
-      zipcode === ""
-    )
-  }
-
-  function getCustomer(): Customer {
-    if (passwordRef.current === null) {
-      throw Error("passwordRef should not be null.")
-    }
-    return {
-      firstName,
-      lastName,
-      email,
-      password: passwordRef.current.value,
-      phoneNumber,
-      isSubscribedForPromotions
-    }
-  }
-
-  async function addCustomer() {
-    const customer = getCustomer()
-    const response = await fetch("http://localhost:8080/api/customers/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(customer)
-    })
-    const customerId = await response.text()
-    return parseInt(customerId)
-  }
-
-  function getCard(customerId: number): Card {
-    if (creditCardTypeRef.current === null) {
-      throw Error("creditCardTypeRef should not be null.")
-    }
-    if (billingAddressRef.current === null) {
-      throw Error("billingAddressRef should not be null.")
-    }
-    const { value: cardType } = creditCardTypeRef.current
-    const { value: billingAddress } = billingAddressRef.current
-    return {
-      customerId,
-      cardType,
-      cardNumber: creditCardNumber,
-      expirationDate,
-      billingAddress
-    }
-  }
-
-  async function addCard(customerId: number) {
-    const card = getCard(customerId)
-    await fetch("http://localhost:8080/api/cards/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(card)
-    })
-  }
-
-  function getHomeAddress(customerId: number): HomeAddress {
-    if (homeAddressRef.current === null) {
-      throw Error("homeAddressRef should not be null.")
-    }
-    if (cityRef.current === null) {
-      throw Error("cityRef should not be null.")
-    }
-    if (stateRef.current === null) {
-      throw Error("stateRef should not be null.")
-    }
-    return {
-      customerId,
-      address: homeAddressRef.current.value,
-      city: cityRef.current.value,
-      state: stateRef.current.value,
-      zipcode: zipcode
-    }
-  }
-
-  async function addHomeAddress(customerId: number) {
-    const homeAddress = getHomeAddress(customerId)
-    await fetch("http://localhost:8080/api/home-addresses/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(homeAddress)
-    })
-  }
-
-  async function emailExists() {
-    const response = await fetch(
-      `http://localhost:8080/api/customers/email_exists/${email}`
-    )
-    const data = await response.text()
-    return data === "true"
-  }
-
-  const selectStyles = "rounded-sm font-semibold p-[0.375rem] w-full"
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -270,387 +152,48 @@ export default function RegistrationPage() {
         <div className="flex bg-dark-jade w-max rounded-sm h-max">
           <div className="flex flex-col border-r-2">
             <button
-              className={getButtonStepStyles(showPersonalInformationForm)}
+              className={getButtonStepStyles(formType === FormType.Personal)}
               onClick={goToPersonalInformationForm}
             >
               1. Personal Information
             </button>
             <button
-              className={getButtonStepStyles(showPaymentInformationForm)}
+              className={getButtonStepStyles(formType === FormType.Payment)}
               onClick={async () => await goToPaymentInformationForm()}
             >
               2. (Optional) Payment Information
             </button>
             <button
-              className={getButtonStepStyles(showHomeAddressForm)}
+              className={getButtonStepStyles(formType === FormType.HomeAddress)}
               onClick={async () => await goToHomeAddressForm()}
             >
               3. (Optional) Home Address
             </button>
           </div>
-          <form className={getFormStyles(showPersonalInformationForm)}>
-            <h1 className="h1">Personal Information</h1>
-            <div className="flex gap-3">
-              <div className="flex flex-col w-1/2">
-                <label htmlFor="first-name" className="label">
-                  First Name *
-                </label>
-                <input
-                  id="first-name"
-                  type="text"
-                  className="input"
-                  value={firstName}
-                  onChange={e => setValueWithNoSpaces(e, setFirstName)}
-                />
-              </div>
-              <div className="flex flex-col w-1/2">
-                <label htmlFor="last-name" className="label">
-                  Last Name *
-                </label>
-                <input
-                  id="last-name"
-                  type="text"
-                  value={lastName}
-                  className="input"
-                  onChange={e => setValueWithNoSpaces(e, setLastName)}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="email" className="label">
-                Email *
-              </label>
-              <input
-                id="email"
-                type="text"
-                value={email}
-                className="input"
-                onChange={e => setValueWithNoSpaces(e, setEmail)}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="password" className="label">
-                Password *
-              </label>
-              <input
-                id="password"
-                type="password"
-                className="input"
-                ref={passwordRef}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="confirm-password" className="label">
-                Confirm Password *
-              </label>
-              <input
-                id="confirm-password"
-                type="password"
-                className="input"
-                ref={confirmPasswordRef}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="phone-number" className="label">
-                Phone Number *
-              </label>
-              <input
-                id="phone-number"
-                type="text"
-                value={phoneNumber}
-                className="input"
-                onChange={e => setValueWithOnlyDigits(e, setPhoneNumber)}
-              />
-            </div>
-            <div className="flex items-center gap-2 mt-2 mb-1">
-              <input
-                checked={isSubscribedForPromotions}
-                id="promotions"
-                type="checkbox"
-                className="w-6 aspect-square"
-                onChange={() =>
-                  setIsSubscribedForPromotions(!isSubscribedForPromotions)
-                }
-              />
-              <label htmlFor="promotions" className="label select-none">
-                Subscribe For Promotions
-              </label>
-            </div>
-            <button
-              type="button"
-              className="action-button w-full mt-0"
-              onClick={async () => await goToPaymentInformationForm()}
-            >
-              Next
-            </button>
-            <div className="flex justify-center">
-              <p className="inline text-white font-semibold mr-3">
-                Already Have An Account?
-              </p>
-              <Link
-                href="/login/login-page"
-                className="inline-block font-semibold text-bright-jade hover:scale-[1.075] transition-transform duration-300"
-              >
-                Log In
-              </Link>
-            </div>
-            <p className="text-white font-semibold text-sm">* Required Field</p>
-          </form>
-          <form className={getFormStyles(showPaymentInformationForm)}>
-            <h1 className="h1">(Optional) Payment Information</h1>
-            <div
-              className="grid gap-3 items-center"
-              style={{
-                gridTemplateColumns: "max-content auto"
-              }}
-            >
-              <h2 className="label">Credit Card Type</h2>
-              <select className={selectStyles} ref={creditCardTypeRef}>
-                <option />
-                <option>Visa</option>
-                <option>Mastercard</option>
-                <option>American Express</option>
-                <option>Discover</option>
-              </select>
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="credit-card-number" className="label">
-                Credit Card Number
-              </label>
-              <input
-                id="credit-card-number"
-                type="text"
-                value={creditCardNumber}
-                className="input"
-                onChange={e => setValueWithOnlyDigits(e, setCreditCardNumber)}
-              />
-            </div>
-            <div className="flex gap-3">
-              <div className="flex flex-col">
-                <label htmlFor="expiration-date" className="label">
-                  Expiration Date
-                </label>
-                <input
-                  id="expiration-date"
-                  type="text"
-                  value={expirationDate}
-                  placeholder="MM/YYYY"
-                  className="input"
-                  onChange={e => {
-                    const { value } = e.target
-                    if (
-                      /(?:\d|\/)*/.test(value) &&
-                      value.length <= 7 &&
-                      value.indexOf("/") === value.lastIndexOf("/")
-                    ) {
-                      setExpirationDate(value)
-                    }
-                  }}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="cvv" className="label">
-                  CVV
-                </label>
-                <input
-                  id="cvv"
-                  type="text"
-                  value={cvv}
-                  className="input"
-                  onChange={e => setValueWithOnlyDigits(e, setCVV)}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="billing-address" className="label">
-                Billing Address
-              </label>
-              <input
-                id="billing-address"
-                type="text"
-                className="input"
-                ref={billingAddressRef}
-              />
-            </div>
-            <div className="flex justify-between">
-              <button
-                type="button"
-                className="back-button"
-                onClick={goToPersonalInformationForm}
-              >
-                Back
-              </button>
-              <button
-                type="button"
-                className="action-button"
-                onClick={async () => await goToHomeAddressForm()}
-              >
-                Next
-              </button>
-            </div>
-          </form>
-          <form className={getFormStyles(showHomeAddressForm)}>
-            <h1 className="h1">(Optional) Home Address Information</h1>
-            <div className="flex flex-col">
-              <label htmlFor="home-address" className="label">
-                Home Address
-              </label>
-              <input
-                id="home-address"
-                type="text"
-                className="input"
-                ref={homeAddressRef}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="city" className="label">
-                City
-              </label>
-              <input id="city" type="text" className="input" ref={cityRef} />
-            </div>
-            <div>
-              <h2 className="label">State</h2>
-              <select className={selectStyles} ref={stateRef}>
-                <option />
-                <option>Alabama</option>
-                <option>Alaska</option>
-                <option>Arizona</option>
-                <option>Arkansas</option>
-                <option>California</option>
-                <option>Colorado</option>
-                <option>Connecticut</option>
-                <option>Delaware</option>
-                <option>Florida</option>
-                <option>Georgia</option>
-                <option>Hawaii</option>
-                <option>Idaho</option>
-                <option>Illinois</option>
-                <option>Indiana</option>
-                <option>Iowa</option>
-                <option>Kansas</option>
-                <option>Kentucky</option>
-                <option>Louisiana</option>
-                <option>Maine</option>
-                <option>Maryland</option>
-                <option>Massachusetts</option>
-                <option>Michigan</option>
-                <option>Minnesota</option>
-                <option>Mississippi</option>
-                <option>Missouri</option>
-                <option>Montana</option>
-                <option>Nebraska</option>
-                <option>Nevada</option>
-                <option>New Hampshire</option>
-                <option>New Jersey</option>
-                <option>New Mexico</option>
-                <option>New York</option>
-                <option>North</option>
-                <option>Carolina</option>
-                <option>North</option>
-                <option>Dakota</option>
-                <option>Ohio</option>
-                <option>Oklahoma</option>
-                <option>Oregon</option>
-                <option>Pennsylvania</option>
-                <option>Rhode</option>
-                <option>Island</option>
-                <option>South</option>
-                <option>Carolina</option>
-                <option>South</option>
-                <option>Dakota</option>
-                <option>Tennessee</option>
-                <option>Texas</option>
-                <option>Utah</option>
-                <option>Vermont</option>
-                <option>Virginia</option>
-                <option>Washington</option>
-                <option>West</option>
-                <option>Virginia</option>
-                <option>Wisconsin</option>
-                <option>Wyoming</option>
-              </select>
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="zip-code" className="label">
-                Zip Code
-              </label>
-              <input
-                id="zip-code"
-                type="text"
-                value={zipcode}
-                className="input"
-                onChange={e => setValueWithOnlyDigits(e, setZipcode)}
-              />
-            </div>
-            <div className="flex justify-between">
-              <button
-                type="button"
-                className="back-button"
-                onClick={async () => await goToPaymentInformationForm()}
-              >
-                Back
-              </button>
-              <button
-                type="submit"
-                className="action-button"
-                onClick={async e => {
-                  e.preventDefault()
-                  if (!validHomeAddress()) {
-                    alert(
-                      "Please either complete the home address information form correctly or delete all incomplete fields."
-                    )
-                    return
-                  }
-
-                  const customerId = await addCustomer()
-                  if (paymentInformationComplete()) {
-                    await addCard(customerId)
-                  }
-                  if (homeAddressComplete()) {
-                    await addHomeAddress(customerId)
-                  }
-
-                  router.push(
-                    `./registration-verification-code?id=${customerId}`
-                  )
-                }}
-              >
-                Submit
-              </button>
-            </div>
-          </form>
+          <PersonalInformationFormComponent
+            form={form}
+            setForm={setForm}
+            goToPaymentInformationForm={goToPaymentInformationForm}
+            formStyles={getFormStyles(formType === FormType.Personal)}
+          />
+          <PaymentInformationFormComponent
+            form={form}
+            setForm={setForm}
+            formStyles={getFormStyles(formType === FormType.Payment)}
+            goToPersonalInformationForm={goToPersonalInformationForm}
+            goToHomeAddressForm={goToHomeAddressForm}
+          />
+          <HomeAddressInformationFormComponent
+            form={form}
+            setForm={setForm}
+            formStyles={getFormStyles(formType === FormType.HomeAddress)}
+            goToPaymentInformationForm={goToPaymentInformationForm}
+            paymentInformationComplete={paymentInformationComplete()}
+          />
         </div>
       </div>
     </div>
   )
 }
 
-function getFormStyles(showForm: boolean) {
-  return `flex flex-col p-8 gap-3 w-96 ${showForm ? undefined : "hidden"}`
-}
-
-function getButtonStepStyles(showForm: boolean) {
-  return `text-white text-left p-6 font-semibold ${
-    showForm ? "bg-jade" : "hover:bg-light-jade transition-colors duration-300"
-  }`
-}
-
-function setValueWithNoSpaces(
-  e: ChangeEvent<HTMLInputElement>,
-  setValue: Dispatch<SetStateAction<string>>
-) {
-  const { value } = e.target
-  if (!value.includes(" ")) {
-    setValue(value)
-  }
-}
-
-function setValueWithOnlyDigits(
-  e: ChangeEvent<HTMLInputElement>,
-  setValue: Dispatch<SetStateAction<string>>
-) {
-  const { value } = e.target
-  if (/^\d*$/.test(value)) {
-    setValue(value)
-  }
-}
+export default RegistrationPage

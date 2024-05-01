@@ -1,6 +1,6 @@
 package com.server.cinema.database.customer.dto;
 
-public record InactiveCustomerDTO(
+public record NewCustomerDTO(
         String firstName,
         String lastName,
         String email,

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.server.cinema.database.customer.dto.InactiveCustomerDTO;
+import com.server.cinema.database.customer.dto.NewCustomerDTO;
 import com.server.cinema.database.customer.dto.CustomerDTO;
 import com.server.cinema.database.customer.enums.UserState;
 
@@ -68,7 +68,7 @@ public class CustomerController {
         return customerService.getCustomerIdByEmail(email);
     }
 
-    @GetMapping("/email_exists/{email}")
+    @GetMapping("/{email}/check")
     public boolean emailExists(@PathVariable final String email) {
         return customerService.emailExists(email);
     }
@@ -86,8 +86,8 @@ public class CustomerController {
     }
 
     @PostMapping("/add")
-    public int addInactiveCustomer(@RequestBody final InactiveCustomerDTO customer) {
-        return customerService.addInactiveCustomer(customer);
+    public int addNewCustomer(@RequestBody final NewCustomerDTO customer) {
+        return customerService.addNewCustomer(customer);
     }
 
     @PutMapping("/set_active_status/{customerId}")

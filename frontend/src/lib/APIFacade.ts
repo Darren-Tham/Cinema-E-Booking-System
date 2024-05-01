@@ -2,8 +2,10 @@ import {
   Admin,
   Customer,
   CustomerCard,
+  CustomerHomeAddress,
   Email,
   Movie,
+  NewCustomer,
   ProfileCard,
   ProfileHomeAddress,
   Promotion,
@@ -117,6 +119,14 @@ export default class APIFacade {
     return await APICustomerFacade.getCustomer(email, password)
   }
 
+  public static async addCustomer(customer: NewCustomer) {
+    return await APICustomerFacade.addCustomer(customer)
+  }
+
+  public static async customerEmailExists(email: string) {
+    return await APICustomerFacade.customerEmailExists(email)
+  }
+
   public static async sendEmail(email: Email) {
     return await APIEmailFacade.sendEmail(email)
   }
@@ -143,6 +153,10 @@ export default class APIFacade {
 
   public static async deleteHomeAddress(homeAddressId: number) {
     await APIHomeAddressFacade.deleteHomeAddress(homeAddressId)
+  }
+
+  public static async addHomeAddress(homeAddress: CustomerHomeAddress) {
+    await APIHomeAddressFacade.addHomeAddress(homeAddress)
   }
 
   public static async getAdmin(username: string, password: string) {
@@ -320,6 +334,20 @@ class APICustomerFacade {
       return undefined
     }
   }
+
+  public static async addCustomer(customer: NewCustomer) {
+    const response = await fetch(
+      `${this.CUSTOMER_URL}/add`,
+      RequestInitHandler.postRequestInitWithBody(customer)
+    )
+    return +(await response.text())
+  }
+
+  public static async customerEmailExists(email: string) {
+    const response = await fetch(`${this.CUSTOMER_URL}/${email}/check`)
+    const data = await response.text()
+    return data === "true"
+  }
 }
 
 class APIEmailFacade {
@@ -377,6 +405,13 @@ class APIHomeAddressFacade {
     await fetch(
       `${this.HOME_ADDRESS_URL}/${homeAddressId}`,
       RequestInitHandler.deleteRequestInitNoBody()
+    )
+  }
+
+  public static async addHomeAddress(homeAddress: CustomerHomeAddress) {
+    await fetch(
+      `${this.HOME_ADDRESS_URL}/add`,
+      RequestInitHandler.postRequestInitWithBody(homeAddress)
     )
   }
 }
