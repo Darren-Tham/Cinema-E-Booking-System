@@ -1,29 +1,34 @@
 "use client"
 
 import HomeNavbar from "@/components/HomeNavbar"
+import APIFacade from "@/lib/APIFacade"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
-import {
-  resendVerificationCode,
-  sendAndSetNewVerificationCode
-} from "@/lib/FetchCalls"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
+
+type Form = {
+  customerId: number
+  verificationCode: string
+}
 
 export default function RegistrationVerificationCode() {
+  const [form, setForm] = useState<Form>({
+    customerId: -1,
+    verificationCode: ""
+  })
   const [verificationCode, setVerificationCode] = useState("")
-  const inputRef = useRef<HTMLInputElement | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
-  const param = searchParams.get("id")
   const loadRef = useRef(false)
-
-  if (param === null) {
-    throw Error("customerId should not be null.")
-  }
-  const customerId = parseInt(param)
 
   useEffect(() => {
     if (loadRef.current) {
-      sendAndSetNewVerificationCode(customerId, setVerificationCode)
+      const param = searchParams.get("id")
+      if (param === null) {
+        throw Error("customerId should exist.")
+      }
+      const customerId = +param
+      setForm({ ...form, customerId })
+      APIFacade.sendAndSetNewVerificationCode(customerId, setVerificationCode)
     }
 
     return () => {
@@ -31,13 +36,22 @@ export default function RegistrationVerificationCode() {
     }
   }, [])
 
-  async function setStatusToActive() {
-    await fetch(
-      `http://localhost:8080/api/customers/set_active_status/${customerId}`,
-      {
-        method: "PUT"
-      }
-    )
+  const handleVerificationCodeChange = async (
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    setForm({ ...form, verificationCode: e.target.value.trim() })
+  }
+
+  const handleFormSubmit = async () => {
+    if (form.verificationCode !== verificationCode) {
+      alert(
+        "The verification code is incorrect. Please try again or resend another verification code."
+      )
+      return
+    }
+
+    await APIFacade.updateCustomerStatusToActive(form.customerId)
+    router.push("./registration-confirmation")
   }
 
   return loadRef.current ? (
@@ -52,27 +66,22 @@ export default function RegistrationVerificationCode() {
           <input
             type="text"
             className="rounded-sm font-semibold outline-none p-[0.375rem] w-full mb-3"
-            ref={inputRef}
+            value={form.verificationCode}
+            onChange={handleVerificationCodeChange}
           />
           <button
             className="bg-jade text-white w-full font-bold px-4 py-2 rounded-sm hover:scale-105 transition-transform duration-300 mb-1"
-            onClick={async () => {
-              if (inputRef.current?.value.trim() === verificationCode) {
-                await setStatusToActive()
-                router.push("./registration-confirmation")
-              } else {
-                alert(
-                  "The verification code is incorrect. Please try again or resend another verification code."
-                )
-              }
-            }}
+            onClick={handleFormSubmit}
           >
             Submit
           </button>
           <button
             className="back-button w-full"
             onClick={async () =>
-              await resendVerificationCode(customerId, setVerificationCode)
+              await APIFacade.resendVerificationCode(
+                form.customerId,
+                setVerificationCode
+              )
             }
           >
             Resend Verification Code

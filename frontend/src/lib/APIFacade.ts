@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react"
 import {
   Admin,
   Customer,
@@ -127,8 +128,29 @@ export default class APIFacade {
     return await APICustomerFacade.customerEmailExists(email)
   }
 
+  public static async updateCustomerStatusToActive(customerId: number) {
+    await APICustomerFacade.updateCustomerStatusToActive(customerId)
+  }
+
   public static async sendEmail(email: Email) {
     return await APIEmailFacade.sendEmail(email)
+  }
+
+  public static async sendAndSetNewVerificationCode(
+    customerId: number,
+    setVerificationCode: Dispatch<SetStateAction<string>>
+  ) {
+    await APIEmailFacade.sendAndSetNewVerificationCode(
+      customerId,
+      setVerificationCode
+    )
+  }
+
+  public static async resendVerificationCode(
+    customerId: number,
+    setVerificationCode: Dispatch<SetStateAction<string>>
+  ) {
+    await APIEmailFacade.resendVerificationCode(customerId, setVerificationCode)
   }
 
   public static async getCustomerCards(customerId: number) {
@@ -348,6 +370,13 @@ class APICustomerFacade {
     const data = await response.text()
     return data === "true"
   }
+
+  public static async updateCustomerStatusToActive(customerId: number) {
+    await fetch(
+      `${this.CUSTOMER_URL}/${customerId}/active-status`,
+      RequestInitHandler.putRequestInitNoBody()
+    )
+  }
 }
 
 class APIEmailFacade {
@@ -357,6 +386,40 @@ class APIEmailFacade {
     await fetch(
       `${this.EMAIL_URL}`,
       RequestInitHandler.postRequestInitWithBody(email)
+    )
+  }
+
+  private static generateVerificationCode() {
+    const randomNumber = Math.floor(Math.random() * 1_000_000)
+    let verificationCode = randomNumber.toString()
+    while (verificationCode.length < 6) {
+      verificationCode = "0" + verificationCode
+    }
+    return verificationCode
+  }
+
+  public static async sendAndSetNewVerificationCode(
+    customerId: number,
+    setVerificationCode: Dispatch<SetStateAction<string>>
+  ) {
+    const code = this.generateVerificationCode()
+    setVerificationCode(code)
+    const receiverEmail = await APIFacade.getCustomerEmailById(customerId)
+    const email: Email = {
+      receiverEmail,
+      subject: `Cinema E-Booking System Email Verification Code: ${code}`,
+      text: `In order to activate your account, please enter the verification code: ${code}. Please do not share your verification code with anyone. If you do not recognize this email, please safely discard it.`
+    }
+    await APIFacade.sendEmail(email)
+  }
+
+  public static async resendVerificationCode(
+    customerId: number,
+    setVerificationCode: Dispatch<SetStateAction<string>>
+  ) {
+    await this.sendAndSetNewVerificationCode(customerId, setVerificationCode)
+    alert(
+      "A new verification code has been sent to your associated email account. The previous verification code is now expired. Please enter the new verification code."
     )
   }
 }

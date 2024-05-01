@@ -2,61 +2,15 @@
 
 import HomeNavbar from "@/components/HomeNavbar"
 import APIFacade from "@/lib/APIFacade"
-import { Email } from "@/lib/Types"
-// import {
-//   resendVerificationCode,
-//   sendAndSetNewVerificationCode
-// } from "@/lib/FetchCalls"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState
-} from "react"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
 
 type Form = {
   customerId: number
   verificationCode: string
   password: string
   confirmPassword: string
-}
-
-const generateVerificationCode = () => {
-  const randomNumber = Math.floor(Math.random() * 1_000_000)
-  let verificationCode = randomNumber.toString()
-  while (verificationCode.length < 6) {
-    verificationCode = "0" + verificationCode
-  }
-  return verificationCode
-}
-
-const sendAndSetNewVerificationCode = async (
-  customerId: number,
-  setVerificationCode: Dispatch<SetStateAction<string>>
-) => {
-  const code = generateVerificationCode()
-  setVerificationCode(code)
-  const receiverEmail = await APIFacade.getCustomerEmailById(customerId)
-  const email: Email = {
-    receiverEmail,
-    subject: `Cinema E-Booking System Email Verification Code: ${code}`,
-    text: `In order to activate your account, please enter the verification code: ${code}. Please do not share your verification code with anyone. If you do not recognize this email, please safely discard it.`
-  }
-  await APIFacade.sendEmail(email)
-}
-
-const resendVerificationCode = async (
-  customerId: number,
-  setVerificationCode: Dispatch<SetStateAction<string>>
-) => {
-  await sendAndSetNewVerificationCode(customerId, setVerificationCode)
-  alert(
-    "A new verification code has been sent to your associated email account. The previous verification code is now expired. Please enter the new verification code."
-  )
 }
 
 export default function ResetPassword() {
@@ -79,7 +33,7 @@ export default function ResetPassword() {
       }
       const customerId = +param
       setForm({ ...form, customerId })
-      sendAndSetNewVerificationCode(customerId, setVerificationCode)
+      APIFacade.sendAndSetNewVerificationCode(customerId, setVerificationCode)
     }
 
     return () => {
@@ -184,7 +138,10 @@ export default function ResetPassword() {
           <button
             className="back-button w-full"
             onClick={async () =>
-              await resendVerificationCode(form.customerId, setVerificationCode)
+              await APIFacade.resendVerificationCode(
+                form.customerId,
+                setVerificationCode
+              )
             }
           >
             Resend Verification

@@ -90,7 +90,7 @@ public class CustomerController {
         return customerService.addNewCustomer(customer);
     }
 
-    @PutMapping("/set_active_status/{customerId}")
+    @PutMapping("/{customerId}/active-status")
     public void setStatusToActive(@PathVariable final int customerId) {
         customerService.setStatusToActive(customerId);
     }
