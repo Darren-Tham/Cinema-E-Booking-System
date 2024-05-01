@@ -63,6 +63,9 @@ public class MovieService {
         movie.setStatus(MovieStatus.valueOf(movieDTO.status()));
         movie.setRatingOutOf10(movieDTO.ratingOutOf10());
         movie.setCategories(movieDTO.categories());
+        movie.setDirectors(movieDTO.directors());
+        movie.setProducers(movieDTO.producers());
+        movie.setCastMembers(movieDTO.castMembers());
         entityManager.persist(movie);
     }
 }
