@@ -174,7 +174,7 @@ const ManagePromotions = () => {
           <div className="grid grid-cols-2 gap-2">
             <Link
               href="/admin-view"
-              className="bg-jade px-4 py-2 text-white font-bold hover:scale-[1.015] transition-transform duration-300 rounded self-start"
+              className="bg-jade px-4 py-2 text-white font-bold hover:scale-[1.015] transition-transform duration-300 rounded text-center"
             >
               Back To Admin View
             </Link>
