@@ -186,6 +186,10 @@ export default class APIFacade {
     await APIHomeAddressFacade.addHomeAddress(homeAddress)
   }
 
+  public static async updateHomeAddress(homeAddress: ProfileHomeAddress) {
+    await APIHomeAddressFacade.updateHomeAddress(homeAddress)
+  }
+
   public static async getAdmin(username: string, password: string) {
     return await APIAdminFacade.getAdmin(username, password)
   }
@@ -475,8 +479,12 @@ class APIHomeAddressFacade {
 
   public static async getCustomerHomeAddress(customerId: number) {
     const response = await fetch(`${this.HOME_ADDRESS_URL}/${customerId}`)
-    const data: ProfileHomeAddress = await response.json()
-    return data
+    if (response.ok) {
+      const data: ProfileHomeAddress = await response.json()
+      return data
+    } else {
+      return undefined
+    }
   }
 
   public static async deleteHomeAddress(homeAddressId: number) {
@@ -490,6 +498,13 @@ class APIHomeAddressFacade {
     await fetch(
       `${this.HOME_ADDRESS_URL}/add`,
       RequestInitHandler.postRequestInitWithBody(homeAddress)
+    )
+  }
+
+  public static async updateHomeAddress(homeAddress: ProfileHomeAddress) {
+    await fetch(
+      `${this.HOME_ADDRESS_URL}/update`,
+      RequestInitHandler.putRequestInitWithBody(homeAddress)
     )
   }
 }

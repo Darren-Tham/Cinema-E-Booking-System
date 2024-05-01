@@ -20,6 +20,11 @@ const PasswordInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
     newPassword: string,
     confirmPassword: string
   ) => {
+    if (newPassword === "") {
+      alert("Password cannot be empty.")
+      return false
+    }
+
     if (newPassword !== confirmPassword) {
       alert("The new password does not match the confirmed password.")
       return false
@@ -40,7 +45,9 @@ const PasswordInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
     const newPassword = newPasswordRef.current.value
     const confirmPassword = confirmPasswordRef.current.value
 
-    if (!passwordConfirmed(currentPassword, newPassword, confirmPassword)) {
+    if (
+      !(await passwordConfirmed(currentPassword, newPassword, confirmPassword))
+    ) {
       return
     }
 
