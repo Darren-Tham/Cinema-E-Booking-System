@@ -1,4 +1,4 @@
-import States from "@/components/States"
+import States from "@/components/option/States"
 import APIFacade from "@/lib/APIFacade"
 import FormHandler from "@/lib/FormHandler"
 import { Customer, CustomerHomeAddress, Email } from "@/lib/Types"

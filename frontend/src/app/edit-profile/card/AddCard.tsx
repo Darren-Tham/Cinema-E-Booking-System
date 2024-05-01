@@ -1,6 +1,6 @@
 "use client"
 
-import CardTypes from "@/components/CardTypes"
+import CardTypes from "@/components/option/CardTypes"
 import APIFacade from "@/lib/APIFacade"
 import FormHandler from "@/lib/FormHandler"
 import { Customer, CustomerCard, Email } from "@/lib/Types"

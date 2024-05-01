@@ -1,5 +1,6 @@
-export type Movie = {
-  id: number
+export type Movie = { id: number } & NewMovie
+
+export type NewMovie = {
   title: string
   trailerLink: string
   imageLink: string

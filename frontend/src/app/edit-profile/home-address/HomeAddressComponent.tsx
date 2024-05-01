@@ -1,6 +1,6 @@
 "use client"
 
-import States from "@/components/States"
+import States from "@/components/option/States"
 import APIFacade from "@/lib/APIFacade"
 import { Customer, Email, ProfileHomeAddress } from "@/lib/Types"
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"

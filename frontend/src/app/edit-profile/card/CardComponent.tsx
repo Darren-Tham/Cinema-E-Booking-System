@@ -1,6 +1,6 @@
 "use client"
 
-import CardTypes from "@/components/CardTypes"
+import CardTypes from "@/components/option/CardTypes"
 import APIFacade from "@/lib/APIFacade"
 import { Customer, Email, ProfileCard } from "@/lib/Types"
 import { Dispatch, SetStateAction, useRef, useState } from "react"

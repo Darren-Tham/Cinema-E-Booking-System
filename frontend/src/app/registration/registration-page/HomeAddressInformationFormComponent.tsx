@@ -5,7 +5,7 @@ import { Form } from "./page"
 import { CustomerCard, CustomerHomeAddress, NewCustomer } from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"
 import { useRouter } from "next/navigation"
-import States from "@/components/States"
+import States from "@/components/option/States"
 import FormHandler from "@/lib/FormHandler"
 
 type Props = {

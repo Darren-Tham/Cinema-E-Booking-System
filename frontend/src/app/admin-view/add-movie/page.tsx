@@ -1,281 +1,316 @@
 "use client"
+import UnauthorizedScreen from "@/components/UnauthorizedScreen"
+import MovieRatings from "@/components/option/MovieRatings"
+import MovieStatuses from "@/components/option/MovieStatuses"
+import APIFacade from "@/lib/APIFacade"
+import { NewMovie } from "@/lib/Types"
 import { useAuth } from "@/lib/useAuth"
-import { ChangeEvent, useState } from "react"
-export default function AddMovie() {
-  const buttonStyles =
-    "text-white w-max font-bold px-4 py-2 rounded-md hover:scale-105 transition-transform duration-300 mt-2 bg-teal-950 border-2 min-w-[200px] min-h-[50px]"
-  const textBox =
-    "mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block w-full"
+import Link from "next/link"
+import { ChangeEvent, FormEvent, useRef, useState } from "react"
+const AddMovie = () => {
+  const [movie, setMovie] = useState<NewMovie>({
+    title: "",
+    trailerLink: "",
+    imageLink: "",
+    status: "",
+    ratingOutOf10: "",
+    categories: [],
+    castMembers: [],
+    directors: [],
+    producers: [],
+    synopsis: "",
+    ratingCode: ""
+  })
+  const [dateTimes, setDateTimes] = useState<string[]>([])
+  const dateRef = useRef<HTMLInputElement>(null!)
+  const timeRef = useRef<HTMLInputElement>(null!)
   const isAdmin = useAuth("admin")
-  const [imageLink, setImageLink] = useState("")
-  const [trailerLink, setTrailerLink] = useState("")
-  const [title, setTitle] = useState("")
-  const [synopsis, setSynopsis] = useState("")
-  const [ratingCode, setRatingCode] = useState("G")
-  const [ratingValue, setRatingValue] = useState("")
-  const [status, setStatus] = useState("COMING_SOON")
-  const [validInfo, setValidInfo] = useState(true)
-  const [directors, setDirectors] = useState([] as string[])
-  const [producers, setProducers] = useState([] as string[])
-  const [castmembers, setCastmembers] = useState([] as string[])
-  const [categories, setCategories] = useState([] as string[])
 
-  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setRatingCode(e.target.value)
-  }
-  const handleDirectors = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setDirectors(e.target.value.split(","))
+  const labelStyles = "text-white font-semibold text-lg"
+  const inputStyles = "rounded-sm outline-none p-2 text-sm w-[30rem]"
+  const divStyles = "flex flex-col gap-1"
+
+  const arrayInputEmpty = (input: string[]) => {
+    return input.length === 1 && input[0] === ""
   }
 
-  const handleProducers = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setProducers(e.target.value.split(","))
-  }
-
-  const handleCastmembers = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setCastmembers(e.target.value.split(","))
-  }
-  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value)
-  }
-
-  const handleRatingValue = (e: ChangeEvent<HTMLInputElement>) => {
-    if (
-      !isNaN(Number(e.target.value)) &&
-      Number(e.target.value) >= 0 &&
-      Number(e.target.value) <= 10
-    ) {
-      setRatingValue(e.target.value)
+  const isValidForm = () => {
+    if (movie.title === "") {
+      alert("Movie title cannot be empty.")
+      return false
     }
-  }
 
-  const handleImageLink = (e: ChangeEvent<HTMLInputElement>) => {
-    setImageLink(e.target.value)
-  }
+    if (movie.synopsis === "") {
+      alert("Movie synopsis cannot be empty.")
+      return false
+    }
 
-  const handleTrailerLink = (e: ChangeEvent<HTMLInputElement>) => {
-    setTrailerLink(e.target.value)
-  }
+    if (movie.imageLink === "") {
+      alert("Movie image link cannot be empty.")
+      return false
+    }
 
-  const handleSynopsis = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setSynopsis(e.target.value)
-  }
-  const handleCategories = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setCategories(e.target.value.split(","))
-  }
-  const handleStatus = (e: ChangeEvent<HTMLSelectElement>) => {
-    setStatus(e.target.value)
-  }
+    if (movie.trailerLink === "") {
+      alert("Movie trailer link cannot be empty.")
+      return false
+    }
 
-  async function handleClick() {
+    const ratingOutOf10 = +movie.ratingOutOf10
     if (
-      title.length == 0 ||
-      imageLink.length == 0 ||
-      trailerLink.length == 0 ||
-      synopsis.length == 0 ||
-      ratingValue.length == 0 ||
-      categories.length == 0 ||
-      directors.length == 0 ||
-      castmembers.length == 0
+      movie.ratingOutOf10 === "" ||
+      isNaN(ratingOutOf10) ||
+      ratingOutOf10 < 0 ||
+      ratingOutOf10 > 10
     ) {
-      setValidInfo(false)
-    } else {
-      setValidInfo(true)
-      const movie = {
-        title: title,
-        trailerLink: trailerLink,
-        imageLink: imageLink,
-        synopsis: synopsis,
-        ratingOutOf10: ratingValue,
-        ratingCode: ratingCode,
-        status: status
-      }
-      await fetch("http://localhost:8080/api/movie/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(movie)
-      })
+      alert("Movie rating out of 10 must be between 0 and 10.")
+      return false
+    }
+
+    if (movie.ratingCode === "") {
+      alert("Movie must have a rating code.")
+      return false
+    }
+
+    if (movie.status === "") {
+      alert("Movie must have a status.")
+      return false
+    }
+
+    if (arrayInputEmpty(movie.categories)) {
+      alert("Movie must have a category.")
+      return false
+    }
+
+    if (arrayInputEmpty(movie.directors)) {
+      alert("Movie must have a director.")
+      return false
+    }
+
+    if (arrayInputEmpty(movie.producers)) {
+      alert("Movie must have a producer.")
+      return false
+    }
+
+    if (arrayInputEmpty(movie.castMembers)) {
+      alert("Movie must have a cast member.")
+      return false
+    }
+
+    return true
+  }
+
+  const formatMovie = (movie: NewMovie) => {
+    movie.categories = movie.categories.map(category => category.toUpperCase())
+    movie.ratingCode = movie.ratingCode.replace("-", "_")
+    return movie
+  }
+
+  const formatDateTimes = (dateTimes: string[]) => {
+    return dateTimes.map(dateTime => dateTime.replace("T", " "))
+  }
+
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!isValidForm()) return
+    await APIFacade.updateMovie(formatMovie(movie))
+    await APIFacade.updateMovieShowtimes(movie.id, formatDateTimes(dateTimes))
+    window.location.reload()
+  }
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { id, value } = e.target
+    setMovie({ ...movie, [id]: value })
+  }
+
+  const handleArrayChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { id, value } = e.target
+    setMovie({ ...movie, [id]: value.split(",") })
+  }
+
+  const upperCaseToTitleCase = (s: string) =>
+    s[0] + s.substring(1).toLowerCase()
+
+  const formatCategories = () =>
+    movie.categories.map(category => upperCaseToTitleCase(category))
+
+  const handleAddShowTime = () => {
+    const date = dateRef.current.value
+    const time = timeRef.current.value
+    if (date === "") {
+      alert("Date cannot be empty.")
+      return
+    }
+
+    if (time === "") {
+      alert("Time cannot be empty.")
+      return
+    }
+
+    const dateTime = `${date}T${time}:00`
+    if (dateTimes.includes(dateTime)) {
+      alert("Show time already exists.")
+      return
+    }
+    setDateTimes(
+      [...dateTimes, dateTime].toSorted((a, b) => a.localeCompare(b))
+    )
+  }
+
+  const statusMap = (status: string | undefined) => {
+    switch (status) {
+      case "NOW_PLAYING":
+        return "Now Playing"
+      case "COMING_SOON":
+        return "Coming Soon"
+      default:
+        return ""
     }
   }
 
   return isAdmin ? (
-    <div className="flex justify-center items-center flex-col h-screen bg-black">
-      <div className="flex flex-row gap-2 justify-center items-center">
-        <div className="bg-teal-950 p-16 rounded-lg flex flex-col items-center mt-2"></div>
-      </div>
-      <div className="bg-teal-950 p-16 rounded-lg flex flex-col gap-5 items-center mt-2">
-        <div className="flex flex-row items-center gap-12">
-          <label htmlFor="title" className="block font-large text-white">
-            Title:
+    <div className="flex flex-col p-8 gap-10 justify-center items-center">
+      <Link
+        href="/admin-view/manage-movies"
+        className="bg-jade px-4 py-2 text-white font-bold scale-transition rounded-md self-start"
+      >
+        Back To Manage Movies
+      </Link>
+      <form
+        className="bg-dark-jade flex flex-col gap-4 p-4 rounded-md"
+        onSubmit={handleFormSubmit}
+      >
+        <div className={divStyles}>
+          <label htmlFor="title" className={labelStyles}>
+            Title
           </label>
           <input
-            type="text"
             id="title"
-            name="title"
-            className={textBox}
-            placeholder="Enter title..."
-            value={title}
-            onChange={handleTitleChange}
+            className={inputStyles}
+            defaultValue={movie?.title}
+            onChange={handleChange}
           />
         </div>
-        <div className="flex flex-row items-center gap-5">
-          <label htmlFor="rating-val" className="block font-large text-white">
-            Rating out of 10
-          </label>
-          <input
-            type="text"
-            id="rating-val"
-            name="rating-val"
-            className={textBox}
-            placeholder="Enter a number"
-            value={ratingValue}
-            onChange={handleRatingValue}
-          />
-        </div>
-        <div className="flex flex-row items-center gap-5">
-          <label htmlFor="imglink" className="block font-large text-white">
-            Image Link:
-          </label>
-          <input
-            type="text"
-            id="imglink"
-            name="imglink"
-            className={textBox}
-            placeholder="Enter link..."
-            value={imageLink}
-            onChange={handleImageLink}
-          />
-        </div>
-        <div className="flex flex-row items-center gap-5">
-          <label htmlFor="trailer-link" className="block font-large text-white">
-            Trailer Link:
-          </label>
-          <input
-            type="text"
-            id="trailer-link"
-            name="trailer-link"
-            className={textBox}
-            placeholder="Enter link..."
-            value={trailerLink}
-            onChange={handleTrailerLink}
-          />
-        </div>
-        <div className="flex flex-row items-center gap-6 w-full">
-          <label htmlFor="synopsis" className="block font-large text-white">
-            Synopsis:
+        <div className={divStyles}>
+          <label htmlFor="synopsis" className={labelStyles}>
+            Synopsis
           </label>
           <textarea
             id="synopsis"
-            name="synopsis"
-            className="w-full h-20 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
-            placeholder="Enter description..."
-            value={synopsis}
-            onChange={handleSynopsis}
+            className={inputStyles}
+            defaultValue={movie?.synopsis}
+            onChange={handleChange}
           />
         </div>
-        <div className="flex flex-row items-center gap-6 w-full">
-          <label htmlFor="categories" className="block font-large text-white">
-            Categories:
+        <div className={divStyles}>
+          <label htmlFor="imageLink" className={labelStyles}>
+            Image Link
           </label>
-          <textarea
-            id="categories"
-            name="categories"
-            className="w-full h-20 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
-            placeholder="Enter categories..."
-            value={categories}
-            onChange={handleCategories}
+          <input
+            id="imageLink"
+            className={inputStyles}
+            defaultValue={movie?.imageLink}
+            onChange={handleChange}
           />
         </div>
-
-        <div className="flex flex-row items-center gap-6 w-full">
-          <label htmlFor="producers" className="block font-large text-white">
-            Producers:
+        <div className={divStyles}>
+          <label htmlFor="trailerLink" className={labelStyles}>
+            Trailer Link
           </label>
-          <textarea
-            id="producers"
-            name="producers"
-            className="w-full h-20 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
-            placeholder="Enter producers..."
-            value={producers}
-            onChange={handleProducers}
+          <input
+            id="trailerLink"
+            className={inputStyles}
+            defaultValue={movie?.trailerLink}
+            onChange={handleChange}
           />
         </div>
-        <div className="flex flex-row items-center gap-6 w-full">
-          <label htmlFor="directors" className="block font-large text-white">
-            Directors:
+        <div className={divStyles}>
+          <label htmlFor="ratingOutOf10" className={labelStyles}>
+            Rating Out Of 10
           </label>
-          <textarea
-            id="directors"
-            name="directors"
-            className="w-full h-20 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
-            placeholder="Enter directors..."
-            value={directors}
-            onChange={handleDirectors}
+          <input
+            id="ratingOutOf10"
+            className={inputStyles}
+            defaultValue={movie?.ratingOutOf10}
+            onChange={handleChange}
           />
         </div>
-        <div className="flex flex-row items-center gap-6 w-full">
-          <label htmlFor="castmembers" className="block font-large text-white">
-            Cast Members:
-          </label>
-          <textarea
-            id="castmembers"
-            name="castmembers"
-            className="w-full h-20 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
-            placeholder="Enter cast members..."
-            value={castmembers}
-            onChange={handleCastmembers}
-          />
-        </div>
-
-        <div className="flex flex-row items-center gap-4">
-          <label htmlFor="rating-code" className="block font-large text-white">
-            Rating Code:
+        <div className={divStyles}>
+          <label htmlFor="ratingCode" className={labelStyles}>
+            Rating Code
           </label>
           <select
-            id="rating-code"
-            value={ratingCode}
-            onChange={handleSelectChange}
-            className="rounded-md"
+            id="ratingCode"
+            className={inputStyles}
+            defaultValue={movie?.ratingCode.replace("_", "-")}
+            onChange={handleChange}
           >
-            <option value="G">G</option>
-            <option value="PG">PG</option>
-            <option value="PG_13">PG_13</option>
-            <option value="R">R</option>
-            <option value="NC_17">NC_17</option>
+            <MovieRatings />
           </select>
         </div>
-        <div className="flex flex-row gap-3">
-          <label htmlFor="status" className="text-gray-100">
-            Status:
+        <div className={divStyles}>
+          <label htmlFor="status" className={labelStyles}>
+            Status
           </label>
-          <select className="rounded-md" value={status} onChange={handleStatus}>
-            <option value="COMING_SOON">Coming Soon</option>
-            <option value="NOW_PLAYING">Now Playing</option>
+          <select
+            id="status"
+            className={inputStyles}
+            defaultValue={statusMap(movie?.status)}
+            onChange={handleChange}
+          >
+            <MovieStatuses />
           </select>
         </div>
-        {!validInfo && (
-          <div role="alert">
-            <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
-              Missing Info
-            </div>
-            <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
-              <p>Please fill out all the required fields.</p>
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="flex justify-center mt-4">
-        <button className={buttonStyles} onClick={handleClick}>
-          Confirm and Add Movie
+        <div className={divStyles}>
+          <p className={labelStyles}>Categories</p>
+          <input
+            id="categories"
+            className={inputStyles}
+            defaultValue={formatCategories()}
+            onChange={handleArrayChange}
+          />
+        </div>
+        <div className={divStyles}>
+          <p className={labelStyles}>Directors</p>
+          <input
+            id="directors"
+            className={inputStyles}
+            defaultValue={movie?.directors}
+            onChange={handleArrayChange}
+          />
+        </div>
+        <div className={divStyles}>
+          <p className={labelStyles}>Producers</p>
+          <textarea
+            id="producers"
+            className={inputStyles}
+            defaultValue={movie?.producers}
+            onChange={handleArrayChange}
+          />
+        </div>
+        <div className={divStyles}>
+          <p className={labelStyles}>Cast Members</p>
+          <textarea
+            id="castMembers"
+            className={inputStyles}
+            defaultValue={movie?.castMembers}
+            onChange={handleArrayChange}
+          />
+        </div>
+        <button
+          type="submit"
+          className="text-white bg-jade p-2 rounded-sm font-bold hover:scale-[1.015] transition-transform duration-300"
+        >
+          Apply Changes
         </button>
-      </div>
+      </form>
     </div>
   ) : (
-    <div className="h-screen bg-black flex justify-center items-center">
-      <h1 className="text-white text-3xl">
-        WOMP WOMP, you are not authorized.
-      </h1>
-    </div>
+    <UnauthorizedScreen />
   )
 }
+
+export default AddMovie

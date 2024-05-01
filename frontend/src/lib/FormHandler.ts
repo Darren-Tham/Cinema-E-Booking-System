@@ -2,7 +2,7 @@ import { ChangeEvent, Dispatch, SetStateAction } from "react"
 
 export default class FormHandler {
   public static updateForm<T>(
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
     key: string,
     form: T,
     setForm: Dispatch<SetStateAction<T>>
@@ -19,11 +19,20 @@ export default class FormHandler {
     setForm({ ...form, [key]: e.target.checked })
   }
 
+  public static updateFormArray<T>(
+    e: ChangeEvent<HTMLInputElement>,
+    key: string,
+    form: T,
+    setForm: Dispatch<SetStateAction<T>>
+  ) {
+    setForm({ ...form, [key]: e.target.value.split(",") })
+  }
+
   public static updateFormOnlyNumbers<T>(
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     key: string,
     form: T,
-    setForm: Dispatch<SetStateAction<T>>,
+    setForm: Dispatch<SetStateAction<T>>
   ) {
     const { value } = e.target
     if (/^\d*$/.test(value)) {
