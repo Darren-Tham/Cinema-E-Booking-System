@@ -1,14 +1,10 @@
 package com.server.cinema.database.movie;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.server.cinema.database.movie.enums.MovieCategory;
 import com.server.cinema.database.movie.enums.MovieRatingCode;
 import com.server.cinema.database.movie.enums.MovieStatus;
-import com.server.cinema.database.movie_cast_member.MovieCastMember;
-import com.server.cinema.database.movie_director.MovieDirector;
-import com.server.cinema.database.movie_producer.MovieProducer;
 import com.server.cinema.database.review.Review;
 import com.server.cinema.database.show_room.ShowRoom;
 import com.server.cinema.database.show_time.ShowTime;
@@ -60,20 +56,26 @@ public class Movie {
     @Enumerated(EnumType.STRING)
     private MovieRatingCode ratingCode;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
-    private Set<MovieProducer> producers;
-
     @ElementCollection(targetClass = MovieCategory.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "movie_category", joinColumns = @JoinColumn(name = "movie_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "category")
     private Set<MovieCategory> categories;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
-    private Set<MovieDirector> directors;
+    @ElementCollection
+    @CollectionTable(name = "producer", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "name", nullable = false)
+    private Set<String> producers;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
-    private Set<MovieCastMember> castMembers;
+    @ElementCollection
+    @CollectionTable(name = "director", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "name", nullable = false)
+    private Set<String> directors;
+
+    @ElementCollection
+    @CollectionTable(name = "cast_member", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "name", nullable = false)
+    private Set<String> castMembers;
 
     @OneToMany(mappedBy = "movie")
     private Set<ShowTime> showTimes;
@@ -95,15 +97,6 @@ public class Movie {
         final String statusStr = status == null
                 ? "NULL"
                 : status.toString();
-        final Set<String> castMemberNames = castMembers.stream()
-                .map((final MovieCastMember movieClassMember) -> movieClassMember.getCastMember().getName())
-                .collect(Collectors.toSet());
-        final Set<String> directorNames = directors.stream()
-                .map((final MovieDirector movieDirector) -> movieDirector.getDirector().getName())
-                .collect(Collectors.toSet());
-        final Set<String> producerNames = producers.stream()
-                .map((final MovieProducer movieProducer) -> movieProducer.getProducer().getName())
-                .collect(Collectors.toSet());
         return new MovieDTO(id,
                 title,
                 trailerLink,
@@ -113,9 +106,8 @@ public class Movie {
                 statusStr,
                 ratingOutOf10,
                 categories,
-                castMemberNames,
-                directorNames,
-                producerNames);
+                castMembers,
+                directors,
+                producers);
     }
-
 }

@@ -8,7 +8,29 @@
     "ratingCode": "PG_13",
     "categories": ["ACTION", "ADVENTURE", "SCI_FI"],
     "status": "NOW_PLAYING",
-    "ratingOutOf10": "3.8"
+    "ratingOutOf10": "3.8",
+    "directors": ["S.J. Clarkson"],
+    "producers": ["Lorenzo di Bonaventura"],
+    "castMembers": [
+      "Dakota Johnson",
+      "Sydney Sweeney",
+      "Isabela Merced",
+      "Celeste O'Connor",
+      "Tahar Rahim",
+      "Mike Epps",
+      "Emma Roberts",
+      "Adam Scott",
+      "Kerry Bishé",
+      "Zosia Mamet",
+      "José María Yazpik",
+      "Kathy-Ann Hart",
+      "Josh Drennen",
+      "Yuma Feldman",
+      "Miranda Adekoje",
+      "Deirdre McCourt",
+      "Naheem Garcia",
+      "Jill Hennessy"
+    ]
   },
   {
     "id": 2,
@@ -19,7 +41,29 @@
     "ratingCode": "R",
     "categories": ["BIOGRAPHY", "DRAMA", "HISTORY"],
     "status": "NOW_PLAYING",
-    "ratingOutOf10": "8.3"
+    "ratingOutOf10": "8.3",
+    "directors": ["Christopher Nolan"],
+    "producers": ["Christopher Nolan", "Emma Thomas", "Charles Roven"],
+    "castMembers": [
+      "Cillian Murphy",
+      "Emily Blunt",
+      "Matt Damon",
+      "Robert Downey Jr.",
+      "Alden Ehrenreich",
+      "Scott Grimes",
+      "Jason Clarke",
+      "Kurt Koehler",
+      "Tony Goldwyn",
+      "John Gowans",
+      "Macon Blair",
+      "James D'Arcy",
+      "Kenneth Branagh",
+      "Harry Groener",
+      "Gregory Jbara",
+      "Ted King",
+      "Tim DeKay",
+      "Steven Houska"
+    ]
   },
   {
     "id": 3,
@@ -30,7 +74,29 @@
     "ratingCode": "R",
     "categories": ["ACTION", "THRILLER"],
     "status": "NOW_PLAYING",
-    "ratingOutOf10": "6.4"
+    "ratingOutOf10": "6.4",
+    "directors": ["David Ayer"],
+    "producers": ["Jason Statham", "David Ayer", "Chris Long", "Kurt Wimmer"],
+    "castMembers": [
+      "Jason Statham",
+      "Emmy Raver-Lampman",
+      "Bobby Naderi",
+      "Josh Hutcherson",
+      "Jeremy Irons",
+      "David Witts",
+      "Michael Epp",
+      "Taylor James",
+      "Phylicia Rashad",
+      "Jemma Redgrave",
+      "Minnie Driver",
+      "Don Gilet",
+      "Sophia Feliciano",
+      "Enzo Cilenti",
+      "Megan Le",
+      "Dan Li",
+      "Georgia Goodman",
+      "Derek Siow"
+    ]
   },
   {
     "id": 4,
@@ -41,7 +107,29 @@
     "ratingCode": "PG",
     "categories": ["ADVENTURE", "COMEDY", "FAMILY"],
     "status": "NOW_PLAYING",
-    "ratingOutOf10": "7.0"
+    "ratingOutOf10": "7.0",
+    "directors": ["Paul King"],
+    "producers": ["David Heyman", "Alexandra Derbyshire", "Luke Kelly"],
+    "castMembers": [
+      "Timothée Chalamet",
+      "Gustave Die",
+      "Murray McArthur",
+      "Paul G. Raymond",
+      "Bertie Caplan",
+      "Isy Suttie",
+      "Kobna Holdbrook-Smith",
+      "Matilda Tucker",
+      "Tom Davis",
+      "Olivia Colman",
+      "Calah Lane",
+      "Paterson Joseph",
+      "Matt Lucas",
+      "Mathew Baynton",
+      "Freya Parker",
+      "Keegan-Michael Key",
+      "Jim Carter",
+      "Rakhee Thakrar"
+    ]
   },
   {
     "id": 5,
@@ -52,7 +140,29 @@
     "ratingCode": "R",
     "categories": ["ACTION", "DRAMA", "THRILLER"],
     "status": "NOW_PLAYING",
-    "ratingOutOf10": "5.3"
+    "ratingOutOf10": "5.3",
+    "directors": ["Richard Holm"],
+    "producers": ["Michael Jefferson"],
+    "castMembers": [
+      "Tuva Novotny",
+      "Kardo Razzazi",
+      "Felicia Maxime",
+      "Peter Franzén",
+      "Angela Kovacs",
+      "Tintin Poggats Sarri",
+      "Edvin Ryding",
+      "Åsa Simma",
+      "Jonathan Fredriksson",
+      "Jakob Hultcrantz Hansson",
+      "Jakob Öhrman",
+      "Lina Brännström",
+      "Casper Berglund",
+      "Scott Isitt",
+      "Ida Guttormsen",
+      "Mateo Kristiansen",
+      "Johan Finne",
+      "Nina Boström"
+    ]
   },
   {
     "id": 6,
@@ -63,7 +173,29 @@
     "ratingCode": "PG_13",
     "categories": ["HORROR", "THRILLER"],
     "status": "COMING_SOON",
-    "ratingOutOf10": "4.7"
+    "ratingOutOf10": "4.7",
+    "directors": ["Bryce McGuire"],
+    "producers": ["Jason Blum", "James Wan"],
+    "castMembers": [
+      "Wyatt Russell",
+      "Kerry Condon",
+      "Amélie Hoeferle",
+      "Gavin Warren",
+      "Jodi Long",
+      "Nancy Lenehan",
+      "Eddie Martinez",
+      "Elijah J. Roberts",
+      "Rahnuma Panthaky",
+      "Ben Sinclair",
+      "Ellie Araiza",
+      "Ayazhan Dalabayeva",
+      "Joziah Lagonoy",
+      "Aivan Uttapa",
+      "Liz Parkinson",
+      "Mike Avery",
+      "Eleanor T. Threatt",
+      "Bianca Diezmo"
+    ]
   },
   {
     "id": 7,
@@ -73,7 +205,37 @@
     "synopsis": "A malevolent being known as the Jester terrorizes the inhabitants of a small town on Halloween night, including two estranged sisters who must come together to find a way to defeat the evil entity.",
     "categories": ["HORROR", "MYSTERY", "THRILLER"],
     "status": "COMING_SOON",
-    "ratingOutOf10": "4.0"
+    "ratingOutOf10": "4.0",
+    "directors": ["Colin Krawchuk"],
+    "producers": [
+      "Brian Clarke",
+      "Patrick Ewald",
+      "Carlo Glorioso",
+      "Ted Hentschke",
+      "Chad Horn",
+      "Cory Okouchi",
+      "Katie Page"
+    ],
+    "castMembers": [
+      "Michael Sheffield",
+      "Lelia Symington",
+      "Delaney White",
+      "Matt Servitto",
+      "Lena Janes",
+      "Mia Rae Roberts",
+      "Riley Collins",
+      "Mary Jane Pentony",
+      "Cory Okouchi",
+      "Sam Lukowski",
+      "Joe Hansard",
+      "Dan De Luca",
+      "Emmanuel Kerry",
+      "Patrick McAteer",
+      "Jessie L. Greene",
+      "Molly Evetts",
+      "Ken Arnold",
+      "Gabriel Morgan"
+    ]
   },
   {
     "id": 8,
@@ -84,7 +246,39 @@
     "ratingCode": "R",
     "categories": ["ACTION", "THRILLER"],
     "status": "COMING_SOON",
-    "ratingOutOf10": "6.5"
+    "ratingOutOf10": "6.5",
+    "directors": ["William Eubank"],
+    "producers": [
+      "David Frigerio",
+      "William Eubank",
+      "Michael Jefferson",
+      "Adam Beasley",
+      "Nathan Klingher",
+      "Ryan Winterstern",
+      "Arianne Fraser",
+      "Petr Jákl",
+      "Mark Fasano"
+    ],
+    "castMembers": [
+      "Liam Hemsworth",
+      "Russell Crowe",
+      "Luke Hemsworth",
+      "Ricky Whittle",
+      "Milo Ventimiglia",
+      "Chika Ikogwe",
+      "Daniel MacPherson",
+      "Robert Rabiah",
+      "Jack Finsterer",
+      "Chris Masters Mah",
+      "Lincoln Lewis",
+      "Lachlan Engeler",
+      "Miguel Usares",
+      "Timothy Latimer",
+      "Michael Joaquin",
+      "Joey Vieira",
+      "Gunner Wright",
+      "Eric Zivic"
+    ]
   },
   {
     "id": 9,
@@ -95,7 +289,29 @@
     "ratingCode": "PG",
     "categories": ["ANIMATION", "ADVENTURE", "COMEDY"],
     "status": "COMING_SOON",
-    "ratingOutOf10": "6.7"
+    "ratingOutOf10": "6.7",
+    "directors": ["Benjamin Renner", "Guylo Homsy"],
+    "producers": ["Chris Meledandri"],
+    "castMembers": [
+      "Kumail Nanjiani",
+      "Tresi Gazal",
+      "Elizabeth Banks",
+      "Caspar Jennings",
+      "Isabela Merced",
+      "Danny DeVito",
+      "Carol Kane",
+      "Awkwafina",
+      "Keegan-Michael Key",
+      "David Mitchell",
+      "Ozioma Akagha",
+      "Carlos Alazraqui",
+      "Valenzia Algarin",
+      "Will Collyer",
+      "Abby Craden",
+      "Django Craig",
+      "John DeMita",
+      "Luca Diaz"
+    ]
   },
   {
     "id": 10,
@@ -106,6 +322,28 @@
     "ratingCode": "PG",
     "categories": ["ANIMATION", "ADVENTURE", "COMEDY"],
     "status": "COMING_SOON",
-    "ratingOutOf10": "5.6"
+    "ratingOutOf10": "5.6",
+    "directors": ["Chris Buck", "Fawn Veerasunthorn"],
+    "producers": ["Peter Del Vecho", "Juan Pablo Reyes", "Lancaster-Jones"],
+    "castMembers": [
+      "Ariana DeBose",
+      "Chris Pine",
+      "Alan Tudyk",
+      "Angelique Cabral",
+      "Victor Garber",
+      "Natasha Rothwell",
+      "Jennifer Kumiyama",
+      "Harvey Guillén",
+      "Niko Vargas",
+      "Evan Peters",
+      "Ramy Youssef",
+      "Jon Rudnitsky",
+      "Della Saba",
+      "Keone Young",
+      "Lucas Sigler",
+      "Holland Watkins",
+      "Woody Buck",
+      "Efé"
+    ]
   }
 ]
