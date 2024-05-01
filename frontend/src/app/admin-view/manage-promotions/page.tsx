@@ -116,13 +116,7 @@ const ManagePromotions = () => {
               className="mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
               value={form.discountCode}
               onChange={e =>
-                FormHandler.updateFormNoSpaces(
-                  e,
-                  "discountCode",
-                  form,
-                  setForm,
-                  false
-                )
+                FormHandler.updateFormNoSpaces(e, "discountCode", form, setForm)
               }
             />
           </div>

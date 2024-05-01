@@ -2,19 +2,12 @@
 
 import CardTypes from "@/components/CardTypes"
 import APIFacade from "@/lib/APIFacade"
+import FormHandler from "@/lib/FormHandler"
 import { Customer, CustomerCard, Email } from "@/lib/Types"
-import {
-  ChangeEvent,
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useRef,
-  useState
-} from "react"
+import { Dispatch, MutableRefObject, SetStateAction, useState } from "react"
 
 type Props = {
   setDialogOpen: Dispatch<SetStateAction<boolean>>
-  expirationDateIsFormatted: (expirationDate: string) => boolean
   customer: Customer
   addDialogRef: MutableRefObject<HTMLDialogElement>
 }
@@ -28,7 +21,6 @@ type Form = {
 
 const AddCard = ({
   setDialogOpen,
-  expirationDateIsFormatted,
   customer,
   addDialogRef
 }: Readonly<Props>) => {
@@ -38,32 +30,6 @@ const AddCard = ({
     expirationDate: "",
     billingAddress: ""
   })
-
-  const handleCardTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setForm({ ...form, cardType: e.target.value })
-  }
-
-  const handleCardNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: cardNumber } = e.target
-    if (/^\d*$/.test(cardNumber)) {
-      setForm({ ...form, cardNumber })
-    }
-  }
-
-  const handleExpirationDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: expirationDate } = e.target
-    if (
-      /(?:\d|\/)*/.test(expirationDate) &&
-      expirationDate.length <= 7 &&
-      expirationDate.indexOf("/") === expirationDate.lastIndexOf("/")
-    ) {
-      setForm({ ...form, expirationDate })
-    }
-  }
-
-  const handleBillingAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, billingAddress: e.target.value })
-  }
 
   const isValidCardInfo = () => {
     if (form.cardType === "") {
@@ -76,8 +42,8 @@ const AddCard = ({
       return false
     }
 
-    if (!expirationDateIsFormatted(form.expirationDate)) {
-      alert("Expiration date should be formatted and inputted correctly.")
+    if (form.expirationDate.length !== 7) {
+      alert("Expiration date must be filled out fully.")
       return false
     }
 
@@ -134,7 +100,9 @@ const AddCard = ({
           <select
             className="rounded-sm font-semibold p-[0.375rem] w-full bg-emerald-50"
             value={form.cardType}
-            onChange={handleCardTypeChange}
+            onChange={e =>
+              FormHandler.updateForm(e, "cardType", form, setForm, false)
+            }
           >
             <CardTypes />
           </select>
@@ -144,7 +112,15 @@ const AddCard = ({
           <input
             className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
             value={form.cardNumber}
-            onChange={handleCardNumberChange}
+            onChange={e =>
+              FormHandler.updateFormOnlyNumbers(
+                e,
+                "cardNumber",
+                form,
+                setForm,
+                false
+              )
+            }
           />
           <div className="bg-light-jade outline-none font-semibold p-2 rounded-sm">
             Expiration Date
@@ -153,7 +129,14 @@ const AddCard = ({
             className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
             placeholder="MM/YYYY"
             value={form.expirationDate}
-            onChange={handleExpirationDateChange}
+            onChange={e =>
+              FormHandler.updateFormExpirationDate(
+                e,
+                "expirationDate",
+                form,
+                setForm
+              )
+            }
           />
           <div className="bg-light-jade outline-none font-semibold p-2 rounded-sm">
             Billing Address
@@ -161,7 +144,9 @@ const AddCard = ({
           <input
             className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
             value={form.billingAddress}
-            onChange={handleBillingAddressChange}
+            onChange={e =>
+              FormHandler.updateForm(e, "billingAddress", form, setForm, false)
+            }
           />
         </div>
         <div className="grid grid-cols-2 gap-3">
