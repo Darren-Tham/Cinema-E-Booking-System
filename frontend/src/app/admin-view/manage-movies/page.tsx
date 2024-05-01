@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useAuth } from "@/lib/useAuth"
-import { MovieType } from "@/components/Movie"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import APIFacade from "@/lib/APIFacade"
 import { Movie } from "@/lib/Types"
@@ -52,7 +51,7 @@ export default function ManageMovies() {
   )
 }
 
-function renderMovies(heading: string, movies: MovieType[]) {
+function renderMovies(heading: string, movies: Movie[]) {
   return (
     <div className="w-max">
       <h2 className="font-bold text-2xl text-white mb-4">{heading}</h2>

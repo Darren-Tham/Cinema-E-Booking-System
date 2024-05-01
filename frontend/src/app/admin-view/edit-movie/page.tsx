@@ -1,5 +1,4 @@
 "use client"
-import { MovieType } from "@/components/Movie"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import APIFacade from "@/lib/APIFacade"
 import { Movie } from "@/lib/Types"
@@ -10,7 +9,7 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 
 const EditMovie = () => {
   const searchParams = useSearchParams()
-  const [movie, setMovie] = useState<MovieType>({
+  const [movie, setMovie] = useState<Movie>({
     id: 0,
     title: "",
     trailerLink: "",
