@@ -81,7 +81,7 @@ const AddCard = ({
       return false
     }
 
-    if (form.expirationDate === "") {
+    if (form.billingAddress === "") {
       alert("Billing address cannot be empty.")
       return false
     }

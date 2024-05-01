@@ -70,6 +70,27 @@ const HomeAddressComponent = ({
       alert("The updated home address is the same as the current home address!")
       return false
     }
+
+    if (form?.address === "") {
+      alert("Home address cannot be empty.")
+      return false
+    }
+
+    if (form?.city === "") {
+      alert("City cannot be empty.")
+      return false
+    }
+
+    if (form?.state === "") {
+      alert("State cannot be empty.")
+      return false
+    }
+
+    if (form?.zipcode === "") {
+      alert("Zipcode cannot be empty.")
+      return false
+    }
+
     return true
   }
 

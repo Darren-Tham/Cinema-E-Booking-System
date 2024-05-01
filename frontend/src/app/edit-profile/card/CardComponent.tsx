@@ -212,7 +212,7 @@ export const CardComponent = ({
           <button
             className="self-center scale-transition w-max"
             onClick={() => {
-              dialogRef.current.close()
+              dialogRef.current.showModal()
               setDialogOpen(true)
             }}
           >
