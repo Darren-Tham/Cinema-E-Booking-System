@@ -3,14 +3,14 @@
 import CardTypes from "@/components/CardTypes"
 import APIFacade from "@/lib/APIFacade"
 import { Customer, Email, ProfileCard } from "@/lib/Types"
-import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useRef, useState } from "react"
 import PencilIcon from "@public/pencil-icon.svg"
 import RedDeleteIcon from "@public/red-delete-icon.svg"
 import Image from "next/image"
+import FormHandler from "@/lib/FormHandler"
 
 type Props = {
   setDialogOpen: Dispatch<SetStateAction<boolean>>
-  expirationDateIsFormatted: (expirationDate: string) => boolean
   card: ProfileCard
   customer: Customer
 }
@@ -28,7 +28,6 @@ const formatExpirationDate = (expirationDate: string) => {
 
 export const CardComponent = ({
   setDialogOpen,
-  expirationDateIsFormatted,
   card,
   customer
 }: Readonly<Props>) => {
@@ -39,28 +38,11 @@ export const CardComponent = ({
   })
   const dialogRef = useRef<HTMLDialogElement>(null!)
 
-  const handleCardTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setForm({ ...form, cardType: e.target.value })
-  }
-
-  const handleExpirationDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, expirationDate: e.target.value })
-  }
-
-  const handleBillingAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, billingAddress: e.target.value })
-  }
-
-  const isValidCardInfo = (
-    card: ProfileCard,
-    cardType: string,
-    expirationDate: string,
-    billingAddress: string
-  ) => {
+  const isValidCardInfo = (card: ProfileCard) => {
     if (
-      cardType === card.cardType &&
-      expirationDate === formatExpirationDate(card.expirationDate) &&
-      billingAddress === card.billingAddress
+      form.cardType === card.cardType &&
+      form.expirationDate === formatExpirationDate(card.expirationDate) &&
+      form.billingAddress === card.billingAddress
     ) {
       alert(
         "Updated card information is the same as the current card information."
@@ -68,18 +50,18 @@ export const CardComponent = ({
       return false
     }
 
-    if (cardType === "") {
+    if (form.cardType === "") {
       alert("Card type cannot be empty.")
       return false
     }
 
-    if (billingAddress === "") {
+    if (form.billingAddress === "") {
       alert("Billing address cannot be empty.")
       return false
     }
 
-    if (!expirationDateIsFormatted(expirationDate)) {
-      alert("Expiration date is not formatted correctly.")
+    if (form.expirationDate.length !== 7) {
+      alert("Expiration date must be filled out fully.")
       return false
     }
 
@@ -87,16 +69,7 @@ export const CardComponent = ({
   }
 
   const updateCard = async (card: ProfileCard) => {
-    if (
-      !isValidCardInfo(
-        card,
-        form.cardType,
-        form.expirationDate,
-        form.billingAddress
-      )
-    ) {
-      return
-    }
+    if (!isValidCardInfo(card)) return
 
     const updatedCard: ProfileCard = {
       id: card.id,
@@ -153,7 +126,9 @@ export const CardComponent = ({
             <select
               className="rounded-sm font-semibold p-[0.375rem] w-full bg-emerald-50"
               value={form.cardType}
-              onChange={handleCardTypeChange}
+              onChange={e =>
+                FormHandler.updateForm(e, "cardType", form, setForm, false)
+              }
             >
               <CardTypes />
             </select>
@@ -163,7 +138,14 @@ export const CardComponent = ({
             <input
               className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
               value={form.expirationDate}
-              onChange={handleExpirationDateChange}
+              onChange={e =>
+                FormHandler.updateFormExpirationDate(
+                  e,
+                  "expirationDate",
+                  form,
+                  setForm
+                )
+              }
               placeholder="MM/YYYY"
             />
             <div className="p-2 rounded-sm font-semibold bg-light-jade">
@@ -172,7 +154,15 @@ export const CardComponent = ({
             <input
               className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
               value={form.billingAddress}
-              onChange={handleBillingAddressChange}
+              onChange={e =>
+                FormHandler.updateForm(
+                  e,
+                  "billingAddress",
+                  form,
+                  setForm,
+                  false
+                )
+              }
             />
           </div>
           <div className="grid grid-cols-2 gap-3">

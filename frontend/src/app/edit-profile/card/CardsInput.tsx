@@ -4,7 +4,7 @@ import Image from "next/image"
 import BluePlusIcon from "@public/blue-plus-icon.svg"
 import { useEffect, useState, useRef, Dispatch, SetStateAction } from "react"
 import APIFacade from "@/lib/APIFacade"
-import { Customer, Email, ProfileCard } from "@/lib/Types"
+import { Customer, ProfileCard } from "@/lib/Types"
 import CardComponent from "./CardComponent"
 import AddCard from "./AddCard"
 
@@ -13,10 +13,7 @@ type Props = {
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function CardsInput({
-  customer,
-  setDialogOpen
-}: Readonly<Props>) {
+const CardsInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
   const [customerCards, setCustomerCards] = useState<ProfileCard[]>([])
   const addDialogRef = useRef<HTMLDialogElement>(null!)
 
@@ -28,10 +25,6 @@ export default function CardsInput({
 
     fetchCustomerCards()
   }, [customer])
-
-  const expirationDateIsFormatted = (expirationDate: string) => {
-    return /^(?:0[1-9]|1[0-2])\/\d{4}$/.test(expirationDate)
-  }
 
   return (
     <>
@@ -56,7 +49,6 @@ export default function CardsInput({
           <CardComponent
             key={card.id}
             setDialogOpen={setDialogOpen}
-            expirationDateIsFormatted={expirationDateIsFormatted}
             card={card}
             customer={customer}
           />
@@ -64,10 +56,11 @@ export default function CardsInput({
       </div>
       <AddCard
         setDialogOpen={setDialogOpen}
-        expirationDateIsFormatted={expirationDateIsFormatted}
         customer={customer}
         addDialogRef={addDialogRef}
       />
     </>
   )
 }
+
+export default CardsInput
