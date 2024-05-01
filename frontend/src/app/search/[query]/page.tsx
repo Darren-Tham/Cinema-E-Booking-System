@@ -1,10 +1,10 @@
 "use client"
 
 import MainMovieBanner from "@/components/MainMovieBanner"
-import { MovieType } from "@/components/Movie"
 import MoviesContainer from "@/components/MoviesContainer"
 import UserNavbar from "@/components/UserNavbar"
 import APIFacade from "@/lib/APIFacade"
+import { Movie } from "@/lib/Types"
 import { useEffect, useState } from "react"
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 }
 
 const SearchQuery = ({ params: { query } }: Readonly<Props>) => {
-  const [movies, setMovies] = useState<MovieType[]>([])
+  const [movies, setMovies] = useState<Movie[]>([])
 
   useEffect(() => {
     const fetchSearchedMovies = async () => {

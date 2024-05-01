@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import ReactPlayer from "react-player"
 import Cancel from "@public/cancel-icon.svg"
-import Movie, { MovieType } from "./Movie"
+import MovieComponent, { MovieType } from "./Movie"
 import { useEffect, useRef, useState } from "react"
 
 type Props = {
@@ -42,7 +42,7 @@ export default function MoviesContainer({ heading, movies }: Readonly<Props>) {
         <h2 className="font-bold text-2xl text-white mb-4">{heading}</h2>
         <div className="flex gap-7">
           {movies.map(movie => (
-            <Movie
+            <MovieComponent
               key={movie.id}
               movie={movie}
               handleTrailerClick={() =>

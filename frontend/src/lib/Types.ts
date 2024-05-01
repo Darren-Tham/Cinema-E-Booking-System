@@ -88,3 +88,11 @@ export type Admin = {
   id: number
   username: string
 }
+
+export type Review = {
+  id: number
+  ratingOutOf10: number
+  date: string
+  title: string
+  content: string
+}

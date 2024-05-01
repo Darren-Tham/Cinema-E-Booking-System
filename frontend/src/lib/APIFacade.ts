@@ -10,6 +10,7 @@ import {
   ProfileCard,
   ProfileHomeAddress,
   Promotion,
+  Review,
   ShowTime
 } from "./Types"
 
@@ -187,6 +188,10 @@ export default class APIFacade {
 
   public static async getAdmin(username: string, password: string) {
     return await APIAdminFacade.getAdmin(username, password)
+  }
+
+  public static async getMovieReviews(movieId: number) {
+    return await APIReviewFacade.getMovieReviews(movieId)
   }
 }
 
@@ -500,6 +505,16 @@ class APIAdminFacade {
     } else {
       return undefined
     }
+  }
+}
+
+class APIReviewFacade {
+  private static readonly REVIEW_URL = URL + "/reviews"
+
+  public static async getMovieReviews(movieId: number) {
+    const response = await fetch(`${this.REVIEW_URL}/${movieId}`)
+    const data: Review[] = await response.json()
+    return data
   }
 }
 

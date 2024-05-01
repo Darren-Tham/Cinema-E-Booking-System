@@ -2,52 +2,47 @@
 
 import Image from "next/image"
 import HomeNavbar from "@/components/HomeNavbar"
-import CalendarIcon from "@public/calendar-icon.svg"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { MovieType } from "@/components/Movie"
 import ReactPlayer from "react-player"
 import Cancel from "@public/red-cancel-icon.svg"
-
-type ShowTime = {
-  id: number
-  movieId: number
-  dateTime: string
-}
+import APIFacade from "@/lib/APIFacade"
+import { Movie, Review, ShowTime } from "@/lib/Types"
 
 export default function TheatersAndTimes() {
   const [load, setLoad] = useState(false)
   const searchParams = useSearchParams()
-  const [movie, setMovie] = useState<MovieType>()
+  const [movie, setMovie] = useState<Movie>()
   const [reviews, setReviews] = useState<Review[]>([])
-  const [showTimes, setShowTimes] = useState<ShowTime[]>([])
-  const dialogRef = useRef<HTMLDialogElement | null>(null)
-  const iconWidth = 20
+  const [showtimes, setShowtimes] = useState<ShowTime[]>([])
+  const dialogRef = useRef<HTMLDialogElement>(null!)
 
   useEffect(() => {
-    const movieId = searchParams.get("movieId")
-    async function getMovie() {
-      if (movieId === null) {
-        throw Error("Invalid movie id.")
-      }
-      const response = await fetch(
-        `http://localhost:8080/api/movies/${movieId}`
-      )
-      const data = await response.json()
-      setMovie(data)
+    const param = searchParams.get("movieId")
+    if (param === null) {
+      throw Error("movieId should not be null.")
+    }
+    const movieId = +param
+
+    const fetchMovie = async () => {
+      const movie = await APIFacade.getMovieById(movieId)
+      setMovie(movie)
     }
 
-    async function getShowTimes() {
-      const response = await fetch(
-        `http://localhost:8080/api/showtimes/movieId/${movieId}`
-      )
-      const data: ShowTime[] = await response.json()
-      setShowTimes(data)
+    const fetchShowTimes = async () => {
+      const showtimes = await APIFacade.getShowTimesByMovieId(movieId)
+      setShowtimes(showtimes)
     }
 
-    getMovie()
-    getShowTimes()
+    const fetchMovieReviews = async () => {
+      const reviews = await APIFacade.getMovieReviews(movieId)
+      setReviews(reviews)
+    }
+
+    fetchMovie()
+    fetchShowTimes()
+    fetchMovieReviews()
     setLoad(true)
   }, [])
 
@@ -101,12 +96,7 @@ export default function TheatersAndTimes() {
             </p>
             <button
               className="text-white bg-jade mx-12 w-max py-2 px-4 rounded-sm font-semibold scale-transition"
-              onClick={async () => {
-                dialogRef.current?.showModal()
-                if (movie !== undefined) {
-                  setReviews(await getReviews(movie.id))
-                }
-              }}
+              onClick={async () => dialogRef.current.showModal()}
             >
               View Reviews
             </button>
@@ -117,7 +107,7 @@ export default function TheatersAndTimes() {
           <div className="px-2 py-2">
             <h1 className="font-bold text-3xl text-white mb-3">UGA Theatre</h1>
             <div className="flex flex-col gap-2">
-              {showTimes
+              {showtimes
                 .toSorted((a, b) => a.dateTime.localeCompare(b.dateTime))
                 .map(showTime => (
                   <Link
@@ -173,19 +163,4 @@ export default function TheatersAndTimes() {
       </dialog>
     </>
   )
-}
-
-type Review = {
-  id: number
-  ratingOutOf10: number
-  date: string
-  title: string
-  content: string
-}
-
-async function getReviews(movieId: number): Promise<Review[]> {
-  const response = await fetch(
-    `http://localhost:8080/api/reviews/movieId/${movieId}`
-  )
-  return await response.json()
 }

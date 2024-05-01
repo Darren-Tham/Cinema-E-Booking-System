@@ -1,28 +1,17 @@
 import Image from "next/image"
 import PlayCircle from "@public/play-circle-icon.svg"
 import Link from "next/link"
-
-export type MovieType = {
-  id: number
-  title: string
-  trailerLink: string
-  imageLink: string
-  status: string
-  ratingOutOf10: string
-  categories: string[]
-  castMembers: string[]
-  directors: string[]
-  producers: string[]
-  synopsis: string
-  ratingCode: string
-}
+import { Movie } from "@/lib/Types"
 
 type Props = {
-  movie: MovieType
+  movie: Movie
   handleTrailerClick: () => void
 }
 
-export default function Movie({ movie, handleTrailerClick }: Readonly<Props>) {
+export default function MovieComponent({
+  movie,
+  handleTrailerClick
+}: Readonly<Props>) {
   return (
     <div className="bg-jade p-2 flex flex-col justify-end">
       <div className="relative">
