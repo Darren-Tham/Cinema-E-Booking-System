@@ -142,7 +142,7 @@ const PersonalInformationFormComponent = ({
       </div>
       <div className="flex items-center gap-2 mt-2 mb-1">
         <input
-          checked
+          checked={form.isSubscribedForPromotions}
           id="promotions"
           type="checkbox"
           className="w-6 aspect-square"
