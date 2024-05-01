@@ -7,6 +7,7 @@ import {
   Email,
   Movie,
   NewCustomer,
+  NewMovie,
   ProfileCard,
   ProfileHomeAddress,
   Promotion,
@@ -17,6 +18,10 @@ import {
 const URL = "http://localhost:8080/api"
 
 export default class APIFacade {
+  public static async addMovie(movie: NewMovie) {
+    await APIMovieFacade.addMovie(movie)
+  }
+
   public static async getAllMovies() {
     return await APIMovieFacade.getAllMovies()
   }
@@ -205,6 +210,13 @@ export default class APIFacade {
 
 class APIMovieFacade {
   private static readonly MOVIE_URL = URL + "/movies"
+
+  public static async addMovie(movie: NewMovie) {
+    await fetch(
+      `${this.MOVIE_URL}/add`,
+      RequestInitHandler.postRequestInitWithBody(movie)
+    )
+  }
 
   public static async getAllMovies() {
     const response = await fetch(`${this.MOVIE_URL}`)

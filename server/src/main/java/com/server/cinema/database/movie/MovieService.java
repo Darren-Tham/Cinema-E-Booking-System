@@ -18,15 +18,30 @@ public class MovieService {
 
     private final MovieDAO movieDAO;
     private final EntityManager entityManager;
+    private final MovieRepository movieRepository;
 
     @Autowired
-    public MovieService(final MovieDAO movieDAO, final EntityManager entityManager) {
+    public MovieService(final MovieDAO movieDAO, final EntityManager entityManager,
+            final MovieRepository movieRepository) {
         this.movieDAO = movieDAO;
         this.entityManager = entityManager;
+        this.movieRepository = movieRepository;
     }
 
-    public void addMovie(final Movie movie) {
-        movieDAO.addMovie(movie);
+    public void addMovie(final NewMovieDTO newMovieDTO) {
+        final Movie movie = new Movie();
+        movie.setTitle(newMovieDTO.title());
+        movie.setTrailerLink(newMovieDTO.trailerLink());
+        movie.setImageLink(newMovieDTO.imageLink());
+        movie.setSynopsis(newMovieDTO.synopsis());
+        movie.setRatingCode(newMovieDTO.ratingCode());
+        movie.setStatus(newMovieDTO.status());
+        movie.setRatingOutOf10(newMovieDTO.ratingOutOf10());
+        movie.setCategories(newMovieDTO.categories());
+        movie.setCastMembers(newMovieDTO.castMembers());
+        movie.setProducers(newMovieDTO.producers());
+        movie.setDirectors(newMovieDTO.directors());
+        movieRepository.save(movie);
     }
 
     public MovieDTO getMovieById(final int id) {

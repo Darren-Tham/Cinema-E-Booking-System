@@ -1,4 +1,5 @@
 "use client"
+
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import MovieRatings from "@/components/option/MovieRatings"
 import MovieStatuses from "@/components/option/MovieStatuses"
@@ -9,6 +10,9 @@ import { useAuth } from "@/lib/useAuth"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { FormEvent, useEffect, useRef, useState } from "react"
+
+const titleCase = (s: string) =>
+  s[0].toUpperCase() + s.substring(1).toLowerCase()
 
 const EditMovie = () => {
   const searchParams = useSearchParams()
@@ -35,21 +39,14 @@ const EditMovie = () => {
   const inputStyles = "rounded-sm outline-none p-2 text-sm w-[30rem]"
   const divStyles = "flex flex-col gap-1"
 
-  const upperCaseToTitleCase = (s: string) =>
-    s[0] + s.substring(1).toLowerCase()
-
-  const formatStatus = (status: string) => {
-    return status
-      .split("_")
-      .map(token => upperCaseToTitleCase(token))
-      .join(" ")
-  }
-
   useEffect(() => {
     const fetchMovie = async (movieId: number) => {
       const movie = await APIFacade.getMovieById(movieId)
       movie.ratingCode = movie.ratingCode.replace("_", "-")
-      movie.status = formatStatus(movie.status)
+      movie.status = movie.status
+        .split("_")
+        .map(token => titleCase(token))
+        .join(" ")
       setForm(movie)
     }
 
@@ -148,10 +145,13 @@ const EditMovie = () => {
     return true
   }
 
-  const formatMovie = (movie: Movie) => {
-    movie.categories = movie.categories.map(category => category.toUpperCase())
-    movie.ratingCode = movie.ratingCode.replace("-", "_")
-    return movie
+  const formToMovie = (): Movie => {
+    return {
+      ...form,
+      ratingCode: form.ratingCode.replace("-", "_"),
+      status: form.status.toUpperCase().replace(" ", "_"),
+      categories: form.categories.map(category => titleCase(category))
+    }
   }
 
   const formatDateTimes = (dateTimes: string[]) => {
@@ -161,13 +161,11 @@ const EditMovie = () => {
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!isValidForm()) return
-    await APIFacade.updateMovie(formatMovie(form))
+    await APIFacade.updateMovie(formToMovie())
     await APIFacade.updateMovieShowtimes(form.id, formatDateTimes(dateTimes))
+    alert("Movie is successfully updated.")
     window.location.reload()
   }
-
-  const formatCategories = () =>
-    form.categories.map(category => upperCaseToTitleCase(category))
 
   const handleAddShowTime = () => {
     const date = dateRef.current.value
@@ -297,9 +295,9 @@ const EditMovie = () => {
           <p className={labelStyles}>Categories</p>
           <input
             className={inputStyles}
-            defaultValue={formatCategories()}
+            value={form.categories}
             onChange={e =>
-              FormHandler.updateForm(e, "categories", form, setForm)
+              FormHandler.updateFormArray(e, "categories", form, setForm)
             }
           />
         </div>
@@ -309,7 +307,7 @@ const EditMovie = () => {
             className={inputStyles}
             value={form.directors}
             onChange={e =>
-              FormHandler.updateForm(e, "directors", form, setForm)
+              FormHandler.updateFormArray(e, "directors", form, setForm)
             }
           />
         </div>
@@ -319,7 +317,7 @@ const EditMovie = () => {
             className={inputStyles}
             value={form.producers}
             onChange={e =>
-              FormHandler.updateForm(e, "producers", form, setForm)
+              FormHandler.updateFormArray(e, "producers", form, setForm)
             }
           />
         </div>
@@ -329,7 +327,7 @@ const EditMovie = () => {
             className={inputStyles}
             value={form.castMembers}
             onChange={e =>
-              FormHandler.updateForm(e, "castMembers", form, setForm)
+              FormHandler.updateFormArray(e, "castMembers", form, setForm)
             }
           />
         </div>

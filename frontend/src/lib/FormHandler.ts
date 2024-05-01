@@ -20,7 +20,7 @@ export default class FormHandler {
   }
 
   public static updateFormArray<T>(
-    e: ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     key: string,
     form: T,
     setForm: Dispatch<SetStateAction<T>>

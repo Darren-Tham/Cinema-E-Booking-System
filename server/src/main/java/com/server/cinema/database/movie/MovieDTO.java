@@ -2,8 +2,6 @@ package com.server.cinema.database.movie;
 
 import java.util.Set;
 
-import com.server.cinema.database.movie.enums.MovieCategory;
-
 public record MovieDTO(
         int id,
         String title,
@@ -13,7 +11,7 @@ public record MovieDTO(
         String ratingCode,
         String status,
         String ratingOutOf10,
-        Set<MovieCategory> categories,
+        Set<String> categories,
         Set<String> castMembers,
         Set<String> directors,
         Set<String> producers) {

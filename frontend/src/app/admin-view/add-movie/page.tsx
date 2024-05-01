@@ -1,14 +1,20 @@
 "use client"
+
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import MovieRatings from "@/components/option/MovieRatings"
 import MovieStatuses from "@/components/option/MovieStatuses"
 import APIFacade from "@/lib/APIFacade"
+import FormHandler from "@/lib/FormHandler"
 import { NewMovie } from "@/lib/Types"
 import { useAuth } from "@/lib/useAuth"
 import Link from "next/link"
-import { ChangeEvent, FormEvent, useRef, useState } from "react"
+import { FormEvent, useState } from "react"
+
+const titleCase = (s: string) =>
+  s[0].toUpperCase() + s.substring(1).toLowerCase()
+
 const AddMovie = () => {
-  const [movie, setMovie] = useState<NewMovie>({
+  const [form, setForm] = useState<NewMovie>({
     title: "",
     trailerLink: "",
     imageLink: "",
@@ -21,9 +27,6 @@ const AddMovie = () => {
     synopsis: "",
     ratingCode: ""
   })
-  const [dateTimes, setDateTimes] = useState<string[]>([])
-  const dateRef = useRef<HTMLInputElement>(null!)
-  const timeRef = useRef<HTMLInputElement>(null!)
   const isAdmin = useAuth("admin")
 
   const labelStyles = "text-white font-semibold text-lg"
@@ -35,29 +38,29 @@ const AddMovie = () => {
   }
 
   const isValidForm = () => {
-    if (movie.title === "") {
+    if (form.title === "") {
       alert("Movie title cannot be empty.")
       return false
     }
 
-    if (movie.synopsis === "") {
+    if (form.synopsis === "") {
       alert("Movie synopsis cannot be empty.")
       return false
     }
 
-    if (movie.imageLink === "") {
+    if (form.imageLink === "") {
       alert("Movie image link cannot be empty.")
       return false
     }
 
-    if (movie.trailerLink === "") {
+    if (form.trailerLink === "") {
       alert("Movie trailer link cannot be empty.")
       return false
     }
 
-    const ratingOutOf10 = +movie.ratingOutOf10
+    const ratingOutOf10 = +form.ratingOutOf10
     if (
-      movie.ratingOutOf10 === "" ||
+      form.ratingOutOf10 === "" ||
       isNaN(ratingOutOf10) ||
       ratingOutOf10 < 0 ||
       ratingOutOf10 > 10
@@ -66,32 +69,32 @@ const AddMovie = () => {
       return false
     }
 
-    if (movie.ratingCode === "") {
+    if (form.ratingCode === "") {
       alert("Movie must have a rating code.")
       return false
     }
 
-    if (movie.status === "") {
+    if (form.status === "") {
       alert("Movie must have a status.")
       return false
     }
 
-    if (arrayInputEmpty(movie.categories)) {
+    if (arrayInputEmpty(form.categories)) {
       alert("Movie must have a category.")
       return false
     }
 
-    if (arrayInputEmpty(movie.directors)) {
+    if (arrayInputEmpty(form.directors)) {
       alert("Movie must have a director.")
       return false
     }
 
-    if (arrayInputEmpty(movie.producers)) {
+    if (arrayInputEmpty(form.producers)) {
       alert("Movie must have a producer.")
       return false
     }
 
-    if (arrayInputEmpty(movie.castMembers)) {
+    if (arrayInputEmpty(form.castMembers)) {
       alert("Movie must have a cast member.")
       return false
     }
@@ -99,76 +102,21 @@ const AddMovie = () => {
     return true
   }
 
-  const formatMovie = (movie: NewMovie) => {
-    movie.categories = movie.categories.map(category => category.toUpperCase())
-    movie.ratingCode = movie.ratingCode.replace("-", "_")
-    return movie
-  }
-
-  const formatDateTimes = (dateTimes: string[]) => {
-    return dateTimes.map(dateTime => dateTime.replace("T", " "))
+  const formToMovie = (): NewMovie => {
+    return {
+      ...form,
+      ratingCode: form.ratingCode.replace("-", "_"),
+      status: form.status.toUpperCase().replace(" ", "_"),
+      categories: form.categories.map(category => titleCase(category))
+    }
   }
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!isValidForm()) return
-    await APIFacade.updateMovie(formatMovie(movie))
-    await APIFacade.updateMovieShowtimes(movie.id, formatDateTimes(dateTimes))
+    await APIFacade.addMovie(formToMovie())
+    alert("Movie is successfully added.")
     window.location.reload()
-  }
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { id, value } = e.target
-    setMovie({ ...movie, [id]: value })
-  }
-
-  const handleArrayChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { id, value } = e.target
-    setMovie({ ...movie, [id]: value.split(",") })
-  }
-
-  const upperCaseToTitleCase = (s: string) =>
-    s[0] + s.substring(1).toLowerCase()
-
-  const formatCategories = () =>
-    movie.categories.map(category => upperCaseToTitleCase(category))
-
-  const handleAddShowTime = () => {
-    const date = dateRef.current.value
-    const time = timeRef.current.value
-    if (date === "") {
-      alert("Date cannot be empty.")
-      return
-    }
-
-    if (time === "") {
-      alert("Time cannot be empty.")
-      return
-    }
-
-    const dateTime = `${date}T${time}:00`
-    if (dateTimes.includes(dateTime)) {
-      alert("Show time already exists.")
-      return
-    }
-    setDateTimes(
-      [...dateTimes, dateTime].toSorted((a, b) => a.localeCompare(b))
-    )
-  }
-
-  const statusMap = (status: string | undefined) => {
-    switch (status) {
-      case "NOW_PLAYING":
-        return "Now Playing"
-      case "COMING_SOON":
-        return "Coming Soon"
-      default:
-        return ""
-    }
   }
 
   return isAdmin ? (
@@ -190,8 +138,8 @@ const AddMovie = () => {
           <input
             id="title"
             className={inputStyles}
-            defaultValue={movie?.title}
-            onChange={handleChange}
+            value={form.title}
+            onChange={e => FormHandler.updateForm(e, "title", form, setForm)}
           />
         </div>
         <div className={divStyles}>
@@ -201,52 +149,60 @@ const AddMovie = () => {
           <textarea
             id="synopsis"
             className={inputStyles}
-            defaultValue={movie?.synopsis}
-            onChange={handleChange}
+            value={form.synopsis}
+            onChange={e => FormHandler.updateForm(e, "synopsis", form, setForm)}
           />
         </div>
         <div className={divStyles}>
-          <label htmlFor="imageLink" className={labelStyles}>
+          <label htmlFor="image-link" className={labelStyles}>
             Image Link
           </label>
           <input
-            id="imageLink"
+            id="image-link"
             className={inputStyles}
-            defaultValue={movie?.imageLink}
-            onChange={handleChange}
+            value={form.imageLink}
+            onChange={e =>
+              FormHandler.updateForm(e, "imageLink", form, setForm)
+            }
           />
         </div>
         <div className={divStyles}>
-          <label htmlFor="trailerLink" className={labelStyles}>
+          <label htmlFor="trailer-link" className={labelStyles}>
             Trailer Link
           </label>
           <input
-            id="trailerLink"
+            id="trailer-link"
             className={inputStyles}
-            defaultValue={movie?.trailerLink}
-            onChange={handleChange}
+            value={form.trailerLink}
+            onChange={e =>
+              FormHandler.updateForm(e, "trailerLink", form, setForm)
+            }
           />
         </div>
         <div className={divStyles}>
-          <label htmlFor="ratingOutOf10" className={labelStyles}>
+          <label htmlFor="rating-out-of-10" className={labelStyles}>
             Rating Out Of 10
           </label>
           <input
-            id="ratingOutOf10"
+            id="rating-out-of-10"
             className={inputStyles}
-            defaultValue={movie?.ratingOutOf10}
-            onChange={handleChange}
+            value={form.ratingOutOf10}
+            onChange={e =>
+              FormHandler.updateForm(e, "ratingOutOf10", form, setForm)
+            }
           />
         </div>
         <div className={divStyles}>
-          <label htmlFor="ratingCode" className={labelStyles}>
+          <label htmlFor="rating-code" className={labelStyles}>
             Rating Code
           </label>
           <select
-            id="ratingCode"
+            id="rating-code"
             className={inputStyles}
-            defaultValue={movie?.ratingCode.replace("_", "-")}
-            onChange={handleChange}
+            value={form.ratingCode}
+            onChange={e =>
+              FormHandler.updateForm(e, "ratingCode", form, setForm)
+            }
           >
             <MovieRatings />
           </select>
@@ -258,8 +214,8 @@ const AddMovie = () => {
           <select
             id="status"
             className={inputStyles}
-            defaultValue={statusMap(movie?.status)}
-            onChange={handleChange}
+            value={form.status}
+            onChange={e => FormHandler.updateForm(e, "status", form, setForm)}
           >
             <MovieStatuses />
           </select>
@@ -267,37 +223,41 @@ const AddMovie = () => {
         <div className={divStyles}>
           <p className={labelStyles}>Categories</p>
           <input
-            id="categories"
             className={inputStyles}
-            defaultValue={formatCategories()}
-            onChange={handleArrayChange}
+            value={form.categories}
+            onChange={e =>
+              FormHandler.updateFormArray(e, "categories", form, setForm)
+            }
           />
         </div>
         <div className={divStyles}>
           <p className={labelStyles}>Directors</p>
           <input
-            id="directors"
             className={inputStyles}
-            defaultValue={movie?.directors}
-            onChange={handleArrayChange}
+            value={form.directors}
+            onChange={e =>
+              FormHandler.updateFormArray(e, "directors", form, setForm)
+            }
           />
         </div>
         <div className={divStyles}>
           <p className={labelStyles}>Producers</p>
           <textarea
-            id="producers"
             className={inputStyles}
-            defaultValue={movie?.producers}
-            onChange={handleArrayChange}
+            value={form.producers}
+            onChange={e =>
+              FormHandler.updateFormArray(e, "producers", form, setForm)
+            }
           />
         </div>
         <div className={divStyles}>
           <p className={labelStyles}>Cast Members</p>
           <textarea
-            id="castMembers"
             className={inputStyles}
-            defaultValue={movie?.castMembers}
-            onChange={handleArrayChange}
+            value={form.castMembers}
+            onChange={e =>
+              FormHandler.updateFormArray(e, "castMembers", form, setForm)
+            }
           />
         </div>
         <button

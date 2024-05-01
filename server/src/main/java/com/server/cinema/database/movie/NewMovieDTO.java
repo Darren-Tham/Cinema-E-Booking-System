@@ -2,17 +2,18 @@ package com.server.cinema.database.movie;
 
 import java.util.Set;
 
-import com.server.cinema.database.movie.enums.MovieCategory;
+import com.server.cinema.database.movie.enums.MovieRatingCode;
+import com.server.cinema.database.movie.enums.MovieStatus;
 
 public record NewMovieDTO(
         String title,
         String trailerLink,
         String imageLink,
         String synopsis,
-        String ratingCode,
-        String status,
+        MovieRatingCode ratingCode,
+        MovieStatus status,
         String ratingOutOf10,
-        Set<MovieCategory> categories,
+        Set<String> categories,
         Set<String> castMembers,
         Set<String> directors,
         Set<String> producers) {

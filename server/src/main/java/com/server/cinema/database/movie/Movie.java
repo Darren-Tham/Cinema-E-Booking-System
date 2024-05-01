@@ -2,7 +2,6 @@ package com.server.cinema.database.movie;
 
 import java.util.Set;
 
-import com.server.cinema.database.movie.enums.MovieCategory;
 import com.server.cinema.database.movie.enums.MovieRatingCode;
 import com.server.cinema.database.movie.enums.MovieStatus;
 import com.server.cinema.database.review.Review;
@@ -56,11 +55,10 @@ public class Movie {
     @Enumerated(EnumType.STRING)
     private MovieRatingCode ratingCode;
 
-    @ElementCollection(targetClass = MovieCategory.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "movie_category", joinColumns = @JoinColumn(name = "movie_id"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "category")
-    private Set<MovieCategory> categories;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "category", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "category", nullable = false)
+    private Set<String> categories;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "producer", joinColumns = @JoinColumn(name = "movie_id"))

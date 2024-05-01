@@ -3,8 +3,6 @@ package com.server.cinema.database.movie;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,9 +25,8 @@ public class MovieController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addMovie(@RequestBody final Movie movie) {
+    public void addMovie(@RequestBody final NewMovieDTO movie) {
         movieService.addMovie(movie);
-        return new ResponseEntity<>("Movie has been successfully added.", HttpStatus.CREATED);
     }
 
     @GetMapping("/{movieId}")
