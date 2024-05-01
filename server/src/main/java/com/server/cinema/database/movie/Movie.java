@@ -62,17 +62,17 @@ public class Movie {
     @Column(name = "category")
     private Set<MovieCategory> categories;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "producer", joinColumns = @JoinColumn(name = "movie_id"))
     @Column(name = "name", nullable = false)
     private Set<String> producers;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "director", joinColumns = @JoinColumn(name = "movie_id"))
     @Column(name = "name", nullable = false)
     private Set<String> directors;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "cast_member", joinColumns = @JoinColumn(name = "movie_id"))
     @Column(name = "name", nullable = false)
     private Set<String> castMembers;
