@@ -4,6 +4,7 @@ import MainMovieBanner from "@/components/MainMovieBanner"
 import { MovieType } from "@/components/Movie"
 import MoviesContainer from "@/components/MoviesContainer"
 import UserNavbar from "@/components/UserNavbar"
+import APIFacade from "@/lib/APIFacade"
 import { useEffect, useState } from "react"
 
 type Props = {
@@ -12,18 +13,15 @@ type Props = {
   }
 }
 
-export default function SearchQuery({ params: { query } }: Readonly<Props>) {
+const SearchQuery = ({ params: { query } }: Readonly<Props>) => {
   const [movies, setMovies] = useState<MovieType[]>([])
 
   useEffect(() => {
-    async function getMovies() {
-      const response = await fetch(
-        `http://localhost:8080/api/movies/search?query=${query}`
-      )
-      const data = await response.json()
-      setMovies(data)
+    const fetchSearchedMovies = async () => {
+      const movies = await APIFacade.getSearchedMovies(query)
+      setMovies(movies)
     }
-    getMovies()
+    fetchSearchedMovies()
   }, [query])
 
   return (
@@ -40,3 +38,5 @@ export default function SearchQuery({ params: { query } }: Readonly<Props>) {
     </div>
   )
 }
+
+export default SearchQuery

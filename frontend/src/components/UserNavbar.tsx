@@ -66,7 +66,9 @@ export default function UserNavbar() {
             </p>
             {isAdmin && (
               <Link href="/admin-view">
-                <button className="back-button text-[#2CC295] border-[#2CC295]">Admin Portal</button>
+                <button className="back-button text-[#2CC295] border-[#2CC295]">
+                  Admin Portal
+                </button>
               </Link>
             )}
             <button

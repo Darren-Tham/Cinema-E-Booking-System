@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
@@ -43,10 +42,10 @@ public class MovieController {
         return movieService.getAllMovies();
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search/{query}")
     public List<MovieDTO> searchMovies(
-            @RequestParam("query") final String searchQuery) {
-        return movieService.searchMovies(searchQuery);
+            @PathVariable final String query) {
+        return movieService.searchMovies(query);
     }
 
     @PutMapping("/update")

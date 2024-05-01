@@ -28,6 +28,10 @@ export default class APIFacade {
     await APIMovieFacade.updateMovie(movie)
   }
 
+  public static async getSearchedMovies(query: string) {
+    return await APIMovieFacade.getSearchedMovies(query)
+  }
+
   public static async getShowTimesByMovieId(movieId: number) {
     return await APIShowtimeFacade.getShowTimesByMovieId(movieId)
   }
@@ -206,6 +210,12 @@ class APIMovieFacade {
       `${this.MOVIE_URL}/update`,
       RequestInitHandler.putRequestInitWithBody(movie)
     )
+  }
+
+  public static async getSearchedMovies(query: string) {
+    const response = await fetch(`${this.MOVIE_URL}/search/${query}`)
+    const data: Movie[] = await response.json()
+    return data
   }
 }
 
