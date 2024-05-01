@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useAuth } from "@/lib/useAuth"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 
-const SuspendUser = () => {
+const AdminView = () => {
   const isAdmin = useAuth("admin")
 
   const buttonStyles =
@@ -34,4 +34,4 @@ const SuspendUser = () => {
   )
 }
 
-export default SuspendUser
+export default AdminView
