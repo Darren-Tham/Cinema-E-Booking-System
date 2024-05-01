@@ -8,10 +8,9 @@ import FirstNameInput from "./FirstNameInput"
 import LastNameInput from "./LastNameInput"
 import PhoneNumberInput from "./PhoneNumberInput"
 import HomeAddressInput from "./HomeAddressInput"
-import CardsInput from "./CardsInput"
+import CardsInput from "./card/CardsInput"
 import PasswordInput from "./PasswordInput"
 import PromotionButton from "./PromotionButton"
-import VerificationCodeInput from "./VerificationCodeInput"
 import { useAuth } from "@/lib/useAuth"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import { Customer } from "@/lib/Types"
@@ -88,7 +87,6 @@ const EditProfile = () => {
               setDialogOpen={setDialogOpen}
             />
           </div>
-          {/* <VerificationCodeInput customerId={customer?.id} /> */}
           <PromotionButton customer={customer} />
           <Link
             href="/"
