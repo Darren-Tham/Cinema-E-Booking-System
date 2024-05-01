@@ -38,7 +38,7 @@ export default function FirstNameInput({
       return
     }
 
-    await APIFacade.updateCustomerFirstName(customer.id, firstName)
+    await APIFacade.updateCustomerFirstName(customer.id, updatedFirstName)
 
     const email: Email = {
       receiverEmail: customer.email,
