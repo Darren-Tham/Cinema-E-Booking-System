@@ -54,7 +54,7 @@ const Login = () => {
 
   const adminLogin = async () => {
     const admin = await APIFacade.getAdmin(form.email, form.password)
-    if (admin === undefined) return
+    if (admin === undefined) return false
     const user: Customer = {
       id: admin.id,
       firstName: "",
@@ -66,6 +66,7 @@ const Login = () => {
     }
     initialSetUp(user, form.rememberMe)
     router.push("/admin-view")
+    return true
   }
 
   const customerLogin = async () => {
@@ -80,8 +81,9 @@ const Login = () => {
 
   const handleFormSubmit = async () => {
     if (!isValidForm()) return
-    adminLogin()
-    customerLogin()
+    if (!(await adminLogin())) {
+      await customerLogin()
+    }
   }
 
   return (
@@ -130,7 +132,10 @@ const Login = () => {
               Remember Me
             </label>
           </div>
-          <button className="action-button w-full shadow-md" onClick={handleFormSubmit}>
+          <button
+            className="action-button w-full shadow-md"
+            onClick={handleFormSubmit}
+          >
             Log In
           </button>
           <div className="flex justify-center">
