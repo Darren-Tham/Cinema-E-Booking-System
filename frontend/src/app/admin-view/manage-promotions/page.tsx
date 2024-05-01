@@ -6,6 +6,7 @@ import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import { Email, Promotion } from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"
 import FormHandler from "@/lib/FormHandler"
+import Link from "next/link"
 
 const ManagePromotions = () => {
   const [form, setForm] = useState<Promotion>({
@@ -85,7 +86,7 @@ const ManagePromotions = () => {
   }
 
   return isAdmin ? (
-    <div className="flex bg-black min-h-screen items-center justify-center px-4">
+    <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md bg-teal-950 p-4 rounded-md shadow-lg">
         <h1 className="text-white text-2xl font-bold mb-4 text-center">
           Promotions
@@ -184,12 +185,20 @@ const ManagePromotions = () => {
               />
             </div>
           </div>
-          <button
-            type="submit"
-            className="w-full p-2 bg-light-jade text-white rounded hover:scale-[1.015] transition-transform duration-300 font-semibold"
-          >
-            Confirm
-          </button>
+          <div className="grid grid-cols-2 gap-2">
+            <Link
+              href="/admin-view"
+              className="bg-jade px-4 py-2 text-white font-bold hover:scale-[1.015] transition-transform duration-300 rounded self-start"
+            >
+              Back To Admin View
+            </Link>
+            <button
+              type="submit"
+              className="w-full p-2 bg-light-jade text-white rounded hover:scale-[1.015] transition-transform duration-300 font-semibold"
+            >
+              Confirm
+            </button>
+          </div>
         </form>
       </div>
     </div>
