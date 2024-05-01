@@ -3,14 +3,7 @@
 import States from "@/components/States"
 import APIFacade from "@/lib/APIFacade"
 import { Customer, Email, ProfileHomeAddress } from "@/lib/Types"
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState
-} from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import PencilIcon from "@public/pencil-icon.svg"
 import RedDeleteIcon from "@public/red-delete-icon.svg"

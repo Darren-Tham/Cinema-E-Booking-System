@@ -10,7 +10,7 @@ import Cancel from "@public/red-cancel-icon.svg"
 import APIFacade from "@/lib/APIFacade"
 import { Movie, Review, ShowTime } from "@/lib/Types"
 
-export default function TheatersAndTimes() {
+const TheatersAndTimes = () => {
   const [load, setLoad] = useState(false)
   const searchParams = useSearchParams()
   const [movie, setMovie] = useState<Movie>()
@@ -164,3 +164,5 @@ export default function TheatersAndTimes() {
     </>
   )
 }
+
+export default TheatersAndTimes

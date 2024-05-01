@@ -2,13 +2,7 @@ import States from "@/components/States"
 import APIFacade from "@/lib/APIFacade"
 import FormHandler from "@/lib/FormHandler"
 import { Customer, CustomerHomeAddress, Email } from "@/lib/Types"
-import {
-  ChangeEvent,
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useState
-} from "react"
+import { Dispatch, MutableRefObject, SetStateAction, useState } from "react"
 
 type Form = {
   address: string

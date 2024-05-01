@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/useAuth"
 import HomeNavbar from "@/components/HomeNavbar"
 import EncantoPoster from "@public/Encanto_poster.png"
 
-export default function OrderConfirmation() {
+const OrderConfirmation = () => {
   const isUser = useAuth("user")
   const h1Styles = "font-bold text-6xl text-white text-center"
   const h1Styles2 = "text-xl font-semibold text-white"
@@ -65,3 +65,5 @@ export default function OrderConfirmation() {
     </div>
   )
 }
+
+export default OrderConfirmation

@@ -3,6 +3,7 @@ import AccountField from "@/components/AccountField"
 import SearchIcon from "@public/search-icon.svg"
 import Image from "next/image"
 import { useAuth } from "@/lib/useAuth"
+import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 
 const SuspendUser = () => {
   const isAdmin = useAuth("admin")
@@ -62,11 +63,7 @@ const SuspendUser = () => {
       </div>
     </div>
   ) : (
-    <div className="h-screen bg-black flex justify-center items-center">
-      <h1 className="text-white text-3xl">
-        WOMP WOMP, you are not authorized.
-      </h1>
-    </div>
+    <UnauthorizedScreen />
   )
 }
 

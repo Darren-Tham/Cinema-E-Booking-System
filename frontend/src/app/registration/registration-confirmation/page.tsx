@@ -1,7 +1,7 @@
 import HomeNavbar from "@/components/HomeNavbar"
 import Link from "next/link"
 
-export default function RegistrationConfirmation() {
+const RegistrationConfirmation = () => {
   return (
     <div className="min-h-screen bg-black flex flex-col">
       <HomeNavbar />
@@ -22,3 +22,5 @@ export default function RegistrationConfirmation() {
     </div>
   )
 }
+
+export default RegistrationConfirmation

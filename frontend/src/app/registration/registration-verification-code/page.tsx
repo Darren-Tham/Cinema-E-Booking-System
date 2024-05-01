@@ -4,14 +4,14 @@ import HomeNavbar from "@/components/HomeNavbar"
 import APIFacade from "@/lib/APIFacade"
 import FormHandler from "@/lib/FormHandler"
 import { useRouter, useSearchParams } from "next/navigation"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 type Form = {
   customerId: number
   verificationCode: string
 }
 
-export default function RegistrationVerificationCode() {
+const RegistrationVerificationCode = () => {
   const [form, setForm] = useState<Form>({
     customerId: -1,
     verificationCode: ""
@@ -62,7 +62,9 @@ export default function RegistrationVerificationCode() {
             type="text"
             className="rounded-sm font-semibold outline-none p-[0.375rem] w-full mb-3"
             value={form.verificationCode}
-            onChange={e => FormHandler.updateForm(e, "verificationCode", form, setForm)}
+            onChange={e =>
+              FormHandler.updateForm(e, "verificationCode", form, setForm)
+            }
           />
           <button
             className="bg-jade text-white w-full font-bold px-4 py-2 rounded-sm hover:scale-105 transition-transform duration-300 mb-1"
@@ -88,3 +90,5 @@ export default function RegistrationVerificationCode() {
     <></>
   )
 }
+
+export default RegistrationVerificationCode

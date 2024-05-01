@@ -1,6 +1,6 @@
 "use client"
 
-import { ChangeEvent, Dispatch, MouseEvent, SetStateAction } from "react"
+import { Dispatch, MouseEvent, SetStateAction } from "react"
 import { Form } from "./page"
 import { CustomerCard, CustomerHomeAddress, NewCustomer } from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"

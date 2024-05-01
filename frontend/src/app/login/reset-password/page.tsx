@@ -5,7 +5,7 @@ import APIFacade from "@/lib/APIFacade"
 import FormHandler from "@/lib/FormHandler"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 type Form = {
   customerId: number
@@ -14,7 +14,7 @@ type Form = {
   confirmPassword: string
 }
 
-export default function ResetPassword() {
+const ResetPassword = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [verificationCode, setVerificationCode] = useState("")
@@ -154,3 +154,5 @@ export default function ResetPassword() {
     <></>
   )
 }
+
+export default ResetPassword

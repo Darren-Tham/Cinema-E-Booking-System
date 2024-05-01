@@ -11,10 +11,7 @@ type Props = {
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function FirstNameInput({
-  customer,
-  setDialogOpen
-}: Readonly<Props>) {
+const FirstNameInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
   const dialogRef = useRef<HTMLDialogElement>(null!)
   const inputRef = useRef<HTMLInputElement>(null!)
   const [firstName, setFirstName] = useState("")
@@ -107,3 +104,5 @@ export default function FirstNameInput({
     </>
   )
 }
+
+export default FirstNameInput

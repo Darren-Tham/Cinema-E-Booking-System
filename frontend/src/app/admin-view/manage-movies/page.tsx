@@ -8,7 +8,7 @@ import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import APIFacade from "@/lib/APIFacade"
 import { Movie } from "@/lib/Types"
 
-export default function ManageMovies() {
+const ManageMovies = () => {
   const [movies, setMovies] = useState<Movie[]>([])
   const isAdmin = useAuth("admin")
 
@@ -81,3 +81,5 @@ export default function ManageMovies() {
     <UnauthorizedScreen />
   )
 }
+
+export default ManageMovies

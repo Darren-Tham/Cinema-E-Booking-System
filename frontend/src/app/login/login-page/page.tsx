@@ -3,7 +3,7 @@
 import HomeNavbar from "@/components/HomeNavbar"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { ChangeEvent, useRef, useState } from "react"
+import { useState } from "react"
 import { initialSetUp } from "../../../lib/Auth"
 import APIFacade from "@/lib/APIFacade"
 import { Customer } from "@/lib/Types"

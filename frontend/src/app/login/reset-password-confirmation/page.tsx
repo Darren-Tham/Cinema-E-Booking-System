@@ -1,7 +1,7 @@
 import HomeNavbar from "@/components/HomeNavbar"
 import Link from "next/link"
 
-export default function ResetPasswordConfirmation() {
+const ResetPasswordConfirmation = () => {
   return (
     <div className="min-h-screen bg-black flex flex-col">
       <HomeNavbar />
@@ -22,3 +22,5 @@ export default function ResetPasswordConfirmation() {
     </div>
   )
 }
+
+export default ResetPasswordConfirmation

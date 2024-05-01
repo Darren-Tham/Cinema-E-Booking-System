@@ -1,10 +1,12 @@
 "use client"
+
 import HomeNavbar from "@/components/HomeNavbar"
 import Seat from "@/components/Seat"
 import CheckoutBanner from "@/components/CheckoutBanner"
 import Link from "next/link"
 import { useAuth } from "@/lib/useAuth"
-export default function SeatsPage() {
+
+const SeatsPage = () => {
   const isUser = useAuth("user")
   return isUser ? (
     <div className="min-h-screen bg-black flex flex-col">
@@ -78,3 +80,5 @@ export default function SeatsPage() {
     </div>
   )
 }
+
+export default SeatsPage

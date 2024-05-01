@@ -5,7 +5,6 @@ import Image from "next/image"
 import BluePlusIcon from "@public/blue-plus-icon.svg"
 import { Customer, Email, ProfileHomeAddress } from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"
-import States from "@/components/States"
 import HomeAddressComponent from "./HomeAddressComponent"
 import AddHomeAddress from "./AddHomeAddress"
 
@@ -14,10 +13,7 @@ type Props = {
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function HomeAddressInput({
-  customer,
-  setDialogOpen
-}: Readonly<Props>) {
+const HomeAddressInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
   const [homeAddress, setHomeAddress] = useState<ProfileHomeAddress>()
   const addDialogRef = useRef<HTMLDialogElement>(null!)
 
@@ -63,3 +59,5 @@ export default function HomeAddressInput({
     </>
   )
 }
+
+export default HomeAddressInput
