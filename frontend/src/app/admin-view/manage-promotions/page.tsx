@@ -101,9 +101,7 @@ const ManagePromotions = () => {
               type="text"
               className="mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
               value={form.name}
-              onChange={e =>
-                FormHandler.updateForm(e, "name", form, setForm, false)
-              }
+              onChange={e => FormHandler.updateForm(e, "name", form, setForm)}
             />
           </div>
           <div className="flex flex-col">
@@ -130,13 +128,7 @@ const ManagePromotions = () => {
               className="mt-1"
               value={form.discountPercentage}
               onChange={e =>
-                FormHandler.updateForm(
-                  e,
-                  "discountPercentage",
-                  form,
-                  setForm,
-                  true
-                )
+                FormHandler.updateForm(e, "discountPercentage", form, setForm)
               }
               min="0"
               max="100"
@@ -160,7 +152,7 @@ const ManagePromotions = () => {
                 className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
                 value={form.startDate}
                 onChange={e =>
-                  FormHandler.updateForm(e, "startDate", form, setForm, false)
+                  FormHandler.updateForm(e, "startDate", form, setForm)
                 }
               />
             </div>
@@ -174,7 +166,7 @@ const ManagePromotions = () => {
                 className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
                 value={form.endDate}
                 onChange={e =>
-                  FormHandler.updateForm(e, "endDate", form, setForm, false)
+                  FormHandler.updateForm(e, "endDate", form, setForm)
                 }
               />
             </div>

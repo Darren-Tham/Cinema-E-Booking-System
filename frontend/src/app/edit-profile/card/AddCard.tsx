@@ -100,9 +100,7 @@ const AddCard = ({
           <select
             className="rounded-sm font-semibold p-[0.375rem] w-full bg-emerald-50"
             value={form.cardType}
-            onChange={e =>
-              FormHandler.updateForm(e, "cardType", form, setForm, false)
-            }
+            onChange={e => FormHandler.updateForm(e, "cardType", form, setForm)}
           >
             <CardTypes />
           </select>
@@ -113,13 +111,7 @@ const AddCard = ({
             className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
             value={form.cardNumber}
             onChange={e =>
-              FormHandler.updateFormOnlyNumbers(
-                e,
-                "cardNumber",
-                form,
-                setForm,
-                false
-              )
+              FormHandler.updateFormOnlyNumbers(e, "cardNumber", form, setForm)
             }
           />
           <div className="bg-light-jade outline-none font-semibold p-2 rounded-sm">
@@ -145,7 +137,7 @@ const AddCard = ({
             className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
             value={form.billingAddress}
             onChange={e =>
-              FormHandler.updateForm(e, "billingAddress", form, setForm, false)
+              FormHandler.updateForm(e, "billingAddress", form, setForm)
             }
           />
         </div>

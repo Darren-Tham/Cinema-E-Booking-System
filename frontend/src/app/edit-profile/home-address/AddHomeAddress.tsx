@@ -1,5 +1,6 @@
 import States from "@/components/States"
 import APIFacade from "@/lib/APIFacade"
+import FormHandler from "@/lib/FormHandler"
 import { Customer, CustomerHomeAddress, Email } from "@/lib/Types"
 import {
   ChangeEvent,
@@ -33,25 +34,6 @@ const AddHomeAddress = ({
     state: "",
     zipcode: ""
   })
-
-  const handleAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, address: e.target.value })
-  }
-
-  const handleCityChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, city: e.target.value })
-  }
-
-  const handleStateChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setForm({ ...form, state: e.target.value })
-  }
-
-  const handleZipcodeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: zipcode } = e.target
-    if (/^\d*$/.test(zipcode) && form !== undefined) {
-      setForm({ ...form, zipcode })
-    }
-  }
 
   const isValidForm = () => {
     if (form.address === "") {
@@ -119,7 +101,7 @@ const AddHomeAddress = ({
           <input
             className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
             value={form.address}
-            onChange={handleAddressChange}
+            onChange={e => FormHandler.updateForm(e, "address", form, setForm)}
           />
           <div className="bg-light-jade outline-none font-semibold p-2 rounded-sm">
             City
@@ -127,7 +109,7 @@ const AddHomeAddress = ({
           <input
             className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
             value={form.city}
-            onChange={handleCityChange}
+            onChange={e => FormHandler.updateForm(e, "city", form, setForm)}
           />
           <div className="bg-light-jade outline-none font-semibold p-2 rounded-sm">
             State
@@ -135,7 +117,7 @@ const AddHomeAddress = ({
           <select
             className="rounded-sm font-semibold p-[0.375rem] bg-emerald-50"
             value={form.state}
-            onChange={handleStateChange}
+            onChange={e => FormHandler.updateForm(e, "state", form, setForm)}
           >
             <States />
           </select>
@@ -145,7 +127,9 @@ const AddHomeAddress = ({
           <input
             className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
             value={form.zipcode}
-            onChange={handleZipcodeChange}
+            onChange={e =>
+              FormHandler.updateFormOnlyNumbers(e, "zipcode", form, setForm)
+            }
           />
         </div>
         <div className="grid grid-cols-2 gap-3">

@@ -7,6 +7,7 @@ import { ChangeEvent, useRef, useState } from "react"
 import { initialSetUp } from "../../../lib/Auth"
 import APIFacade from "@/lib/APIFacade"
 import { Customer } from "@/lib/Types"
+import FormHandler from "@/lib/FormHandler"
 
 type Form = {
   email: string
@@ -23,20 +24,6 @@ const Login = () => {
     rememberMe: false,
     loginFailed: false
   })
-
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: email } = e.target
-    if (email.includes(" ")) return
-    setForm({ ...form, email })
-  }
-
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, password: e.target.value })
-  }
-
-  const handleRememberMe = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, rememberMe: e.target.checked })
-  }
 
   const isValidForm = () => {
     if (form.email === "") {
@@ -99,9 +86,11 @@ const Login = () => {
             <input
               type="text"
               id="email"
-              value={form.email}
               className="input"
-              onChange={handleEmailChange}
+              value={form.email}
+              onChange={e =>
+                FormHandler.updateFormNoSpaces(e, "email", form, setForm)
+              }
             />
           </div>
           <div className="flex flex-col gap-1 w-full">
@@ -113,7 +102,9 @@ const Login = () => {
               id="password"
               className="input"
               value={form.password}
-              onChange={handlePasswordChange}
+              onChange={e =>
+                FormHandler.updateForm(e, "password", form, setForm)
+              }
             />
             <Link
               href="./forgot-password"
@@ -126,7 +117,9 @@ const Login = () => {
             <input
               type="checkbox"
               className="w-4 h-4 rounded"
-              onChange={handleRememberMe}
+              onChange={e =>
+                FormHandler.updateFormCheckbox(e, "rememberMe", form, setForm)
+              }
             />
             <label className="ml-1.5 text-sm font-medium text-white">
               Remember Me

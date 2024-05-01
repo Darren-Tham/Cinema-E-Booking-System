@@ -97,7 +97,9 @@ const PasswordInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
               type="password"
               className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
               value={form.currentPassword}
-              onChange={e => FormHandler.updateForm(e, "currentPassword", form, setForm, false)}
+              onChange={e =>
+                FormHandler.updateForm(e, "currentPassword", form, setForm)
+              }
             />
             <div className="bg-light-jade outline-none font-semibold p-2 rounded-sm">
               New Password
@@ -106,7 +108,9 @@ const PasswordInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
               type="password"
               className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
               value={form.newPassword}
-              onChange={e => FormHandler.updateForm(e, "newPassword", form, setForm, false)}
+              onChange={e =>
+                FormHandler.updateForm(e, "newPassword", form, setForm)
+              }
             />
             <div className="bg-light-jade outline-none font-semibold p-2 rounded-sm">
               Confirm Password
@@ -115,7 +119,9 @@ const PasswordInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
               type="password"
               className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
               value={form.confirmPassword}
-              onChange={e => FormHandler.updateForm(e, "confirmPassword", form, setForm, false)}
+              onChange={e =>
+                FormHandler.updateForm(e, "confirmPassword", form, setForm)
+              }
             />
           </div>
           <div className="grid grid-cols-2 gap-3">

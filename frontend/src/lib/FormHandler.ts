@@ -5,10 +5,18 @@ export default class FormHandler {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     key: string,
     form: T,
-    setForm: Dispatch<SetStateAction<T>>,
-    isNumber: boolean
+    setForm: Dispatch<SetStateAction<T>>
   ) {
-    setForm({ ...form, [key]: isNumber ? +e.target.value : e.target.value })
+    setForm({ ...form, [key]: e.target.value })
+  }
+
+  public static updateFormCheckbox<T>(
+    e: ChangeEvent<HTMLInputElement>,
+    key: string,
+    form: T,
+    setForm: Dispatch<SetStateAction<T>>
+  ) {
+    setForm({ ...form, [key]: e.target.checked })
   }
 
   public static updateFormOnlyNumbers<T>(
@@ -16,11 +24,10 @@ export default class FormHandler {
     key: string,
     form: T,
     setForm: Dispatch<SetStateAction<T>>,
-    isNumber: boolean
   ) {
     const { value } = e.target
     if (/^\d*$/.test(value)) {
-      this.updateForm(e, key, form, setForm, isNumber)
+      this.updateForm(e, key, form, setForm)
     }
   }
 
@@ -32,7 +39,7 @@ export default class FormHandler {
   ) {
     const { value } = e.target
     if (value.includes(" ")) return
-    this.updateForm(e, key, form, setForm, false)
+    this.updateForm(e, key, form, setForm)
   }
 
   public static updateFormExpirationDate<T>(
@@ -76,6 +83,6 @@ export default class FormHandler {
         return
     }
 
-    this.updateForm(e, key, form, setForm, false)
+    this.updateForm(e, key, form, setForm)
   }
 }

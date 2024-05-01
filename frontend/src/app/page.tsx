@@ -2,12 +2,12 @@
 
 import Image from "next/image"
 import MoviesContainer from "@/components/MoviesContainer"
-import { MovieType } from "@/components/Movie"
 import { useEffect, useState } from "react"
 import UserNavbar from "@/components/UserNavbar"
 import MainMovieBanner from "@/components/MainMovieBanner"
 import FilterIcon from "@public/filter-icon.svg"
 import APIFacade from "@/lib/APIFacade"
+import { Movie } from "@/lib/Types"
 
 const CATEGORIES = [
   "Animation",
@@ -25,7 +25,7 @@ const CATEGORIES = [
 ]
 
 const Home = () => {
-  const [movies, setMovies] = useState<MovieType[]>([])
+  const [movies, setMovies] = useState<Movie[]>([])
   const [filterType, setFilterType] = useState("All")
 
   useEffect(() => {

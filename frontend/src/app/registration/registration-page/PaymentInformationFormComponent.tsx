@@ -1,5 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react"
 import { Form } from "./page"
+import FormHandler from "@/lib/FormHandler"
 
 type Props = {
   form: Form
@@ -16,48 +17,6 @@ const PaymentInformationFormComponent = ({
   goToPersonalInformationForm,
   goToHomeAddressForm
 }: Readonly<Props>) => {
-  const handleCreditCardTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setForm({
-      ...form,
-      cardType: e.target.value
-    })
-  }
-
-  const handleCreditCardNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: cardNumber } = e.target
-    if (/^\d*$/.test(cardNumber)) {
-      setForm({
-        ...form,
-        cardNumber
-      })
-    }
-  }
-
-  const handleExpirationDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: expirationDate } = e.target
-    if (
-      /(?:\d|\/)*/.test(expirationDate) &&
-      expirationDate.length <= 7 &&
-      expirationDate.indexOf("/") === expirationDate.lastIndexOf("/")
-    ) {
-      setForm({ ...form, expirationDate })
-    }
-  }
-
-  const handleCVVChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: cvv } = e.target
-    if (/^\d*$/.test(cvv)) {
-      setForm({ ...form, cvv })
-    }
-  }
-
-  const handleBillingAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({
-      ...form,
-      billingAddress: e.target.value
-    })
-  }
-
   return (
     <form className={formStyles}>
       <h1 className="h1">(Optional) Payment Information</h1>
@@ -70,7 +29,7 @@ const PaymentInformationFormComponent = ({
         <h2 className="label">Credit Card Type</h2>
         <select
           className="rounded-sm font-semibold p-[0.375rem] w-full"
-          onChange={handleCreditCardTypeChange}
+          onChange={e => FormHandler.updateForm(e, "cardType", form, setForm)}
         >
           <option />
           <option>Visa</option>
@@ -88,7 +47,9 @@ const PaymentInformationFormComponent = ({
           type="text"
           className="input"
           value={form.cardNumber}
-          onChange={handleCreditCardNumberChange}
+          onChange={e =>
+            FormHandler.updateFormOnlyNumbers(e, "cardNumber", form, setForm)
+          }
         />
       </div>
       <div className="flex gap-3">
@@ -102,7 +63,14 @@ const PaymentInformationFormComponent = ({
             placeholder="MM/YYYY"
             className="input"
             value={form.expirationDate}
-            onChange={handleExpirationDateChange}
+            onChange={e =>
+              FormHandler.updateFormExpirationDate(
+                e,
+                "expirationDate",
+                form,
+                setForm
+              )
+            }
           />
         </div>
         <div className="flex flex-col">
@@ -114,7 +82,9 @@ const PaymentInformationFormComponent = ({
             type="text"
             className="input"
             value={form.cvv}
-            onChange={handleCVVChange}
+            onChange={e =>
+              FormHandler.updateFormOnlyNumbers(e, "cvv", form, setForm)
+            }
           />
         </div>
       </div>
@@ -127,7 +97,9 @@ const PaymentInformationFormComponent = ({
           type="text"
           className="input"
           value={form.billingAddress}
-          onChange={handleBillingAddressChange}
+          onChange={e =>
+            FormHandler.updateForm(e, "billingAddress", form, setForm)
+          }
         />
       </div>
       <div className="flex justify-between">

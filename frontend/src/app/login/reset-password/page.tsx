@@ -2,6 +2,7 @@
 
 import HomeNavbar from "@/components/HomeNavbar"
 import APIFacade from "@/lib/APIFacade"
+import FormHandler from "@/lib/FormHandler"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
@@ -40,18 +41,6 @@ export default function ResetPassword() {
       loadRef.current = true
     }
   }, [])
-
-  const handleVerificationCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, verificationCode: e.target.value.trim() })
-  }
-
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, password: e.target.value })
-  }
-
-  const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, confirmPassword: e.target.value })
-  }
 
   const isValidForm = () => {
     if (verificationCode !== form.verificationCode) {
@@ -99,7 +88,9 @@ export default function ResetPassword() {
               id="verification-code"
               className="input"
               value={form.verificationCode}
-              onChange={handleVerificationCodeChange}
+              onChange={e =>
+                FormHandler.updateForm(e, "verificationCode", form, setForm)
+              }
             />
           </div>
           <div className="flex flex-col gap-1 w-full">
@@ -111,7 +102,9 @@ export default function ResetPassword() {
               id="password"
               className="input"
               value={form.password}
-              onChange={handlePasswordChange}
+              onChange={e =>
+                FormHandler.updateForm(e, "password", form, setForm)
+              }
             />
           </div>
           <div className="flex flex-col gap-1 w-full">
@@ -123,7 +116,9 @@ export default function ResetPassword() {
               id="password"
               className="input"
               value={form.confirmPassword}
-              onChange={handleConfirmPasswordChange}
+              onChange={e =>
+                FormHandler.updateForm(e, "confirmPassword", form, setForm)
+              }
             />
           </div>
           <p className="text-white self-start text-sm font-semibold">

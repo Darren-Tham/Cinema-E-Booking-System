@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ChangeEvent, Dispatch, SetStateAction } from "react"
 import { Form } from "./page"
+import FormHandler from "@/lib/FormHandler"
 
 type Props = {
   form: Form
@@ -15,54 +16,6 @@ const PersonalInformationFormComponent = ({
   goToPaymentInformationForm,
   formStyles
 }: Readonly<Props>) => {
-  const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: firstName } = e.target
-    if (firstName.includes(" ")) return
-    setForm({ ...form, firstName })
-  }
-
-  const handleLastNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: lastName } = e.target
-    if (lastName.includes(" ")) return
-    setForm({ ...form, lastName })
-  }
-
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: email } = e.target
-    if (email.includes(" ")) return
-    setForm({ ...form, email })
-  }
-
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({
-      ...form,
-      password: e.target.value
-    })
-  }
-
-  const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({
-      ...form,
-      confirmPassword: e.target.value
-    })
-  }
-
-  const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: phoneNumber } = e.target
-    if (/^\d*$/.test(phoneNumber)) {
-      setForm({ ...form, phoneNumber })
-    }
-  }
-
-  const handleIsSubscribedForPromotionsChange = (
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
-    setForm({
-      ...form,
-      isSubscribedForPromotions: e.target.checked
-    })
-  }
-
   return (
     <form className={formStyles}>
       <h1 className="h1">Personal Information</h1>
@@ -76,7 +29,9 @@ const PersonalInformationFormComponent = ({
             type="text"
             className="input"
             value={form.firstName}
-            onChange={handleFirstNameChange}
+            onChange={e =>
+              FormHandler.updateForm(e, "firstName", form, setForm)
+            }
           />
         </div>
         <div className="flex flex-col w-1/2">
@@ -88,7 +43,7 @@ const PersonalInformationFormComponent = ({
             type="text"
             value={form.lastName}
             className="input"
-            onChange={handleLastNameChange}
+            onChange={e => FormHandler.updateForm(e, "lastName", form, setForm)}
           />
         </div>
       </div>
@@ -101,7 +56,9 @@ const PersonalInformationFormComponent = ({
           type="text"
           className="input"
           value={form.email}
-          onChange={handleEmailChange}
+          onChange={e =>
+            FormHandler.updateFormNoSpaces(e, "email", form, setForm)
+          }
         />
       </div>
       <div className="flex flex-col">
@@ -113,7 +70,7 @@ const PersonalInformationFormComponent = ({
           type="password"
           className="input"
           value={form.password}
-          onChange={handlePasswordChange}
+          onChange={e => FormHandler.updateForm(e, "password", form, setForm)}
         />
       </div>
       <div className="flex flex-col">
@@ -125,7 +82,9 @@ const PersonalInformationFormComponent = ({
           type="password"
           className="input"
           value={form.confirmPassword}
-          onChange={handleConfirmPasswordChange}
+          onChange={e =>
+            FormHandler.updateForm(e, "confirmPassword", form, setForm)
+          }
         />
       </div>
       <div className="flex flex-col">
@@ -137,7 +96,9 @@ const PersonalInformationFormComponent = ({
           type="text"
           className="input"
           value={form.phoneNumber}
-          onChange={handlePhoneNumberChange}
+          onChange={e =>
+            FormHandler.updateFormOnlyNumbers(e, "phoneNumber", form, setForm)
+          }
         />
       </div>
       <div className="flex items-center gap-2 mt-2 mb-1">
@@ -146,7 +107,14 @@ const PersonalInformationFormComponent = ({
           id="promotions"
           type="checkbox"
           className="w-6 aspect-square"
-          onChange={handleIsSubscribedForPromotionsChange}
+          onChange={e =>
+            FormHandler.updateFormCheckbox(
+              e,
+              "isSubscribedForPromotions",
+              form,
+              setForm
+            )
+          }
         />
         <label htmlFor="promotions" className="label select-none">
           Subscribe For Promotions

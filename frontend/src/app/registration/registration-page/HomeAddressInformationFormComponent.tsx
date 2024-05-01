@@ -6,6 +6,7 @@ import { CustomerCard, CustomerHomeAddress, NewCustomer } from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"
 import { useRouter } from "next/navigation"
 import States from "@/components/States"
+import FormHandler from "@/lib/FormHandler"
 
 type Props = {
   form: Form
@@ -23,28 +24,6 @@ const HomeAddressInformationFormComponent = ({
   paymentInformationComplete
 }: Readonly<Props>) => {
   const router = useRouter()
-
-  const handleHomeAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, homeAddress: e.target.value })
-  }
-
-  const handleCityChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, city: e.target.value })
-  }
-
-  const handleStateChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setForm({ ...form, state: e.target.value })
-  }
-
-  const handleZipcodeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value: zipcode } = e.target
-    if (/^\d*$/.test(zipcode)) {
-      setForm({
-        ...form,
-        zipcode
-      })
-    }
-  }
 
   const homeAddressEmpty = () => {
     return (
@@ -122,7 +101,9 @@ const HomeAddressInformationFormComponent = ({
           type="text"
           className="input"
           value={form.homeAddress}
-          onChange={handleHomeAddressChange}
+          onChange={e =>
+            FormHandler.updateForm(e, "homeAddress", form, setForm)
+          }
         />
       </div>
       <div className="flex flex-col">
@@ -134,14 +115,14 @@ const HomeAddressInformationFormComponent = ({
           type="text"
           className="input"
           value={form.city}
-          onChange={handleCityChange}
+          onChange={e => FormHandler.updateForm(e, "city", form, setForm)}
         />
       </div>
       <div>
         <h2 className="label">State</h2>
         <select
           className="rounded-sm font-semibold p-[0.375rem] w-full"
-          onChange={handleStateChange}
+          onChange={e => FormHandler.updateForm(e, "state", form, setForm)}
         >
           <States />
         </select>
@@ -155,7 +136,9 @@ const HomeAddressInformationFormComponent = ({
           type="text"
           className="input"
           value={form.zipcode}
-          onChange={handleZipcodeChange}
+          onChange={e =>
+            FormHandler.updateFormOnlyNumbers(e, "zipcode", form, setForm)
+          }
         />
       </div>
       <div className="flex justify-between">

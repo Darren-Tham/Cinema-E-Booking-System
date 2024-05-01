@@ -86,13 +86,7 @@ const PhoneNumberInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
             placeholder="Enter updated phone number..."
             value={form.phoneNumber}
             onChange={e =>
-              FormHandler.updateFormOnlyNumbers(
-                e,
-                "phoneNumber",
-                form,
-                setForm,
-                false
-              )
+              FormHandler.updateFormOnlyNumbers(e, "phoneNumber", form, setForm)
             }
           />
           <div className="grid grid-cols-2 gap-3">

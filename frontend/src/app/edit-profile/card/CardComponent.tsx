@@ -127,7 +127,7 @@ export const CardComponent = ({
               className="rounded-sm font-semibold p-[0.375rem] w-full bg-emerald-50"
               value={form.cardType}
               onChange={e =>
-                FormHandler.updateForm(e, "cardType", form, setForm, false)
+                FormHandler.updateForm(e, "cardType", form, setForm)
               }
             >
               <CardTypes />
@@ -155,13 +155,7 @@ export const CardComponent = ({
               className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
               value={form.billingAddress}
               onChange={e =>
-                FormHandler.updateForm(
-                  e,
-                  "billingAddress",
-                  form,
-                  setForm,
-                  false
-                )
+                FormHandler.updateForm(e, "billingAddress", form, setForm)
               }
             />
           </div>
