@@ -5,14 +5,21 @@ import PencilIcon from "@public/pencil-icon.svg"
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import { Customer, Email } from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"
+import FormHandler from "@/lib/FormHandler"
 
 type Props = {
   customer: Customer
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
+type Form = {
+  phoneNumber: string
+}
+
 const PhoneNumberInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
-  const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState("")
+  const [form, setForm] = useState<Form>({
+    phoneNumber: ""
+  })
   const dialogRef = useRef<HTMLDialogElement>(null!)
   const [phoneNumber, setPhoneNumber] = useState("")
 
@@ -25,14 +32,14 @@ const PhoneNumberInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
   }, [customer])
 
   const changePhoneNumber = async () => {
-    if (updatedPhoneNumber === phoneNumber) {
+    if (form.phoneNumber === phoneNumber) {
       alert(
         "The updated phone number should not be the same as the current phone number!"
       )
       return
     }
 
-    await APIFacade.updateCustomerPhoneNumber(customer.id, updatedPhoneNumber)
+    await APIFacade.updateCustomerPhoneNumber(customer.id, form.phoneNumber)
 
     const email: Email = {
       receiverEmail: customer.email,
@@ -77,13 +84,16 @@ const PhoneNumberInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
           <input
             className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
             placeholder="Enter updated phone number..."
-            value={updatedPhoneNumber}
-            onChange={e => {
-              const { value } = e.target
-              if (/^\d*$/.test(value)) {
-                setUpdatedPhoneNumber(value)
-              }
-            }}
+            value={form.phoneNumber}
+            onChange={e =>
+              FormHandler.updateFormOnlyNumbers(
+                e,
+                "phoneNumber",
+                form,
+                setForm,
+                false
+              )
+            }
           />
           <div className="grid grid-cols-2 gap-3">
             <button

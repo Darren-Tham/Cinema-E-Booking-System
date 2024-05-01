@@ -19,6 +19,7 @@ const EditProfile = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [customer, setCustomer] = useState<Customer>()
   const isUser = useAuth("user")
+ 
   const boxStyles = "p-2 rounded-sm font-semibold"
   const jadeBoxStyles = `${boxStyles} bg-light-jade`
 

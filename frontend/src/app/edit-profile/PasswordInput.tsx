@@ -1,37 +1,45 @@
 "use client"
 
 import APIFacade from "@/lib/APIFacade"
+import FormHandler from "@/lib/FormHandler"
 import { Customer, Email } from "@/lib/Types"
-import { Dispatch, SetStateAction, useRef } from "react"
+import { Dispatch, SetStateAction, useRef, useState } from "react"
 
 type Props = {
   customer: Customer
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const PasswordInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
-  const dialogRef = useRef<HTMLDialogElement>(null!)
-  const currentPasswordRef = useRef<HTMLInputElement>(null!)
-  const newPasswordRef = useRef<HTMLInputElement>(null!)
-  const confirmPasswordRef = useRef<HTMLInputElement>(null!)
+type Form = {
+  currentPassword: string
+  newPassword: string
+  confirmPassword: string
+}
 
-  const passwordConfirmed = async (
-    currentPassword: string,
-    newPassword: string,
-    confirmPassword: string
-  ) => {
-    if (newPassword === "") {
+const PasswordInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
+  const [form, setForm] = useState<Form>({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  })
+  const dialogRef = useRef<HTMLDialogElement>(null!)
+
+  const passwordConfirmed = async () => {
+    if (form.newPassword === "") {
       alert("Password cannot be empty.")
       return false
     }
 
-    if (newPassword !== confirmPassword) {
+    if (form.newPassword !== form.confirmPassword) {
       alert("The new password does not match the confirmed password.")
       return false
     }
 
     if (
-      !(await APIFacade.customerPasswordIsValid(customer.id, currentPassword))
+      !(await APIFacade.customerPasswordIsValid(
+        customer.id,
+        form.currentPassword
+      ))
     ) {
       alert("Current password is incorrect.")
       return false
@@ -41,17 +49,9 @@ const PasswordInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
   }
 
   const changePassword = async () => {
-    const currentPassword = currentPasswordRef.current.value
-    const newPassword = newPasswordRef.current.value
-    const confirmPassword = confirmPasswordRef.current.value
+    if (!(await passwordConfirmed())) return
 
-    if (
-      !(await passwordConfirmed(currentPassword, newPassword, confirmPassword))
-    ) {
-      return
-    }
-
-    await APIFacade.updateCustomerPassword(customer.id, newPassword)
+    await APIFacade.updateCustomerPassword(customer.id, form.newPassword)
     const email: Email = {
       receiverEmail: customer.email,
       subject: "Cinema E-Booking System Password Update",
@@ -95,24 +95,27 @@ const PasswordInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
             </div>
             <input
               type="password"
-              ref={currentPasswordRef}
               className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
+              value={form.currentPassword}
+              onChange={e => FormHandler.updateForm(e, "currentPassword", form, setForm, false)}
             />
             <div className="bg-light-jade outline-none font-semibold p-2 rounded-sm">
               New Password
             </div>
             <input
               type="password"
-              ref={newPasswordRef}
               className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
+              value={form.newPassword}
+              onChange={e => FormHandler.updateForm(e, "newPassword", form, setForm, false)}
             />
             <div className="bg-light-jade outline-none font-semibold p-2 rounded-sm">
               Confirm Password
             </div>
             <input
               type="password"
-              ref={confirmPasswordRef}
               className="bg-emerald-50 outline-none font-semibold p-2 rounded-sm"
+              value={form.confirmPassword}
+              onChange={e => FormHandler.updateForm(e, "confirmPassword", form, setForm, false)}
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
