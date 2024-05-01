@@ -48,6 +48,10 @@ export default class APIFacade {
     await APIPromotionFacade.addPromotion(promotion)
   }
 
+  public static async discountCodeExists(discountCode: string) {
+    return await APIPromotionFacade.discountCodeExists(discountCode)
+  }
+
   public static async getSubscribedCustomersEmails() {
     return await APICustomerFacade.getSubscribedCustomersEmails()
   }
@@ -256,6 +260,11 @@ class APIPromotionFacade {
       `${this.PROMOTION_URL}/add`,
       RequestInitHandler.postRequestInitWithBody(promotion)
     )
+  }
+
+  public static async discountCodeExists(discountCode: string) {
+    const response = await fetch(`${this.PROMOTION_URL}/${discountCode}/check`)
+    return (await response.text()) === "true"
   }
 }
 

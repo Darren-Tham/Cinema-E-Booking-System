@@ -17,7 +17,7 @@ const ManagePromotions = () => {
   })
   const isAdmin = useAuth("admin")
 
-  const isValidForm = () => {
+  const isValidForm = async () => {
     if (form.name === "") {
       alert("Name cannot be empty.")
       return false
@@ -43,6 +43,11 @@ const ManagePromotions = () => {
       return false
     }
 
+    if (await APIFacade.discountCodeExists(form.discountCode)) {
+      alert("Discount code already exists.")
+      return false
+    }
+
     return true
   }
 
@@ -56,7 +61,7 @@ const ManagePromotions = () => {
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!isValidForm()) return
+    if (!(await isValidForm())) return
 
     await APIFacade.addPromotion(form)
     const subscribedCustomersEmails =
