@@ -1,43 +1,44 @@
 "use client"
 
-import { FormEvent, useRef, useState } from "react"
+import { FormEvent, useState } from "react"
 import { useAuth } from "@/lib/useAuth"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import { Email, Promotion } from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"
+import FormHandler from "@/lib/FormHandler"
 
 const ManagePromotions = () => {
-  const [discountPercentage, setDiscountPercentage] = useState(0)
-  const nameRef = useRef<HTMLInputElement>(null!)
-  const discountCodeRef = useRef<HTMLInputElement>(null!)
-  const startDateRef = useRef<HTMLInputElement>(null!)
-  const endDateRef = useRef<HTMLInputElement>(null!)
+  const [form, setForm] = useState<Promotion>({
+    name: "",
+    discountCode: "",
+    discountPercentage: 0,
+    startDate: "",
+    endDate: ""
+  })
   const isAdmin = useAuth("admin")
 
   const isValidForm = () => {
-    if (nameRef.current.value === "") {
+    if (form.name === "") {
       alert("Name cannot be empty.")
       return false
     }
 
-    if (discountCodeRef.current.value === "") {
+    if (form.discountCode === "") {
       alert("Discount code cannot be empty.")
       return false
     }
 
-    if (startDateRef.current.value === "") {
+    if (form.startDate === "") {
       alert("Start date cannot be empty.")
       return false
     }
 
-    if (endDateRef.current.value === "") {
+    if (form.endDate === "") {
       alert("End date cannot be empty.")
       return false
     }
 
-    if (
-      new Date(endDateRef.current.value) <= new Date(startDateRef.current.value)
-    ) {
+    if (new Date(form.endDate) <= new Date(form.startDate)) {
       alert("End date must be after the start date.")
       return false
     }
@@ -57,29 +58,25 @@ const ManagePromotions = () => {
     e.preventDefault()
     if (!isValidForm()) return
 
-    const promotion: Promotion = {
-      name: nameRef.current.value,
-      discountCode: discountCodeRef.current.value,
-      discountPercentage,
-      startDate: startDateRef.current.value,
-      endDate: endDateRef.current.value
-    }
-
-    await APIFacade.addPromotion(promotion)
+    await APIFacade.addPromotion(form)
     const subscribedCustomersEmails =
       await APIFacade.getSubscribedCustomersEmails()
     for (const receiverEmail of subscribedCustomersEmails) {
       const email: Email = {
         receiverEmail,
-        subject: `New Promotion: ${promotion.name}`,
-        text: `Use the code ${promotion.discountCode} to get ${
-          promotion.discountPercentage
+        subject: `New Promotion: ${form.name}`,
+        text: `Use the code ${form.discountCode} to get ${
+          form.discountPercentage
         }% off! Promotion starts on ${formatDate(
-          promotion.startDate
-        )}, and it ends on ${formatDate(promotion.endDate)}.`
+          form.startDate
+        )}, and it ends on ${formatDate(form.endDate)}.`
       }
       await APIFacade.sendEmail(email)
     }
+    alert(
+      "Promotion has been successfully created and sent to all subscribed customers."
+    )
+    window.location.reload()
   }
 
   return isAdmin ? (
@@ -97,7 +94,10 @@ const ManagePromotions = () => {
               id="name"
               type="text"
               className="mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
-              ref={nameRef}
+              value={form.name}
+              onChange={e =>
+                FormHandler.updateForm(e, "name", form, setForm, false)
+              }
             />
           </div>
           <div className="flex flex-col">
@@ -108,7 +108,16 @@ const ManagePromotions = () => {
               id="code"
               type="text"
               className="mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
-              ref={discountCodeRef}
+              value={form.discountCode}
+              onChange={e =>
+                FormHandler.updateFormNoSpaces(
+                  e,
+                  "discountCode",
+                  form,
+                  setForm,
+                  false
+                )
+              }
             />
           </div>
           <div className="flex flex-col">
@@ -119,14 +128,22 @@ const ManagePromotions = () => {
               id="discount"
               type="range"
               className="mt-1"
-              value={discountPercentage}
-              onChange={e => setDiscountPercentage(+e.target.value)}
+              value={form.discountPercentage}
+              onChange={e =>
+                FormHandler.updateForm(
+                  e,
+                  "discountPercentage",
+                  form,
+                  setForm,
+                  true
+                )
+              }
               min="0"
               max="100"
             />
             <div className="flex justify-between text-white text-sm">
               <span className="font-semibold">0%</span>
-              <span className="font-semibold">{discountPercentage}%</span>
+              <span className="font-semibold">{form.discountPercentage}%</span>
             </div>
           </div>
           <div className="flex gap-2">
@@ -141,7 +158,10 @@ const ManagePromotions = () => {
                 id="start-date"
                 type="date"
                 className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
-                ref={startDateRef}
+                value={form.startDate}
+                onChange={e =>
+                  FormHandler.updateForm(e, "startDate", form, setForm, false)
+                }
               />
             </div>
             <div className="flex-1 min-w-0">
@@ -152,7 +172,10 @@ const ManagePromotions = () => {
                 id="end-date"
                 type="date"
                 className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
-                ref={endDateRef}
+                value={form.endDate}
+                onChange={e =>
+                  FormHandler.updateForm(e, "endDate", form, setForm, false)
+                }
               />
             </div>
           </div>

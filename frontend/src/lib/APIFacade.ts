@@ -253,7 +253,7 @@ class APIPromotionFacade {
 
   public static async addPromotion(promotion: Promotion) {
     await fetch(
-      `${this.PROMOTION_URL}`,
+      `${this.PROMOTION_URL}/add`,
       RequestInitHandler.postRequestInitWithBody(promotion)
     )
   }

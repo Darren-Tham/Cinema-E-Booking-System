@@ -10,7 +10,7 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 const EditMovie = () => {
   const searchParams = useSearchParams()
   const [movie, setMovie] = useState<Movie>({
-    id: 0,
+    id: -1,
     title: "",
     trailerLink: "",
     imageLink: "",
@@ -27,6 +27,7 @@ const EditMovie = () => {
   const dateRef = useRef<HTMLInputElement>(null!)
   const timeRef = useRef<HTMLInputElement>(null!)
   const isAdmin = useAuth("admin")
+
   const labelStyles = "text-white font-semibold text-lg"
   const inputStyles = "rounded-sm outline-none p-2 text-sm w-[30rem]"
   const divStyles = "flex flex-col gap-1"

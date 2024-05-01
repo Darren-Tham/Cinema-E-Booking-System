@@ -10,6 +10,7 @@ import { Movie } from "@/lib/Types"
 
 export default function ManageMovies() {
   const [movies, setMovies] = useState<Movie[]>([])
+  const isAdmin = useAuth("admin")
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -18,7 +19,37 @@ export default function ManageMovies() {
     }
     fetchMovies()
   }, [])
-  const isAdmin = useAuth("admin")
+
+  const renderMovies = (heading: string, movies: Movie[]) => {
+    return (
+      <div className="w-max">
+        <h2 className="font-bold text-2xl text-white mb-4">{heading}</h2>
+        <div className="flex gap-7">
+          {movies.map(movie => (
+            <div
+              key={movie.id}
+              className="bg-jade p-2 flex flex-col justify-end"
+            >
+              <div className="relative">
+                <Link href={`./edit-movie?movieId=${movie.id}`}>
+                  <Image
+                    src={movie.imageLink}
+                    alt={movie.title}
+                    width={175}
+                    height={0}
+                    priority
+                  />
+                </Link>
+              </div>
+              <h2 className="text-white text-center font-semibold mt-1">
+                {movie.title}
+              </h2>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   return isAdmin ? (
     <div className="flex flex-col bg-black h-screen items-center gap-8 p-8">
@@ -48,33 +79,5 @@ export default function ManageMovies() {
     </div>
   ) : (
     <UnauthorizedScreen />
-  )
-}
-
-function renderMovies(heading: string, movies: Movie[]) {
-  return (
-    <div className="w-max">
-      <h2 className="font-bold text-2xl text-white mb-4">{heading}</h2>
-      <div className="flex gap-7">
-        {movies.map(movie => (
-          <div key={movie.id} className="bg-jade p-2 flex flex-col justify-end">
-            <div className="relative">
-              <Link href={`./edit-movie?movieId=${movie.id}`}>
-                <Image
-                  src={movie.imageLink}
-                  alt={movie.title}
-                  width={175}
-                  height={0}
-                  priority
-                />
-              </Link>
-            </div>
-            <h2 className="text-white text-center font-semibold mt-1">
-              {movie.title}
-            </h2>
-          </div>
-        ))}
-      </div>
-    </div>
   )
 }
