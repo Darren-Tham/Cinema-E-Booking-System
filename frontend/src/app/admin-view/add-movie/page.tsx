@@ -25,7 +25,10 @@ const AddMovie = () => {
     directors: [],
     producers: [],
     synopsis: "",
-    ratingCode: ""
+    ratingCode: "",
+    adultTicketPrice: -1,
+    childTicketPrice: -1,
+    seniorTicketPrice: -1
   })
   const isAdmin = useAuth("admin")
 

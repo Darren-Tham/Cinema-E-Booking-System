@@ -1,4 +1,4 @@
 package com.server.cinema.record;
 
-public record ShowTimeRecord(int id, int movieId, String dateTime) {
+public record ShowtimeRecord(int id, int movieId, String dateTime) {
 }

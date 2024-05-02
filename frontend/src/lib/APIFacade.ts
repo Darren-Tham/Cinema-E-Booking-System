@@ -12,7 +12,7 @@ import {
   ProfileHomeAddress,
   Promotion,
   Review,
-  ShowTime
+  Showtime
 } from "./Types"
 
 const URL = "http://localhost:8080/api"
@@ -38,8 +38,12 @@ export default class APIFacade {
     return await APIMovieFacade.getSearchedMovies(query)
   }
 
-  public static async getShowTimesByMovieId(movieId: number) {
-    return await APIShowtimeFacade.getShowTimesByMovieId(movieId)
+  public static async getShowtimeById(showtimeId: number) {
+    return await APIShowtimeFacade.getShowtimeById(showtimeId)
+  }
+
+  public static async getShowtimesByMovieId(movieId: number) {
+    return await APIShowtimeFacade.getShowtimesByMovieId(movieId)
   }
 
   public static async updateMovieShowtimes(
@@ -247,9 +251,15 @@ class APIMovieFacade {
 class APIShowtimeFacade {
   private static readonly SHOWTIME_URL = URL + "/showtimes"
 
-  public static async getShowTimesByMovieId(movieId: number) {
+  public static async getShowtimeById(showtimeId: number) {
+    const response = await fetch(`${this.SHOWTIME_URL}/${showtimeId}`)
+    const data: Showtime = await response.json()
+    return data
+  }
+
+  public static async getShowtimesByMovieId(movieId: number) {
     const response = await fetch(`${this.SHOWTIME_URL}/movies/${movieId}`)
-    const data: ShowTime[] = await response.json()
+    const data: Showtime[] = await response.json()
     return data
   }
 

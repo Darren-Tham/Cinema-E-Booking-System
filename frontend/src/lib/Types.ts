@@ -12,11 +12,13 @@ export type NewMovie = {
   producers: string[]
   synopsis: string
   ratingCode: string
+  adultTicketPrice: number
+  childTicketPrice: number
+  seniorTicketPrice: number
 }
 
-export type ShowTime = {
+export type Showtime = {
   id: number
-  movieId: number
   dateTime: string
 }
 

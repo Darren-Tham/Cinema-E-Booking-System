@@ -21,7 +21,7 @@ class DatabaseInitConfig {
             @Qualifier("reviewDataManager") final InitRunnable reviewRunnable,
             @Qualifier("customerDataManager") final InitRunnable customerDataManager,
             @Qualifier("adminDataManager") final InitRunnable adminDataManager,
-            @Qualifier("showTimeDataManager") final InitRunnable showTimeDataManager) {
+            @Qualifier("showtimeDataManager") final InitRunnable showTimeDataManager) {
         this.runnables = List.of(
                 movieRunnable,
                 reviewRunnable,

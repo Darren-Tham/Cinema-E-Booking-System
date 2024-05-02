@@ -115,13 +115,17 @@ const Login = () => {
           </div>
           <div className="flex items-center w-full">
             <input
+              id="remember-me"
               type="checkbox"
               className="w-4 h-4 rounded"
               onChange={e =>
                 FormHandler.updateFormCheckbox(e, "rememberMe", form, setForm)
               }
             />
-            <label className="ml-1.5 text-sm font-medium text-white">
+            <label
+              htmlFor="remember-me"
+              className="ml-1.5 text-sm font-medium text-white"
+            >
               Remember Me
             </label>
           </div>

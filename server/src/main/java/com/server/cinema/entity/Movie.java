@@ -34,16 +34,16 @@ public class Movie {
     @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(nullable = false)
     private String trailerLink;
 
-    @Column
+    @Column(nullable = false)
     private String imageLink;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String synopsis;
 
-    @Column(name = "rating_out_of_10")
+    @Column(name = "rating_out_of_10", nullable = false)
     private String ratingOutOf10;
 
     @Enumerated(EnumType.STRING)
@@ -70,7 +70,17 @@ public class Movie {
     private Set<String> castMembers;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private MovieStatus status;
+
+    @Column(columnDefinition = "DECIMAL(4,2)", nullable = false)
+    private double adultTicketPrice;
+
+    @Column(columnDefinition = "DECIMAL(4,2)")
+    private double childTicketPrice;
+
+    @Column(columnDefinition = "DECIMAL(4,2)")
+    private double seniorTicketPrice;
 
     @ManyToMany
     @JoinTable(name = "movie_show_room", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "show_room_id"))

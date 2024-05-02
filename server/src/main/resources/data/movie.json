@@ -30,7 +30,10 @@
       "Deirdre McCourt",
       "Naheem Garcia",
       "Jill Hennessy"
-    ]
+    ],
+    "adultTicketPrice": 12.99,
+    "childTicketPrice": 8.99,
+    "seniorTicketPrice": 10.99
   },
   {
     "id": 2,
@@ -63,7 +66,10 @@
       "Ted King",
       "Tim DeKay",
       "Steven Houska"
-    ]
+    ],
+    "adultTicketPrice": 14.99,
+    "childTicketPrice": 10.99,
+    "seniorTicketPrice": 12.99
   },
   {
     "id": 3,
@@ -96,7 +102,10 @@
       "Dan Li",
       "Georgia Goodman",
       "Derek Siow"
-    ]
+    ],
+    "adultTicketPrice": 13.49,
+    "childTicketPrice": 9.49,
+    "seniorTicketPrice": 11.49
   },
   {
     "id": 4,
@@ -129,7 +138,10 @@
       "Keegan-Michael Key",
       "Jim Carter",
       "Rakhee Thakrar"
-    ]
+    ],
+    "adultTicketPrice": 11.99,
+    "childTicketPrice": 7.99,
+    "seniorTicketPrice": 9.99
   },
   {
     "id": 5,
@@ -162,7 +174,10 @@
       "Mateo Kristiansen",
       "Johan Finne",
       "Nina Boström"
-    ]
+    ],
+    "adultTicketPrice": 12.49,
+    "childTicketPrice": 8.49,
+    "seniorTicketPrice": 10.49
   },
   {
     "id": 6,
@@ -195,7 +210,10 @@
       "Mike Avery",
       "Eleanor T. Threatt",
       "Bianca Diezmo"
-    ]
+    ],
+    "adultTicketPrice": 13.99,
+    "childTicketPrice": 9.99,
+    "seniorTicketPrice": 11.99
   },
   {
     "id": 7,
@@ -235,7 +253,10 @@
       "Molly Evetts",
       "Ken Arnold",
       "Gabriel Morgan"
-    ]
+    ],
+    "adultTicketPrice": 11.49,
+    "childTicketPrice": 7.49,
+    "seniorTicketPrice": 9.49
   },
   {
     "id": 8,
@@ -278,7 +299,10 @@
       "Joey Vieira",
       "Gunner Wright",
       "Eric Zivic"
-    ]
+    ],
+    "adultTicketPrice": 13.99,
+    "childTicketPrice": 9.99,
+    "seniorTicketPrice": 11.99
   },
   {
     "id": 9,
@@ -311,7 +335,10 @@
       "Django Craig",
       "John DeMita",
       "Luca Diaz"
-    ]
+    ],
+    "adultTicketPrice": 10.99,
+    "childTicketPrice": 6.99,
+    "seniorTicketPrice": 8.99
   },
   {
     "id": 10,
@@ -344,6 +371,9 @@
       "Holland Watkins",
       "Woody Buck",
       "Efé"
-    ]
+    ],
+    "adultTicketPrice": 12.49,
+    "childTicketPrice": 8.49,
+    "seniorTicketPrice": 10.49
   }
 ]

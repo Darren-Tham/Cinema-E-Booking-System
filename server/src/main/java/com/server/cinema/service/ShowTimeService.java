@@ -6,43 +6,53 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.server.cinema.dto.ShowTimeDTO;
+import com.server.cinema.dto.ShowtimeDTO;
 import com.server.cinema.entity.Movie;
-import com.server.cinema.entity.ShowTime;
+import com.server.cinema.entity.Showtime;
 import com.server.cinema.repository.MovieRepository;
-import com.server.cinema.repository.ShowTimeRepository;
+import com.server.cinema.repository.ShowtimeRepository;
 
 @Service
-public class ShowTimeService {
+public class ShowtimeService {
 
-    private final ShowTimeRepository showTimeRepository;
+    private final ShowtimeRepository showtimeRepository;
     private final MovieRepository movieRepository;
 
     @Autowired
-    public ShowTimeService(final ShowTimeRepository showTimeRepository, final MovieRepository movieRepository) {
-        this.showTimeRepository = showTimeRepository;
+    public ShowtimeService(final ShowtimeRepository showtimeRepository, final MovieRepository movieRepository) {
+        this.showtimeRepository = showtimeRepository;
         this.movieRepository = movieRepository;
     }
 
-    public List<ShowTimeDTO> getShowTimesByMovieId(final int movieId) {
-        return showTimeRepository
+    public ShowtimeDTO getShowtimeById(final int showtimeId) {
+        return showtimeRepository
+                .findById(showtimeId)
+                .map(ShowtimeService::toDTO)
+                .orElseThrow();
+    }
+
+    public List<ShowtimeDTO> getShowtimesByMovieId(final int movieId) {
+        return showtimeRepository
                 .findByMovieId(movieId)
                 .stream()
-                .map((final ShowTime showTime) -> new ShowTimeDTO(
-                        showTime.getId(),
-                        movieId,
-                        showTime.getDateTime()))
+                .map(ShowtimeService::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public void updateShowTimes(final int movieId, Iterable<String> dateTimes) {
+    public void updateShowtimes(final int movieId, Iterable<String> dateTimes) {
         final Movie movie = movieRepository.findById(movieId).orElseThrow();
-        showTimeRepository.deleteAll();
+        showtimeRepository.deleteAll();
         for (final String dateTime : dateTimes) {
-            final ShowTime showTime = new ShowTime();
+            final Showtime showTime = new Showtime();
             showTime.setDateTime(dateTime);
             showTime.setMovie(movie);
-            showTimeRepository.save(showTime);
+            showtimeRepository.save(showTime);
         }
+    }
+
+    private static ShowtimeDTO toDTO(final Showtime showtime) {
+        return new ShowtimeDTO(
+                showtime.getId(),
+                showtime.getDateTime());
     }
 }

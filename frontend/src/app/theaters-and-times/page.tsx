@@ -8,14 +8,14 @@ import { useEffect, useRef, useState } from "react"
 import ReactPlayer from "react-player"
 import Cancel from "@public/red-cancel-icon.svg"
 import APIFacade from "@/lib/APIFacade"
-import { Movie, Review, ShowTime } from "@/lib/Types"
+import { Movie, Review, Showtime } from "@/lib/Types"
 
 const TheatersAndTimes = () => {
   const [load, setLoad] = useState(false)
   const searchParams = useSearchParams()
   const [movie, setMovie] = useState<Movie>()
   const [reviews, setReviews] = useState<Review[]>([])
-  const [showtimes, setShowtimes] = useState<ShowTime[]>([])
+  const [showtimes, setShowtimes] = useState<Showtime[]>([])
   const dialogRef = useRef<HTMLDialogElement>(null!)
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const TheatersAndTimes = () => {
     }
 
     const fetchShowTimes = async () => {
-      const showtimes = await APIFacade.getShowTimesByMovieId(movieId)
+      const showtimes = await APIFacade.getShowtimesByMovieId(movieId)
       setShowtimes(showtimes)
     }
 
@@ -109,14 +109,14 @@ const TheatersAndTimes = () => {
             <div className="flex flex-col gap-2">
               {showtimes
                 .toSorted((a, b) => a.dateTime.localeCompare(b.dateTime))
-                .map(showTime => (
+                .map(showtime => (
                   <Link
-                    href="/ticket-summary"
-                    key={showTime.id}
+                    href={`/ticket-summary?movieId=${movie?.id}&showtimeId=${showtime.id}`}
+                    key={showtime.id}
                     className="text-white bg-jade font-semibold p-2 rounded-sm"
                   >
                     {new Date(
-                      showTime.dateTime.replace(" ", "T")
+                      showtime.dateTime.replace(" ", "T")
                     ).toLocaleDateString("en-US", {
                       weekday: "long",
                       month: "long",

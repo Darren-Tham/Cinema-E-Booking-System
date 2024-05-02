@@ -11,29 +11,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.server.cinema.dto.ShowTimeDTO;
-import com.server.cinema.service.ShowTimeService;
+import com.server.cinema.dto.ShowtimeDTO;
+import com.server.cinema.service.ShowtimeService;
 
 @CrossOrigin
 @RestController
 @RequestMapping("api/showtimes")
-public class ShowTimeController {
+public class ShowtimeController {
 
-    private final ShowTimeService showTimeService;
+    private final ShowtimeService showtimeService;
 
     @Autowired
-    public ShowTimeController(final ShowTimeService showTimeService) {
-        this.showTimeService = showTimeService;
+    public ShowtimeController(final ShowtimeService showtimeService) {
+        this.showtimeService = showtimeService;
+    }
+
+    @GetMapping("/{showtimeId}")
+    public ShowtimeDTO getShowtimeById(@PathVariable final int showtimeId) {
+        return showtimeService.getShowtimeById(showtimeId);
     }
 
     @GetMapping("/movies/{movieId}")
-    public List<ShowTimeDTO> getShowTimesByMovieId(@PathVariable final int movieId) {
-        return showTimeService.getShowTimesByMovieId(movieId);
+    public List<ShowtimeDTO> getShowtimesByMovieId(@PathVariable final int movieId) {
+        return showtimeService.getShowtimesByMovieId(movieId);
     }
 
     @PutMapping("/movies/{movieId}")
-    public void updateShowTimes(@PathVariable final int movieId, @RequestBody List<String> dateTimes) {
-        showTimeService.updateShowTimes(movieId, dateTimes);
+    public void updateShowtimes(@PathVariable final int movieId, @RequestBody List<String> dateTimes) {
+        showtimeService.updateShowtimes(movieId, dateTimes);
     }
 
 }

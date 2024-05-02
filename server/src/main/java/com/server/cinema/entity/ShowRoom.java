@@ -28,7 +28,7 @@ public class ShowRoom {
     private int seatCapacity;
 
     @OneToMany(mappedBy = "showRoom")
-    private Set<ShowTime> showTimes;
+    private Set<Showtime> showTimes;
 
     @ManyToMany(mappedBy = "showRooms")
     private Set<Movie> movies;

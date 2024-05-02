@@ -16,5 +16,8 @@ public record NewMovieDTO(
         Set<String> categories,
         Set<String> castMembers,
         Set<String> directors,
-        Set<String> producers) {
+        Set<String> producers,
+        double adultTicketPrice,
+        double childTicketPrice,
+        double seniorTicketPrice) {
 }

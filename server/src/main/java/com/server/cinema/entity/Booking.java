@@ -41,6 +41,6 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "show_time_id", nullable = false)
-    private ShowTime showTime;
+    private Showtime showTime;
 
 }

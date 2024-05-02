@@ -28,7 +28,10 @@ const EditMovie = () => {
     directors: [],
     producers: [],
     synopsis: "",
-    ratingCode: ""
+    ratingCode: "",
+    adultTicketPrice: -1,
+    childTicketPrice: -1,
+    seniorTicketPrice: -1
   })
   const [dateTimes, setDateTimes] = useState<string[]>([])
   const dateRef = useRef<HTMLInputElement>(null!)
@@ -51,7 +54,7 @@ const EditMovie = () => {
     }
 
     const fetchShowTimesByMovieId = async (movieId: number) => {
-      const showtimes = await APIFacade.getShowTimesByMovieId(movieId)
+      const showtimes = await APIFacade.getShowtimesByMovieId(movieId)
       const dateTimes = showtimes.map(({ dateTime }) => {
         const substrings = dateTime.split(" ")
         const date = substrings[0]

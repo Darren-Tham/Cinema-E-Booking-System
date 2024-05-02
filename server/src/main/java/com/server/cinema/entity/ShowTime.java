@@ -19,7 +19,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class ShowTime {
+public class Showtime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,7 @@ public class ShowTime {
     @JoinColumn(name = "show_room_id")
     private ShowRoom showRoom;
 
-    public ShowTime(final int id, final Movie movie, final String dateTime) {
+    public Showtime(final int id, final Movie movie, final String dateTime) {
         this.id = id;
         this.movie = movie;
         this.dateTime = dateTime;
@@ -54,7 +54,7 @@ public class ShowTime {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ShowTime that = (ShowTime) o;
+        Showtime that = (Showtime) o;
         return Objects.equals(id, that.id);
     }
 

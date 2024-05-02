@@ -1,4 +1,4 @@
 package com.server.cinema.dto;
 
-public record ShowTimeDTO(int id, int movieId, String dateTime) {
+public record ShowtimeDTO(int id, String dateTime) {
 }

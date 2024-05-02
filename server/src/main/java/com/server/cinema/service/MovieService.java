@@ -77,8 +77,21 @@ public class MovieService {
     }
 
     private static MovieDTO toDTO(final Movie movie) {
-        return new MovieDTO(movie.getId(), movie.getTitle(), movie.getTrailerLink(), movie.getImageLink(),
-                movie.getSynopsis(), movie.getRatingCode(), movie.getStatus(), movie.getRatingOutOf10(),
-                movie.getCategories(), movie.getCastMembers(), movie.getDirectors(), movie.getProducers());
+        return new MovieDTO(
+                movie.getId(),
+                movie.getTitle(),
+                movie.getTrailerLink(),
+                movie.getImageLink(),
+                movie.getSynopsis(),
+                movie.getRatingCode(),
+                movie.getStatus(),
+                movie.getRatingOutOf10(),
+                movie.getCategories(),
+                movie.getCastMembers(),
+                movie.getDirectors(),
+                movie.getProducers(),
+                movie.getAdultTicketPrice(),
+                movie.getChildTicketPrice(),
+                movie.getSeniorTicketPrice());
     }
 }

@@ -6,8 +6,8 @@ import Image from "next/image"
 import { useState } from "react"
 
 type Props = {
-  onAdd?: () => void
-  onMinus?: () => void
+  onAdd: () => void
+  onMinus: () => void
 }
 
 export default function Counter({ onAdd, onMinus }: Readonly<Props>) {
@@ -21,12 +21,10 @@ export default function Counter({ onAdd, onMinus }: Readonly<Props>) {
       <button
         className={buttonStyles}
         onClick={() => {
-          if (count == 0) {
-            return
-          }
+          if (count == 0) return
           const newCount = count - 1
           setCount(newCount)
-          onMinus && onMinus()
+          onMinus()
         }}
       >
         <Image src={WhiteMinusIcon} alt="Minus Icon" width={iconWidth} />
@@ -37,7 +35,7 @@ export default function Counter({ onAdd, onMinus }: Readonly<Props>) {
         onClick={() => {
           const newCount = count + 1
           setCount(newCount)
-          onAdd && onAdd()
+          onAdd()
         }}
       >
         <Image src={WhitePlusIcon} alt="Plus Icon" width={iconWidth} />
