@@ -42,12 +42,17 @@ public class ShowtimeDataManager extends DataManager implements InitRunnable {
     }
 
     private List<ShowtimeRecord> getShowtimeRecords() {
-        return data("show_time", ShowtimeRecord.class);
+        return data("showtime", ShowtimeRecord.class);
     }
 
     private static Showtime getShowtime(final ShowtimeRecord showTimeRecord, final Map<Integer, Movie> movieMap) {
         final int movieId = showTimeRecord.movieId();
-        return new Showtime(showTimeRecord.id(), movieMap.get(movieId), showTimeRecord.dateTime());
+        final Showtime showtime = new Showtime();
+        showtime.setId(showTimeRecord.id());
+        showtime.setMovie(movieMap.get(movieId));
+        showtime.setDateTime(showTimeRecord.dateTime());
+        showtime.setUnavailableSeats(showTimeRecord.unavailableSeats());
+        return showtime;
     }
 
 }

@@ -1,4 +1,6 @@
 package com.server.cinema.dto;
 
-public record ShowtimeDTO(int id, String dateTime) {
+import java.util.Set;
+
+public record ShowtimeDTO(int id, String dateTime, Set<String> unavailableSeats) {
 }

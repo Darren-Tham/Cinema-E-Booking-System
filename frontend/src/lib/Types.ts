@@ -20,6 +20,7 @@ export type NewMovie = {
 export type Showtime = {
   id: number
   dateTime: string
+  unavailableSeats: string[]
 }
 
 export type Promotion = {

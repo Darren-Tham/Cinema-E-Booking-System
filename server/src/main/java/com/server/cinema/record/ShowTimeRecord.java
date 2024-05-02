@@ -1,4 +1,6 @@
 package com.server.cinema.record;
 
-public record ShowtimeRecord(int id, int movieId, String dateTime) {
+import java.util.Set;
+
+public record ShowtimeRecord(int id, int movieId, String dateTime, Set<String> unavailableSeats) {
 }

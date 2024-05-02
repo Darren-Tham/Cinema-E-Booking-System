@@ -53,6 +53,7 @@ public class ShowtimeService {
     private static ShowtimeDTO toDTO(final Showtime showtime) {
         return new ShowtimeDTO(
                 showtime.getId(),
-                showtime.getDateTime());
+                showtime.getDateTime(),
+                showtime.getUnavailableSeats());
     }
 }
