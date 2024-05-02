@@ -93,13 +93,13 @@ const Checkout = () => {
           </div>
           <div className="flex gap-10">
             <Link
-              href="/theaters-and-times"
+              href={`/theaters-and-times?movieId=${movie.id}`}
               className="border-[3px] text-white py-3 px-20 font-semibold text-xl scale-transition"
             >
               Back
             </Link>
             <Link
-              href="/seats"
+              href={`/seats?movieId=${movie.id}&showtimeId=${showtime.id}`}
               className="bg-jade text-white font-semibold w-max py-3 px-20 text-xl rounded-md scale-transition"
             >
               Pick Seats
