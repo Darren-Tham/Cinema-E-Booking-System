@@ -15,13 +15,13 @@ import com.server.cinema.config.interfaces.InitRunnable;
 import com.server.cinema.config.interfaces.MapSupplier;
 
 @Component
-public class sh extends DataManager implements InitRunnable {
+public class ShowtimeDataManager extends DataManager implements InitRunnable {
 
     private final MapSupplier<Movie> movieMapSupplier;
     private final ShowtimeRepository showTimeRepository;
 
     @Autowired
-    public sh(
+    public ShowtimeDataManager(
             final ResourceLoader resourceLoader,
             final MapSupplier<Movie> movieMapSupplier,
             final ShowtimeRepository showTimeRepository) {
