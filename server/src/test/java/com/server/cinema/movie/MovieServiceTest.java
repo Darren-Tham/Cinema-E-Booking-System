@@ -11,19 +11,17 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.server.cinema.database.movie.Movie;
-import com.server.cinema.database.movie.MovieDTO;
-import com.server.cinema.database.movie.MovieService;
-import com.server.cinema.database.movie.dao.MovieDAO;
-import com.server.cinema.database.movie.exception.MovieNotFoundException;
+import com.server.cinema.entity.Movie;
+import com.server.cinema.dto.MovieDTO;
+import com.server.cinema.service.MovieService;
 
 @ExtendWith(MockitoExtension.class)
 final class MovieServiceTest {
 
     @Mock
-    private MovieDAO movieDAO;
     private MovieService movieService;
 
+  // since no dao, not sure how to reformat this
     @BeforeEach
     private void setUp() {
         movieService = new MovieService(movieDAO);
