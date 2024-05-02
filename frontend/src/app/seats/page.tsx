@@ -69,6 +69,7 @@ const SeatsPage = () => {
           elems.push(
             <Seat
               key={label}
+              seatKey={label}
               unavailable={showtime?.unavailableSeats.includes(label)}
             />
           )
