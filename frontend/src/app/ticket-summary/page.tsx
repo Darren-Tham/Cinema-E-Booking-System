@@ -10,6 +10,7 @@ import APIFacade from "@/lib/APIFacade"
 import { Movie, Showtime } from "@/lib/Types"
 import CheckoutBanner from "@/components/CheckoutBanner"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
+import { updateTransaction } from "@/lib/Auth"
 
 const TAX_PERCENT = 0.07
 
@@ -18,12 +19,19 @@ const Checkout = () => {
   const [showtime, setShowtime] = useState<Showtime>()
   const searchParams = useSearchParams()
   const isUser = useAuth("user")
+  const [adultCount, setAdultCount] = useState(0)
+  const [childCount, setChildCount] = useState(0)
+  const [seniorCount, setSeniorCount] = useState(0)
 
   const [subtotal, setSubtotal] = useState(0)
   const [taxes, setTaxes] = useState(0)
 
   const pStyles = "text-white font-semibold text-xl"
 
+  const handleClick = async () => {
+    const info = {"adultCount" : adultCount, "childCount" : childCount, "seniorCount" : seniorCount, "taxes" : Math.abs(taxes).toFixed(2), "subtotal" : Math.abs(subtotal).toFixed(2), "total" : Math.abs(subtotal + taxes).toFixed(2)}
+    updateTransaction(info)
+  }
   useEffect(() => {
     const fetchMovie = async (movieId: number) => {
       const movie = await APIFacade.getMovieById(movieId)
@@ -67,20 +75,38 @@ const Checkout = () => {
             <p className={pStyles}>Adult</p>
             <p className={pStyles}>${movie.adultTicketPrice.toFixed(2)}</p>
             <Counter
-              onAdd={() => setSubtotal(subtotal + movie.adultTicketPrice)}
-              onMinus={() => setSubtotal(subtotal - movie.adultTicketPrice)}
+              onAdd={() => {
+                setSubtotal(subtotal + movie.adultTicketPrice)
+                setAdultCount(adultCount + 1)
+              }}
+              onMinus={() => {
+                setSubtotal(subtotal - movie.adultTicketPrice)
+                setAdultCount(adultCount - 1)
+              }}
             />
             <p className={pStyles}>Child</p>
             <p className={pStyles}>${movie.childTicketPrice.toFixed(2)}</p>
             <Counter
-              onAdd={() => setSubtotal(subtotal + movie.childTicketPrice)}
-              onMinus={() => setSubtotal(subtotal - movie.childTicketPrice)}
+              onAdd={() => {
+                setSubtotal(subtotal + movie.childTicketPrice)
+                setChildCount(childCount + 1)
+              }}
+              onMinus={() => {
+                setSubtotal(subtotal - movie.childTicketPrice)
+                setChildCount(childCount - 1)
+              }}
             />
             <p className={pStyles}>Senior</p>
             <p className={pStyles}>${movie.seniorTicketPrice.toFixed(2)}</p>
             <Counter
-              onAdd={() => setSubtotal(subtotal + movie.seniorTicketPrice)}
-              onMinus={() => setSubtotal(subtotal - movie.seniorTicketPrice)}
+              onAdd={() => {
+                setSubtotal(subtotal + movie.seniorTicketPrice)
+                setSeniorCount(seniorCount + 1)
+              }}
+              onMinus={() => {
+                setSubtotal(subtotal - movie.seniorTicketPrice)
+                setSeniorCount(seniorCount - 1)
+              }}
             />
           </div>
           <div className="grid grid-cols-2 gap-4 place-items-center self-end">
@@ -101,6 +127,7 @@ const Checkout = () => {
             <Link
               href={`/seats?movieId=${movie.id}&showtimeId=${showtime.id}`}
               className="bg-jade text-white font-semibold w-max py-3 px-20 text-xl rounded-md scale-transition"
+              onClick={handleClick}
             >
               Pick Seats
             </Link>

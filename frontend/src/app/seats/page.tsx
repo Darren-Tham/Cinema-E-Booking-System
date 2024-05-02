@@ -17,6 +17,7 @@ const SeatsPage = () => {
   const [movie, setMovie] = useState<Movie>()
   const [showtime, setShowtime] = useState<Showtime>()
   const searchParams = useSearchParams()
+  
   useEffect(() => {
     const fetchMovie = async (movieId: number) => {
       const movie = await APIFacade.getMovieById(movieId)
