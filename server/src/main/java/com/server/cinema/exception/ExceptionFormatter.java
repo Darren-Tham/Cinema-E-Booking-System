@@ -8,13 +8,11 @@ import lombok.Getter;
 
 @Getter
 class ExceptionFormatter {
-    private final String message;
     private final int statusCode;
     private final HttpStatus httpStatus;
     private final ZonedDateTime timestamp;
 
-    ExceptionFormatter(final String message, final HttpStatus httpStatus) {
-        this.message = message;
+    ExceptionFormatter(final HttpStatus httpStatus) {
         this.statusCode = httpStatus.value();
         this.httpStatus = httpStatus;
         this.timestamp = ZonedDateTime.now();

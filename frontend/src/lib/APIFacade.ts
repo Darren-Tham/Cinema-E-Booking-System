@@ -184,7 +184,7 @@ export default class APIFacade {
   }
 
   public static async getCustomerHomeAddress(customerId: number) {
-    return await APIHomeAddressFacade.getCustomerHomeAddress(customerId)
+    return await APIHomeAddressFacade.getHomeAddress(customerId)
   }
 
   public static async deleteHomeAddress(homeAddressId: number) {
@@ -498,7 +498,7 @@ class APICardFacade {
 class APIHomeAddressFacade {
   private static readonly HOME_ADDRESS_URL = URL + "/home-addresses"
 
-  public static async getCustomerHomeAddress(customerId: number) {
+  public static async getHomeAddress(customerId: number) {
     const response = await fetch(`${this.HOME_ADDRESS_URL}/${customerId}`)
     if (response.ok) {
       const data: ProfileHomeAddress = await response.json()

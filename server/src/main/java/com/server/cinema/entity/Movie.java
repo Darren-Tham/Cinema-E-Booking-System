@@ -1,0 +1,78 @@
+package com.server.cinema.entity;
+
+import java.util.Set;
+
+import com.server.cinema.enums.MovieRatingCode;
+import com.server.cinema.enums.MovieStatus;
+
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@Entity
+public class Movie {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(insertable = false, updatable = false)
+    private int id;
+
+    @Column(nullable = false)
+    private String title;
+
+    @Column
+    private String trailerLink;
+
+    @Column
+    private String imageLink;
+
+    @Column(columnDefinition = "TEXT")
+    private String synopsis;
+
+    @Column(name = "rating_out_of_10")
+    private String ratingOutOf10;
+
+    @Enumerated(EnumType.STRING)
+    private MovieRatingCode ratingCode;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "category", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "category", nullable = false)
+    private Set<String> categories;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "producer", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "name", nullable = false)
+    private Set<String> producers;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "director", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "name", nullable = false)
+    private Set<String> directors;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "cast_member", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "name", nullable = false)
+    private Set<String> castMembers;
+
+    @Enumerated(EnumType.STRING)
+    private MovieStatus status;
+
+    @ManyToMany
+    @JoinTable(name = "movie_show_room", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "show_room_id"))
+    private Set<ShowRoom> showRooms;
+}
