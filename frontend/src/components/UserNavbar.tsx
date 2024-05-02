@@ -22,7 +22,11 @@ export default function UserNavbar() {
       }
       setIsLoggedIn(auth)
       const data = await getUser()
-      setDisplayName(data.user.firstName)
+      if (data.user.email == "admin"){
+        setDisplayName("Admin")
+      } else{
+        setDisplayName(data.user.firstName)
+      }
     }
     authenticate()
   }, [])
