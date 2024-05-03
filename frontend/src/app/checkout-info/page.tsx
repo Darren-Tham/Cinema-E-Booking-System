@@ -1,14 +1,19 @@
 "use client"
 
-import Link from "next/link"
-import { getTransaction } from "@/lib/Authentication"
+import { getTransaction, updateTransaction } from "@/lib/Authentication"
 import { useEffect, useState } from "react"
 import CardTypes from "@/components/option/CardTypes"
 import FormHandler from "@/lib/FormHandler"
 import CardComponent from "./CardComponent"
 import useCustomer from "@/hooks/useCustomer"
-import { ProfileCard, Transaction } from "@/lib/Types"
+import {
+  CheckoutBooking,
+  CheckoutCard,
+  ProfileCard,
+  Transaction
+} from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"
+import { useRouter } from "next/navigation"
 
 type Form = {
   cardType: string
@@ -16,10 +21,12 @@ type Form = {
   expirationDate: string
   cvv: string
   billingAddress: string
+  promotion: string
 }
 
 const CheckoutInfo = () => {
   const isCustomer = useCustomer()
+  const router = useRouter()
   const [transaction, setTransaction] = useState<Transaction>()
   const [cards, setCards] = useState<ProfileCard[]>([])
   const [form, setForm] = useState<Form>({
@@ -27,15 +34,17 @@ const CheckoutInfo = () => {
     cardNumber: "",
     expirationDate: "",
     cvv: "",
-    billingAddress: ""
+    billingAddress: "",
+    promotion: ""
   })
   const [selectedCard, setSelectedCard] = useState<number>()
+  const [promotion, setPromotion] = useState<number>(0)
 
   useEffect(() => {
-    async function getInformation() {
+    const getInformation = async () => {
       const transaction = await getTransaction()
 
-      if (transaction === undefined || transaction.customerId === undefined) {
+      if (transaction?.customerId === undefined) {
         throw Error
       }
 
@@ -46,6 +55,130 @@ const CheckoutInfo = () => {
     getInformation()
   }, [])
 
+  const isValidForm = () => {
+    if (selectedCard !== undefined) return true
+
+    if (form.cardType === "") {
+      alert("Card type cannot be empty.")
+      return false
+    }
+
+    if (form.cardNumber === "") {
+      alert("Card number cannot be empty.")
+      return false
+    }
+
+    if (form.expirationDate.length !== 7) {
+      alert("Expiration date must be filled out fully.")
+      return false
+    }
+
+    if (form.cvv === "") {
+      alert("CVV cannot be empty.")
+      return false
+    }
+
+    if (form.billingAddress === "") {
+      alert("Billing address cannot be empty.")
+      return false
+    }
+
+    return true
+  }
+
+  const formatExpirationDate = (expirationDate: string) => {
+    const [month, year] = expirationDate.split("/")
+    return `${year}-${month}-01`
+  }
+
+  const getCard = async (): Promise<CheckoutCard> => {
+    if (selectedCard === undefined) {
+      return {
+        ...form,
+        expirationDate: formatExpirationDate(form.expirationDate),
+        lastFourDigits: form.cardNumber.substring(form.cardNumber.length - 4)
+      }
+    } else {
+      return await APIFacade.getCardById(selectedCard)
+    }
+  }
+
+  const handleNextClick = async () => {
+    if (!isValidForm()) return
+
+    if (
+      transaction?.movieId === undefined ||
+      transaction.customerId === undefined ||
+      transaction.showtimeId === undefined ||
+      transaction.adultTicketCount === undefined ||
+      transaction.childTicketCount === undefined ||
+      transaction.seniorTicketCount === undefined ||
+      transaction.seats === undefined ||
+      transaction.total === undefined
+    ) {
+      throw Error
+    }
+
+    const card = await getCard()
+    const booking: CheckoutBooking = {
+      movieId: transaction.movieId,
+      customerId: transaction.customerId,
+      showtimeId: transaction.showtimeId,
+      adultTicketCount: transaction.adultTicketCount,
+      childTicketCount: transaction.childTicketCount,
+      seniorTicketCount: transaction.seniorTicketCount,
+      seats: transaction.seats,
+      total: +(transaction.total - promotion).toFixed(2),
+      ...card
+    } as const
+
+    const bookingId = await APIFacade.addBooking(booking)
+    await updateTransaction({ bookingId })
+    router.push("/order-confirmation")
+  }
+
+  const applyPromotion = async () => {
+    if (promotion !== 0) {
+      alert("Another promotion cannot be applied.")
+      return
+    }
+
+    if (form.promotion === "") {
+      alert("Promotion cannot be empty.")
+      return
+    }
+
+    const promo = await APIFacade.getPromotion(form.promotion)
+    if (promo === undefined) {
+      alert("Promotion not found. Try again.")
+      return
+    }
+
+    const startDate = new Date(promo.startDate)
+    if (startDate > new Date(Date.now())) {
+      alert(
+        `This promotion can be applied on ${startDate.toLocaleDateString(
+          "en-US",
+          { year: "numeric", month: "long", day: "numeric" }
+        )}.`
+      )
+      return
+    }
+
+    if (new Date(Date.now()) > new Date(promo.endDate)) {
+      alert("This promotion is now expired.")
+      return
+    }
+
+    if (transaction?.total === undefined) {
+      throw Error
+    }
+
+    setPromotion(
+      +((transaction.total * promo.discountPercentage) / 100).toFixed(2)
+    )
+  }
+
   const labelStyles = "text-white font-semibold"
   const h1Styles = "text-white font-bold text-2xl text-center"
   const h2Styles = "text-lg text-white font-semibold"
@@ -55,7 +188,7 @@ const CheckoutInfo = () => {
 
   return (
     isCustomer &&
-    transaction !== undefined && (
+    transaction?.total && (
       <div className="grid place-items-center bg-black min-h-screen p-8">
         <div className="flex gap-10">
           <div className="flex flex-col bg-dark-jade rounded gap-4 p-8">
@@ -190,19 +323,39 @@ const CheckoutInfo = () => {
               <p className={h2Styles}>${transaction.subtotal?.toFixed(2)}</p>
               <p className={h2Styles}>Taxes</p>
               <p className={h2Styles}>${transaction.taxes?.toFixed(2)}</p>
+              <p className={h2Styles}>Promotion</p>
+              <p className={h2Styles}>-${promotion.toFixed(2)}</p>
               <p className={h2Styles}>Total</p>
-              <p className={h2Styles}>${transaction.total?.toFixed(2)}</p>
+              <p className={h2Styles}>
+                ${(transaction.total - promotion).toFixed(2)}
+              </p>
             </div>
             <div className="flex flex-col">
-              <input className="input" />
-              <button className="back-button w-full">Apply Promotions</button>
+              <input
+                type="text"
+                className="input"
+                value={form.promotion}
+                onChange={e =>
+                  FormHandler.updateForm(e, "promotion", form, setForm)
+                }
+              />
+              <button className="action-button w-full" onClick={applyPromotion}>
+                Apply Promotion
+              </button>
+              <button
+                className="back-button w-full"
+                onClick={() => setPromotion(0)}
+              >
+                Remove Promotion
+              </button>
             </div>
-            <Link
-              href="/order-confirmation"
+            <button
+              //   href="/order-confirmation"
               className="action-button w-full text-center"
+              onClick={handleNextClick}
             >
               Checkout
-            </Link>
+            </button>
           </div>
         </div>
       </div>

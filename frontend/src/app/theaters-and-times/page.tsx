@@ -3,7 +3,6 @@
 import Image from "next/image"
 import HomeNavbar from "@/components/HomeNavbar"
 import { useRouter, useSearchParams } from "next/navigation"
-import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import ReactPlayer from "react-player"
 import Cancel from "@public/red-cancel-icon.svg"
@@ -56,7 +55,7 @@ const TheatersAndTimes = () => {
   return (
     movie !== undefined && (
       <>
-        <div className="min-h-screen bg-black flex flex-col">
+        <div className="min-h-screen flex flex-col">
           <HomeNavbar />
           <div className="justify-items-center grid grid-cols-2 gap-4 py-8">
             <Image

@@ -1,13 +1,10 @@
 package com.server.cinema.entity;
 
-import java.util.Set;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -35,8 +32,5 @@ public class Promotion {
 
     @Column(columnDefinition = "DATE", nullable = false)
     private String endDate;
-
-    @OneToMany(mappedBy = "promotion")
-    private Set<Booking> bookings;
 
 }

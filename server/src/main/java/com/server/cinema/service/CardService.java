@@ -28,6 +28,13 @@ public class CardService {
         this.customerRepository = customerRepository;
     }
 
+    public ProfileCardDTO getCardById(final int cardId) {
+        return cardRepository
+                .findById(cardId)
+                .map(CardService::toProfileCardDTO)
+                .orElseThrow();
+    }
+
     public void addCard(final CustomerCardDTO cardDTO) {
         final String cardNumber = cardDTO.cardNumber();
         final String encryptedCardNumber = BCrypt.hashpw(cardNumber, BCrypt.gensalt());
@@ -53,12 +60,7 @@ public class CardService {
         return cardRepository
                 .findAllByCustomerId(customerId)
                 .stream()
-                .map((final Card card) -> new ProfileCardDTO(
-                        card.getId(),
-                        card.getCardType(),
-                        card.getExpirationDate(),
-                        card.getBillingAddress(),
-                        card.getLastFourDigits()))
+                .map(CardService::toProfileCardDTO)
                 .collect(Collectors.toList());
     }
 
@@ -72,5 +74,14 @@ public class CardService {
 
     public void deleteCard(final int cardId) {
         cardRepository.deleteById(cardId);
+    }
+
+    private static ProfileCardDTO toProfileCardDTO(final Card card) {
+        return new ProfileCardDTO(
+                card.getId(),
+                card.getCardType(),
+                card.getExpirationDate(),
+                card.getBillingAddress(),
+                card.getLastFourDigits());
     }
 }

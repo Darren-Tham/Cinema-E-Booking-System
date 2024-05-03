@@ -74,6 +74,11 @@ export default function UserNavbar() {
                 </button>
               </Link>
             )}
+            {!isAdmin && (
+              <Link className="action-button border-[3px]" href="/booking">
+                Order History
+              </Link>
+            )}
             <button
               className="back-button text-[#2CC295] border-[#2CC295]"
               onClick={async () => {
@@ -86,7 +91,10 @@ export default function UserNavbar() {
           </>
         ) : (
           <>
-            <Link href="/login/login-page" className="action-button">
+            <Link
+              href="/login/login-page"
+              className="action-button border-[3px]"
+            >
               Login
             </Link>
             <Link

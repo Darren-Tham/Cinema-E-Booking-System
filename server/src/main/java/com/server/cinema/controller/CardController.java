@@ -29,12 +29,17 @@ public class CardController {
         this.cardService = cardService;
     }
 
+    @GetMapping("/{cardId}")
+    public ProfileCardDTO getCardById(@PathVariable final int cardId) {
+        return cardService.getCardById(cardId);
+    }
+
     @PostMapping("/add")
     public void addCard(@RequestBody final CustomerCardDTO card) {
         cardService.addCard(card);
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping("/customer/{customerId}")
     public List<ProfileCardDTO> getCustomerCards(@PathVariable final int customerId) {
         return cardService.getCustomerCards(customerId);
     }

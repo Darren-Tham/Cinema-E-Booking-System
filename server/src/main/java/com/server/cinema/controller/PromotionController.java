@@ -24,7 +24,12 @@ public class PromotionController {
         this.promotionService = promotionService;
     }
 
-    @GetMapping("{discountCode}/check")
+    @GetMapping("/{discountCode}")
+    public PromotionDTO getPromotion(@PathVariable final String discountCode) {
+        return promotionService.getPromotion(discountCode);
+    }
+
+    @GetMapping("/{discountCode}/check")
     public boolean discountCodeExists(@PathVariable final String discountCode) {
         return promotionService.discountCodeExists(discountCode);
     }

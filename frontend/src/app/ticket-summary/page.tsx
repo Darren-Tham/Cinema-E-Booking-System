@@ -32,7 +32,7 @@ const Checkout = () => {
       seniorTicketCount,
       taxes,
       subtotal,
-      total: taxes + subtotal
+      total: +(taxes + subtotal).toFixed(2)
     }
     await updateTransaction(transaction)
   }
@@ -57,7 +57,7 @@ const Checkout = () => {
   }, [])
 
   useEffect(() => {
-    setTaxes(subtotal * TAX_PERCENT)
+    setTaxes(+(subtotal * TAX_PERCENT).toFixed(2))
   }, [subtotal])
 
   return (
@@ -77,11 +77,11 @@ const Checkout = () => {
               <p className={pStyles}>${movie.adultTicketPrice.toFixed(2)}</p>
               <Counter
                 onAdd={() => {
-                  setSubtotal(subtotal + movie.adultTicketPrice)
+                  setSubtotal(+(subtotal + movie.adultTicketPrice).toFixed(2))
                   setAdultTicketCount(adultTicketCount + 1)
                 }}
                 onMinus={() => {
-                  setSubtotal(Math.abs(subtotal - movie.adultTicketPrice))
+                  setSubtotal(+(subtotal - movie.adultTicketPrice).toFixed(2))
                   setAdultTicketCount(adultTicketCount - 1)
                 }}
               />
@@ -89,11 +89,11 @@ const Checkout = () => {
               <p className={pStyles}>${movie.childTicketPrice.toFixed(2)}</p>
               <Counter
                 onAdd={() => {
-                  setSubtotal(subtotal + movie.childTicketPrice)
+                  setSubtotal(+(subtotal + movie.childTicketPrice).toFixed(2))
                   setChildTicketCount(childTicketCount + 1)
                 }}
                 onMinus={() => {
-                  setSubtotal(Math.abs(subtotal - movie.childTicketPrice))
+                  setSubtotal(+(subtotal - movie.childTicketPrice).toFixed(2))
                   setChildTicketCount(childTicketCount - 1)
                 }}
               />
@@ -101,11 +101,11 @@ const Checkout = () => {
               <p className={pStyles}>${movie.seniorTicketPrice.toFixed(2)}</p>
               <Counter
                 onAdd={() => {
-                  setSubtotal(subtotal + movie.seniorTicketPrice)
+                  setSubtotal(+(subtotal + movie.seniorTicketPrice).toFixed(2))
                   setSeniorTicketCount(seniorTicketCount + 1)
                 }}
                 onMinus={() => {
-                  setSubtotal(Math.abs(subtotal - movie.seniorTicketPrice))
+                  setSubtotal(+(subtotal - movie.seniorTicketPrice).toFixed(2))
                   setSeniorTicketCount(seniorTicketCount - 1)
                 }}
               />

@@ -37,13 +37,14 @@ export type Email = {
   text: string
 }
 
-export type ProfileCard = {
-  id: number
+export type CheckoutCard = {
   cardType: string
   expirationDate: string
   billingAddress: string
   lastFourDigits: string
 }
+
+export type ProfileCard = { id: number } & CheckoutCard
 
 export type CustomerCard = {
   customerId: number
@@ -112,4 +113,39 @@ export type Transaction = {
   subtotal?: number
   total?: number
   seats?: string[]
+  bookingId?: number
+}
+
+export type ProfileBooking = {
+  bookingId: number
+  movieTitle: string
+  movieImageLink: string
+  dateTime: string
+  seats: string[]
+  total: number
+  cardType: string
+  expirationDate: string
+  billingAddress: string
+  lastFourDigits: string
+}
+
+export type CheckoutBooking = {
+  movieId: number
+  customerId: number
+  showtimeId: number
+  adultTicketCount: number
+  childTicketCount: number
+  seniorTicketCount: number
+  seats: string[]
+  total: number
+  cardType: string
+  expirationDate: string
+  billingAddress: string
+  lastFourDigits: string
+}
+
+export type Ticket = {
+  ticketId: number
+  price: number
+  ticketType: string
 }

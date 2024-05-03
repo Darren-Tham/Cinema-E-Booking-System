@@ -1,5 +1,7 @@
 package com.server.cinema.entity;
 
+import java.util.Objects;
+
 import com.server.cinema.enums.TicketType;
 
 import jakarta.persistence.Column;
@@ -11,13 +13,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
 @NoArgsConstructor
 @Entity
+@Getter
+@Setter
 public class Ticket {
 
     @Id
@@ -36,8 +39,14 @@ public class Ticket {
     @JoinColumn(name = "booking_id", nullable = false)
     private Booking booking;
 
-    @OneToOne
-    @JoinColumn(name = "seat_id", nullable = false)
-    private Seat seat;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        return this == o || (o != null && getClass() == o.getClass() && id == ((Ticket) o).id);
+    }
 
 }

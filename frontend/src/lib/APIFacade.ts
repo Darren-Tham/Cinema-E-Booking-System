@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react"
 import {
   Admin,
+  CheckoutBooking,
   Customer,
   CustomerCard,
   CustomerHomeAddress,
@@ -8,11 +9,13 @@ import {
   Movie,
   NewCustomer,
   NewMovie,
+  ProfileBooking,
   ProfileCard,
   ProfileHomeAddress,
   Promotion,
   Review,
-  Showtime
+  Showtime,
+  Ticket
 } from "./Types"
 
 const URL = "http://localhost:8080/api"
@@ -51,6 +54,10 @@ export default class APIFacade {
     dateTimes: string[]
   ) {
     await APIShowtimeFacade.updateMovieShowtimes(movieId, dateTimes)
+  }
+
+  public static async getPromotion(discountCode: string) {
+    return await APIPromotionFacade.getPromotion(discountCode)
   }
 
   public static async addPromotion(promotion: Promotion) {
@@ -171,6 +178,10 @@ export default class APIFacade {
     await APIEmailFacade.resendVerificationCode(customerId, setVerificationCode)
   }
 
+  public static async getCardById(cardId: number) {
+    return await APICardFacade.getCardById(cardId)
+  }
+
   public static async getCustomerCards(customerId: number) {
     return await APICardFacade.getCustomerCards(customerId)
   }
@@ -209,6 +220,22 @@ export default class APIFacade {
 
   public static async getMovieReviews(movieId: number) {
     return await APIReviewFacade.getMovieReviews(movieId)
+  }
+
+  public static async getCustomerBookings(customerId: number) {
+    return await APIBookingFacade.getCustomerBookings(customerId)
+  }
+
+  public static async getBookingById(bookingId: number) {
+    return await APIBookingFacade.getBookingById(bookingId)
+  }
+
+  public static async addBooking(booking: CheckoutBooking) {
+    return await APIBookingFacade.addBooking(booking)
+  }
+
+  public static async getTicketsByBookingId(bookingId: number) {
+    return await APITicketFacade.getTicketsByBookingId(bookingId)
   }
 }
 
@@ -276,6 +303,17 @@ class APIShowtimeFacade {
 
 class APIPromotionFacade {
   private static readonly PROMOTION_URL = URL + "/promotions"
+
+  public static async getPromotion(discountCode: string) {
+    const response = await fetch(`${this.PROMOTION_URL}/${discountCode}`)
+
+    if (response.ok) {
+      const data: Promotion = await response.json()
+      return data
+    } else {
+      return undefined
+    }
+  }
 
   public static async addPromotion(promotion: Promotion) {
     await fetch(
@@ -477,8 +515,14 @@ class APIEmailFacade {
 class APICardFacade {
   private static readonly CARD_URL = URL + "/cards"
 
+  public static async getCardById(cardId: number) {
+    const response = await fetch(`${this.CARD_URL}/${cardId}`)
+    const data: ProfileCard = await response.json()
+    return data
+  }
+
   public static async getCustomerCards(customerId: number) {
-    const response = await fetch(`${this.CARD_URL}/${customerId}`)
+    const response = await fetch(`${this.CARD_URL}/customer/${customerId}`)
     const data: ProfileCard[] = await response.json()
     return data
   }
@@ -560,6 +604,40 @@ class APIReviewFacade {
   public static async getMovieReviews(movieId: number) {
     const response = await fetch(`${this.REVIEW_URL}/${movieId}`)
     const data: Review[] = await response.json()
+    return data
+  }
+}
+
+class APIBookingFacade {
+  private static readonly BOOKING_URL = URL + "/bookings"
+
+  public static async getCustomerBookings(customerId: number) {
+    const response = await fetch(`${this.BOOKING_URL}/customer/${customerId}`)
+    const data: ProfileBooking[] = await response.json()
+    return data
+  }
+
+  public static async getBookingById(bookingId: number) {
+    const response = await fetch(`${this.BOOKING_URL}/${bookingId}`)
+    const data: ProfileBooking = await response.json()
+    return data
+  }
+
+  public static async addBooking(booking: CheckoutBooking) {
+    const response = await fetch(
+      `${this.BOOKING_URL}/add`,
+      RequestInitHandler.postRequestInitWithBody(booking)
+    )
+    return +(await response.text())
+  }
+}
+
+class APITicketFacade {
+  private static readonly TICKET_URL = URL + "/tickets"
+
+  public static async getTicketsByBookingId(bookingId: number) {
+    const response = await fetch(`${this.TICKET_URL}/booking/${bookingId}`)
+    const data: Ticket[] = await response.json()
     return data
   }
 }

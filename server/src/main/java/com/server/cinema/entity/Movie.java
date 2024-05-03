@@ -16,8 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -82,7 +80,4 @@ public class Movie {
     @Column(columnDefinition = "DECIMAL(4,2)")
     private double seniorTicketPrice;
 
-    @ManyToMany
-    @JoinTable(name = "movie_show_room", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "show_room_id"))
-    private Set<ShowRoom> showRooms;
 }

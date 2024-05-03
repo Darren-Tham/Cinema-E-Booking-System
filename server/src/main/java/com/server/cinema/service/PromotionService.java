@@ -17,6 +17,17 @@ public class PromotionService {
         this.promotionRepository = promotionRepository;
     }
 
+    public PromotionDTO getPromotion(final String discountCode) {
+        return promotionRepository.findByDiscountCode(discountCode)
+                .map((final Promotion promotion) -> new PromotionDTO(
+                        promotion.getName(),
+                        promotion.getDiscountPercentage(),
+                        promotion.getDiscountCode(),
+                        promotion.getStartDate(),
+                        promotion.getEndDate()))
+                .orElseThrow();
+    }
+
     public boolean discountCodeExists(final String discountCode) {
         return promotionRepository.findByDiscountCode(discountCode).isPresent();
     }

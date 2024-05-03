@@ -12,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -35,14 +34,7 @@ public class Showtime {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "movie_seat", joinColumns = @JoinColumn(name = "showtime_id"))
-    @Column(name = "label", nullable = false)
+    @Column(name = "seat", nullable = false)
     private Set<String> unavailableSeats;
-
-    @OneToMany(mappedBy = "showTime")
-    private Set<Booking> bookings;
-
-    @ManyToOne
-    @JoinColumn(name = "show_room_id")
-    private ShowRoom showRoom;
 
 }

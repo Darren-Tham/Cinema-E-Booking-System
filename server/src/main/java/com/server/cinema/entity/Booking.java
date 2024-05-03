@@ -1,9 +1,13 @@
 package com.server.cinema.entity;
 
+import java.util.List;
 import java.util.Set;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,24 +27,38 @@ public class Booking {
     @Column(insertable = false, updatable = false)
     private int id;
 
-    @Column(columnDefinition = "DATETIME", nullable = false)
-    private String dateTime;
-
-    @Column(nullable = false)
-    private int numberOfTickets;
-
-    @Column(columnDefinition = "DECIMAL(5,2)", nullable = false)
-    private double totalPrice;
+    @ManyToOne
+    @JoinColumn(name = "movie_id", nullable = false)
+    private Movie movie;
 
     @ManyToOne
-    @JoinColumn(name = "promotion_id")
-    private Promotion promotion;
+    @JoinColumn(name = "showtime_id", nullable = false)
+    private Showtime showtime;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
 
     @OneToMany(mappedBy = "booking")
-    private Set<Ticket> tickets;
+    private List<Ticket> tickets;
 
-    @ManyToOne
-    @JoinColumn(name = "show_time_id", nullable = false)
-    private Showtime showTime;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "booking_seat", joinColumns = @JoinColumn(name = "booking_id"))
+    @Column(name = "seat", nullable = false)
+    private Set<String> seats;
 
+    @Column(columnDefinition = "DECIMAL(5,2)", nullable = false)
+    private double total;
+
+    @Column(nullable = false)
+    private String cardType;
+
+    @Column(columnDefinition = "DATE", nullable = false)
+    private String expirationDate;
+
+    @Column(nullable = false)
+    private String billingAddress;
+
+    @Column(nullable = false)
+    private String lastFourDigits;
 }
