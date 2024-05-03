@@ -2,7 +2,9 @@
 
 import Link from "next/link"
 import { useAuth } from "@/lib/useAuth"
+import { getTransaction } from "@/lib/Auth"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
+import { useEffect, useState } from "react"
 import CardTypes from "@/components/option/CardTypes"
 import { useState } from "react"
 import FormHandler from "@/lib/FormHandler"
@@ -17,6 +19,7 @@ type Form = {
 }
 
 const CheckoutInfo = () => {
+  const [info, setInfo] = useState()
   const isUser = useAuth("user")
   const [form, setForm] = useState<Form>({
     cardType: "",
@@ -31,8 +34,18 @@ const CheckoutInfo = () => {
   const inputStyles = "outline-none p-2 rounded-sm text-sm font-semibold"
   const h1Styles = "text-white font-bold text-2xl text-center"
   const h2Styles = "text-lg text-white font-semibold"
+  const inputStyles =
+    "bg-light-jade outline-none flex-grow rounded h-8 max-w-80 p-2"
+  useEffect(() => {
+    async function getInfo() {
+      const data = await getTransaction()
+      if (data) {
+        setInfo(data.info)
+      }
+    }
+    getInfo()
+  },[])
   const divStyles = "flex flex-col gap-1"
-
   return isUser ? (
     <div className="grid place-items-center bg-black min-h-screen p-8">
       <div className="flex gap-10">
@@ -159,6 +172,7 @@ const CheckoutInfo = () => {
           <Link
             href="/order-confirmation"
             className="action-button w-full text-center"
+            onClick={() => console.log(info)}
           >
             Checkout
           </Link>

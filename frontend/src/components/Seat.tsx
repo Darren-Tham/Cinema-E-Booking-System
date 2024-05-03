@@ -17,7 +17,9 @@ export default function Seat({ unavailable }: Readonly<Props>) {
   return unavailable ? (
     <Image src={RedChairIcon} alt="Unavaiable Seat" width={iconWidth} />
   ) : (
-    <button onClick={() => setIsSelected(!isSelected)}>
+    <button onClick={() => {
+      setIsSelected(!isSelected)
+    }}>
       <Image
         src={isSelected ? GreenChairIcon : WhiteChairIcon}
         alt="Available Seat"

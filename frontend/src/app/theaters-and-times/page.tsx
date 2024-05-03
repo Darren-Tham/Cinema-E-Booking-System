@@ -9,6 +9,9 @@ import ReactPlayer from "react-player"
 import Cancel from "@public/red-cancel-icon.svg"
 import APIFacade from "@/lib/APIFacade"
 import { Movie, Review, Showtime } from "@/lib/Types"
+import { createTransaction, getUser } from "@/lib/Auth"
+import { useAuth } from "@/lib/useAuth"
+import { destroyTransaction } from "@/lib/Auth"
 
 const TheatersAndTimes = () => {
   const [load, setLoad] = useState(false)
@@ -17,6 +20,16 @@ const TheatersAndTimes = () => {
   const [reviews, setReviews] = useState<Review[]>([])
   const [showtimes, setShowtimes] = useState<Showtime[]>([])
   const dialogRef = useRef<HTMLDialogElement>(null!)
+  const [userId, setUserId ] = useState("")
+  const isUser = useAuth("user")
+
+
+  const handleShowTimeClick = async (showtimeid : Number) => {
+    if (isUser) {
+      const movieId = searchParams.get("movieId")
+      createTransaction({"movieId" : movieId , "userId" : userId, "showtimeId" : showtimeid})
+    }
+  }
 
   useEffect(() => {
     const param = searchParams.get("movieId")
@@ -39,11 +52,17 @@ const TheatersAndTimes = () => {
       const reviews = await APIFacade.getMovieReviews(movieId)
       setReviews(reviews)
     }
-
+    const getUserId  = async () => {
+      const data = await getUser()
+      setUserId(data.user.id)
+    } 
     fetchMovie()
     fetchShowTimes()
     fetchMovieReviews()
     setLoad(true)
+    getUserId()
+    destroyTransaction()
+
   }, [])
 
   return (
@@ -114,6 +133,9 @@ const TheatersAndTimes = () => {
                     href={`/ticket-summary?movieId=${movie?.id}&showtimeId=${showtime.id}`}
                     key={showtime.id}
                     className="text-white bg-jade font-semibold p-2 rounded-sm"
+                    onClick={() => {
+                      handleShowTimeClick(showtime.id)
+                    }}
                   >
                     {new Date(
                       showtime.dateTime.replace(" ", "T")

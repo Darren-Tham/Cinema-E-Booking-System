@@ -5,6 +5,7 @@ import Seat from "@/components/Seat"
 import CheckoutBanner from "@/components/CheckoutBanner"
 import Link from "next/link"
 import { useAuth } from "@/lib/useAuth"
+import { updateTransaction } from "@/lib/Auth"
 import APIFacade from "@/lib/APIFacade"
 import { Movie, Showtime } from "@/lib/Types"
 import { useState, useEffect } from "react"
@@ -16,8 +17,22 @@ const nonSeats = new Set(["A3", "A4", "A5", "A6", "E1", "E2", "E7", "E8"])
 const SeatsPage = () => {
   const [movie, setMovie] = useState<Movie>()
   const [showtime, setShowtime] = useState<Showtime>()
+  const [seats, setSeats] = useState<String[]>([])
   const searchParams = useSearchParams()
+
+  const handleNextClick = async () => {
+    updateTransaction({"seats" : seats})
+  }
+
+  const handleClick = (seat : string) => {
+    if (seats.includes(seat)){
+      setSeats(seats.filter(e => e !== seat ))
+    }
+    else setSeats([...seats,seat])
+  }
   useEffect(() => {
+
+
     const fetchMovie = async (movieId: number) => {
       const movie = await APIFacade.getMovieById(movieId)
       setMovie(movie)
@@ -65,12 +80,24 @@ const SeatsPage = () => {
         if (nonSeats.has(label)) {
           elems.push(<div key={label} />)
         } else {
-          elems.push(
-            <Seat
-              key={label}
-              unavailable={showtime?.unavailableSeats.includes(label)}
-            />
-          )
+          if (showtime?.unavailableSeats.includes(label)) {
+            elems.push(
+              <Seat
+                key={label}
+                unavailable={showtime?.unavailableSeats.includes(label)}
+              />
+            )
+          } else {
+            elems.push(
+              <a onClick={() => handleClick(label)}>
+              <Seat
+                key={label}
+                unavailable={showtime?.unavailableSeats.includes(label)}
+              />
+              </a>
+            )
+          }
+          
         }
       }
     }
@@ -101,6 +128,7 @@ const SeatsPage = () => {
           <Link
             href="/checkout-info"
             className="bg-jade text-white font-semibold w-max py-3 px-20 text-xl rounded-md scale-transition"
+            onClick={handleNextClick}
           >
             Next
           </Link>
