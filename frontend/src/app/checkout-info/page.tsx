@@ -34,7 +34,7 @@ const CheckoutInfo = () => {
   const divStyles = "flex flex-col gap-1"
 
   return isUser ? (
-    <div className="grid place-items-center bg-black min-h-screen">
+    <div className="grid place-items-center bg-black min-h-screen p-8">
       <div className="flex gap-10">
         <div className="flex flex-col bg-dark-jade rounded gap-4 p-8">
           <div className="flex flex-col gap-4">
