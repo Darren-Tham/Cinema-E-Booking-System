@@ -75,7 +75,10 @@ export default function UserNavbar() {
               </Link>
             )}
             {!isAdmin && (
-              <Link className="action-button border-[3px]" href="/booking">
+              <Link
+                className="action-button border-[3px]"
+                href="/order-history"
+              >
                 Order History
               </Link>
             )}

@@ -33,6 +33,17 @@ const Booking = ({ booking }: Readonly<Props>) => {
       <div className="grid grid-cols-2">
         <p className={pHeaderStyles}>Booking Id</p>
         <p className={pStyles}>{booking.bookingId}</p>
+        <p className={pHeaderStyles}>Booking Date</p>
+        <p className={pStyles}>
+          {new Date(booking.bookingDate.replace(" ", "T")).toLocaleDateString(
+            "en-US",
+            {
+              month: "long",
+              year: "numeric",
+              day: "numeric"
+            }
+          )}
+        </p>
         <p className={pHeaderStyles}>Movie</p>
         <p className={pStyles}>{booking.movieTitle}</p>
         <p className={pHeaderStyles}>Date</p>
@@ -54,7 +65,7 @@ const Booking = ({ booking }: Readonly<Props>) => {
         <p className={pHeaderStyles}>Seats</p>
         <p className={pStyles}>{booking.seats.join(", ")}</p>
         <p className={pHeaderStyles}>Total</p>
-        <p className={pStyles}>{booking.total}</p>
+        <p className={pStyles}>${booking.total.toFixed(2)}</p>
       </div>
       <h2 className={headerStyles}>Card Information</h2>
       <div className="grid grid-cols-2">

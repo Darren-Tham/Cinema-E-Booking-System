@@ -1,5 +1,7 @@
 package com.server.cinema.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +57,12 @@ public class BookingService {
                 .stream()
                 .map(BookingService::toProfileBookingDTO)
                 .collect(Collectors.toList());
+    }
+
+    private static String getTodayDate() {
+        final LocalDateTime todayDate = LocalDateTime.now();
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return todayDate.format(formatter);
     }
 
     private static List<Ticket> getTickets(final CheckoutBookingDTO checkoutBookingDTO, final Movie movie,
@@ -117,6 +125,7 @@ public class BookingService {
         booking.setExpirationDate(checkoutBookingDTO.expirationDate());
         booking.setBillingAddress(checkoutBookingDTO.billingAddress());
         booking.setLastFourDigits(checkoutBookingDTO.lastFourDigits());
+        booking.setBookingDate(getTodayDate());
 
         final int bookingId = bookingRepository.save(booking).getId();
         ticketRepository.saveAll(tickets);
@@ -135,7 +144,8 @@ public class BookingService {
                 booking.getCardType(),
                 booking.getExpirationDate(),
                 booking.getBillingAddress(),
-                booking.getLastFourDigits());
+                booking.getLastFourDigits(),
+                booking.getBookingDate());
     }
 
 }

@@ -25,7 +25,7 @@ const OrderConfirmation = () => {
       const tickets = await APIFacade.getTicketsByBookingId(
         transaction.bookingId
       )
-      console.log(tickets)
+      console.log(booking)
       setBooking(booking)
       setTickets(tickets)
     }
@@ -57,6 +57,16 @@ const OrderConfirmation = () => {
             <div>
               <p className={pStyles}>
                 <b>Booking Id:</b> {booking.bookingId}
+              </p>
+              <p className={pStyles}>
+                <b>Booking Date:</b>{" "}
+                {new Date(
+                  booking.bookingDate.replace(" ", "T")
+                ).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric"
+                })}
               </p>
               <p className={pStyles}>
                 <b>Movie:</b> {booking.movieTitle}

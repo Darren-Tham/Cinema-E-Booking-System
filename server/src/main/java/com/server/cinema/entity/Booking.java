@@ -61,4 +61,7 @@ public class Booking {
 
     @Column(nullable = false)
     private String lastFourDigits;
+
+    @Column(nullable = false)
+    private String bookingDate;
 }

@@ -12,5 +12,6 @@ public record ProfileBookingDTO(
         String cardType,
         String expirationDate,
         String billingAddress,
-        String lastFourDigits) {
+        String lastFourDigits,
+        String bookingDate) {
 }
