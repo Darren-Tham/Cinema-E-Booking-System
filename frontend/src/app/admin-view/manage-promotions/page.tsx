@@ -1,12 +1,12 @@
 "use client"
 
 import { FormEvent, useState } from "react"
-import { useAuth } from "@/lib/useAuth"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import { Email, Promotion } from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"
 import FormHandler from "@/lib/FormHandler"
 import Link from "next/link"
+import useAdmin from "@/hooks/useAdmin"
 
 const ManagePromotions = () => {
   const [form, setForm] = useState<Promotion>({
@@ -16,7 +16,7 @@ const ManagePromotions = () => {
     startDate: "",
     endDate: ""
   })
-  const isAdmin = useAuth("admin")
+  const isAdmin = useAdmin()
 
   const isValidForm = async () => {
     if (form.name === "") {
@@ -85,111 +85,121 @@ const ManagePromotions = () => {
     window.location.reload()
   }
 
-  return isAdmin ? (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="w-full max-w-md bg-teal-950 p-4 rounded-md shadow-lg">
-        <h1 className="text-white text-2xl font-bold mb-4 text-center">
-          Promotions
-        </h1>
-        <form className="space-y-4" onSubmit={handleFormSubmit}>
-          <div className="flex flex-col">
-            <label htmlFor="name" className="text-gray-100 font-semibold">
-              Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              className="mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
-              value={form.name}
-              onChange={e => FormHandler.updateForm(e, "name", form, setForm)}
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="code" className="text-gray-100 font-semibold">
-              Discount Code
-            </label>
-            <input
-              id="code"
-              type="text"
-              className="mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
-              value={form.discountCode}
-              onChange={e =>
-                FormHandler.updateFormNoSpaces(e, "discountCode", form, setForm)
-              }
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="discount" className="text-gray-100 font-semibold">
-              Discount Percentage
-            </label>
-            <input
-              id="discount"
-              type="range"
-              className="mt-1"
-              value={form.discountPercentage}
-              onChange={e =>
-                FormHandler.updateForm(e, "discountPercentage", form, setForm)
-              }
-              min="0"
-              max="100"
-            />
-            <div className="flex justify-between text-white text-sm">
-              <span className="font-semibold">0%</span>
-              <span className="font-semibold">{form.discountPercentage}%</span>
+  return (
+    isAdmin && (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="w-full max-w-md bg-teal-950 p-4 rounded-md shadow-lg">
+          <h1 className="text-white text-2xl font-bold mb-4 text-center">
+            Promotions
+          </h1>
+          <form className="space-y-4" onSubmit={handleFormSubmit}>
+            <div className="flex flex-col">
+              <label htmlFor="name" className="text-gray-100 font-semibold">
+                Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                className="mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
+                value={form.name}
+                onChange={e => FormHandler.updateForm(e, "name", form, setForm)}
+              />
             </div>
-          </div>
-          <div className="flex gap-2">
-            <div className="flex-1 min-w-0">
-              <label
-                htmlFor="start-date"
-                className="text-gray-100 font-semibold"
+            <div className="flex flex-col">
+              <label htmlFor="code" className="text-gray-100 font-semibold">
+                Discount Code
+              </label>
+              <input
+                id="code"
+                type="text"
+                className="mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
+                value={form.discountCode}
+                onChange={e =>
+                  FormHandler.updateFormNoSpaces(
+                    e,
+                    "discountCode",
+                    form,
+                    setForm
+                  )
+                }
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="discount" className="text-gray-100 font-semibold">
+                Discount Percentage
+              </label>
+              <input
+                id="discount"
+                type="range"
+                className="mt-1"
+                value={form.discountPercentage}
+                onChange={e =>
+                  FormHandler.updateForm(e, "discountPercentage", form, setForm)
+                }
+                min="0"
+                max="100"
+              />
+              <div className="flex justify-between text-white text-sm">
+                <span className="font-semibold">0%</span>
+                <span className="font-semibold">
+                  {form.discountPercentage}%
+                </span>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <div className="flex-1 min-w-0">
+                <label
+                  htmlFor="start-date"
+                  className="text-gray-100 font-semibold"
+                >
+                  Start Date
+                </label>
+                <input
+                  id="start-date"
+                  type="date"
+                  className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
+                  value={form.startDate}
+                  onChange={e =>
+                    FormHandler.updateForm(e, "startDate", form, setForm)
+                  }
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <label
+                  htmlFor="end-date"
+                  className="text-gray-100 font-semibold"
+                >
+                  End Date
+                </label>
+                <input
+                  id="end-date"
+                  type="date"
+                  className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
+                  value={form.endDate}
+                  onChange={e =>
+                    FormHandler.updateForm(e, "endDate", form, setForm)
+                  }
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <Link
+                href="/admin-view"
+                className="bg-jade px-4 py-2 text-white font-bold hover:scale-[1.015] transition-transform duration-300 rounded text-center"
               >
-                Start Date
-              </label>
-              <input
-                id="start-date"
-                type="date"
-                className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
-                value={form.startDate}
-                onChange={e =>
-                  FormHandler.updateForm(e, "startDate", form, setForm)
-                }
-              />
+                Back To Admin View
+              </Link>
+              <button
+                type="submit"
+                className="w-full p-2 bg-light-jade text-white rounded hover:scale-[1.015] transition-transform duration-300 font-semibold"
+              >
+                Confirm
+              </button>
             </div>
-            <div className="flex-1 min-w-0">
-              <label htmlFor="end-date" className="text-gray-100 font-semibold">
-                End Date
-              </label>
-              <input
-                id="end-date"
-                type="date"
-                className="w-full mt-1 p-2 bg-bright-jade text-black rounded border border-gray-500 outline-none font-semibold"
-                value={form.endDate}
-                onChange={e =>
-                  FormHandler.updateForm(e, "endDate", form, setForm)
-                }
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <Link
-              href="/admin-view"
-              className="bg-jade px-4 py-2 text-white font-bold hover:scale-[1.015] transition-transform duration-300 rounded text-center"
-            >
-              Back To Admin View
-            </Link>
-            <button
-              type="submit"
-              className="w-full p-2 bg-light-jade text-white rounded hover:scale-[1.015] transition-transform duration-300 font-semibold"
-            >
-              Confirm
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
-  ) : (
-    <UnauthorizedScreen />
+    )
   )
 }
 

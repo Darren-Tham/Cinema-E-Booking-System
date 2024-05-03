@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useAuth } from "@/lib/useAuth"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import APIFacade from "@/lib/APIFacade"
 import { Movie } from "@/lib/Types"
+import useAdmin from "@/hooks/useAdmin"
 
 const ManageMovies = () => {
   const [movies, setMovies] = useState<Movie[]>([])
-  const isAdmin = useAuth("admin")
+  const isAdmin = useAdmin()
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -51,34 +51,34 @@ const ManageMovies = () => {
     )
   }
 
-  return isAdmin ? (
-    <div className="flex flex-col bg-black h-screen items-center gap-8 p-8">
-      <Link
-        href="/admin-view"
-        className="bg-jade px-4 py-2 text-white font-bold scale-transition rounded-md self-start"
-      >
-        Back To Admin View
-      </Link>
-      <h1 className="text-3xl text-white font-bold">Manage Movies</h1>
-      {renderMovies(
-        "Now Playing",
-        movies.filter(movie => movie.status === "NOW_PLAYING")
-      )}
-      {renderMovies(
-        "Coming Soon",
-        movies.filter(movie => movie.status === "COMING_SOON")
-      )}
-      <div className="flex gap-5">
+  return (
+    isAdmin && (
+      <div className="flex flex-col bg-black h-screen items-center gap-8 p-8">
         <Link
-          href="./add-movie"
-          className="text-white w-max font-bold text-lg bg-jade px-10 py-3 rounded-md scale-transition "
+          href="/admin-view"
+          className="bg-jade px-4 py-2 text-white font-bold scale-transition rounded-md self-start"
         >
-          Add Movie
+          Back To Admin View
         </Link>
+        <h1 className="text-3xl text-white font-bold">Manage Movies</h1>
+        {renderMovies(
+          "Now Playing",
+          movies.filter(movie => movie.status === "NOW_PLAYING")
+        )}
+        {renderMovies(
+          "Coming Soon",
+          movies.filter(movie => movie.status === "COMING_SOON")
+        )}
+        <div className="flex gap-5">
+          <Link
+            href="./add-movie"
+            className="text-white w-max font-bold text-lg bg-jade px-10 py-3 rounded-md scale-transition "
+          >
+            Add Movie
+          </Link>
+        </div>
       </div>
-    </div>
-  ) : (
-    <UnauthorizedScreen />
+    )
   )
 }
 

@@ -100,3 +100,16 @@ export type Review = {
   title: string
   content: string
 }
+
+export type Transaction = {
+  movieId?: number
+  customerId?: number
+  showtimeId?: number
+  adultTicketCount?: number
+  childTicketCount?: number
+  seniorTicketCount?: number
+  taxes?: number
+  subtotal?: number
+  total?: number
+  seats?: string[]
+}

@@ -8,7 +8,7 @@ import MainMovieBanner from "@/components/MainMovieBanner"
 import FilterIcon from "@public/filter-icon.svg"
 import APIFacade from "@/lib/APIFacade"
 import { Movie } from "@/lib/Types"
-import { destroyTransaction } from "@/lib/Auth"
+import { destoryTransaction } from "@/lib/Authentication"
 
 const CATEGORIES = [
   "Animation",
@@ -35,7 +35,7 @@ const Home = () => {
       setMovies(movies)
     }
     fetchMovies()
-    destroyTransaction()
+    destoryTransaction()
   }, [])
 
   const formatFilterType = (s: string) => {

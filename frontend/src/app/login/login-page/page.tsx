@@ -4,10 +4,10 @@ import HomeNavbar from "@/components/HomeNavbar"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { initialSetUp } from "../../../lib/Auth"
 import APIFacade from "@/lib/APIFacade"
 import { Customer } from "@/lib/Types"
 import FormHandler from "@/lib/FormHandler"
+import { createAdmin, createCustomer } from "@/lib/Authentication"
 
 type Form = {
   email: string
@@ -42,16 +42,7 @@ const Login = () => {
   const adminLogin = async () => {
     const admin = await APIFacade.getAdmin(form.email, form.password)
     if (admin === undefined) return false
-    const user: Customer = {
-      id: admin.id,
-      firstName: "",
-      lastName: "",
-      email: admin.username,
-      phoneNumber: "",
-      status: "",
-      isSubscribedForPromotions: false
-    }
-    initialSetUp(user, form.rememberMe)
+    await createAdmin(form.rememberMe)
     router.push("/admin-view")
     return true
   }
@@ -68,7 +59,7 @@ const Login = () => {
         `/registration/registration-verification-code?id=${customer.id}`
       )
     } else {
-      initialSetUp(customer, form.rememberMe)
+      createCustomer(customer, form.rememberMe)
       router.push("/")
     }
   }

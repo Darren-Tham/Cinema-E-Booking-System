@@ -6,26 +6,25 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
-import { destroyCookie, hasCookie, getUser } from "@/lib/Auth"
-import { useAuth } from "@/lib/useAuth"
+import { destroyCustomer, getCustomer } from "@/lib/Authentication"
 
 export default function UserNavbar() {
   const router = useRouter()
+  const [isAdmin, setIsAdmin] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [displayName, setDisplayName] = useState("")
-  const isAdmin = useAuth("admin")
+
   useEffect(() => {
     const authenticate = async () => {
-      const auth = await hasCookie()
-      if (!auth) {
-        return
-      }
-      setIsLoggedIn(auth)
-      const data = await getUser()
-      if (data.user.email == "admin"){
+      const customer = await getCustomer()
+      if (customer === undefined) return
+
+      setIsLoggedIn(true)
+      if (customer.email === "admin") {
         setDisplayName("Admin")
-      } else{
-        setDisplayName(data.user.firstName)
+        setIsAdmin(true)
+      } else {
+        setDisplayName(customer.firstName)
       }
     }
     authenticate()
@@ -79,8 +78,7 @@ export default function UserNavbar() {
               className="back-button text-[#2CC295] border-[#2CC295]"
               onClick={async () => {
                 setIsLoggedIn(false)
-                destroyCookie()
-                setIsLoggedIn(await hasCookie())
+                await destroyCustomer()
               }}
             >
               Logout
