@@ -1,14 +1,25 @@
 "use client"
 import Link from "next/link"
 import { useAuth } from "@/lib/useAuth"
+import { getTransaction } from "@/lib/Auth"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
+import { useEffect, useState } from "react"
 const CheckoutInfo = () => {
+  const [info, setInfo] = useState()
   const isUser = useAuth("user")
   const h1Styles = "font-bold text-4xl text-white text-center p-10"
   const h2Styles = "text-lg text-white font-semibold"
   const inputStyles =
     "bg-light-jade outline-none flex-grow rounded h-8 max-w-80 p-2"
-
+  useEffect(() => {
+    async function getInfo() {
+      const data = await getTransaction()
+      if (data) {
+        setInfo(data.info)
+      }
+    }
+    getInfo()
+  },[])
   return isUser ? (
     <div className="grid place-items-center bg-black min-h-screen">
       <div className="flex gap-10">
@@ -89,6 +100,7 @@ const CheckoutInfo = () => {
           <Link
             href="/order-confirmation"
             className="action-button w-full text-center"
+            onClick={() => console.log(info)}
           >
             Checkout
           </Link>

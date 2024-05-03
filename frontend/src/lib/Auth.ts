@@ -74,6 +74,9 @@ export async function destroyCookie() {
   remember = false
   cookies().set("session", "", { expires: new Date(0), sameSite: "lax" })
 }
+export async function destroyTransaction() {
+  cookies().set("transaction", "", { expires: new Date(0), sameSite: "lax" })
+}
 export async function updateUser(user: Customer) {
   const val = cookies().get("session")?.value
   if (val) {
@@ -103,6 +106,12 @@ export async function updateTransaction(info: any) {
   } 
 }
 
+export async function getTransaction() {
+  const session = cookies().get("transaction")?.value
+  if (session) return await decrypt(session)
+  else return {}
+
+}
 export async function getUser() {
   const data = cookies().get("session")?.value
   if (data) return await decrypt(data)

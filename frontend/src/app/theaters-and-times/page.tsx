@@ -11,6 +11,7 @@ import APIFacade from "@/lib/APIFacade"
 import { Movie, Review, Showtime } from "@/lib/Types"
 import { createTransaction, getUser } from "@/lib/Auth"
 import { useAuth } from "@/lib/useAuth"
+import { destroyTransaction } from "@/lib/Auth"
 
 const TheatersAndTimes = () => {
   const [load, setLoad] = useState(false)
@@ -60,6 +61,8 @@ const TheatersAndTimes = () => {
     fetchMovieReviews()
     setLoad(true)
     getUserId()
+    destroyTransaction()
+
   }, [])
 
   return (
