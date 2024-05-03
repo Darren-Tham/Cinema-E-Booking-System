@@ -6,7 +6,6 @@ import { getTransaction } from "@/lib/Auth"
 import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import { useEffect, useState } from "react"
 import CardTypes from "@/components/option/CardTypes"
-import { useState } from "react"
 import FormHandler from "@/lib/FormHandler"
 import CardComponent from "./CardComponent"
 
@@ -31,7 +30,6 @@ const CheckoutInfo = () => {
   const [selectedCard, setSelectedCard] = useState<number>()
 
   const labelStyles = "text-white font-semibold"
-  const inputStyles = "outline-none p-2 rounded-sm text-sm font-semibold"
   const h1Styles = "text-white font-bold text-2xl text-center"
   const h2Styles = "text-lg text-white font-semibold"
   const inputStyles =
