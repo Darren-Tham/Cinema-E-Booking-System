@@ -62,8 +62,15 @@ const Login = () => {
       setForm({ ...form, loginFailed: true })
       return
     }
-    initialSetUp(customer, form.rememberMe)
-    router.push("/")
+
+    if (customer.status === "INACTIVE") {
+      router.push(
+        `/registration/registration-verification-code?id=${customer.id}`
+      )
+    } else {
+      initialSetUp(customer, form.rememberMe)
+      router.push("/")
+    }
   }
 
   const handleFormSubmit = async () => {
