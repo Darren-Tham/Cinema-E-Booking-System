@@ -7,7 +7,7 @@ import GreenChairIcon from "@public/green-chair-icon.svg"
 import { Dispatch, SetStateAction, useState } from "react"
 
 type Props = {
-  unavailable: boolean
+  unavailable: boolean | undefined
   label: string
   seats: string[]
   setSeats: Dispatch<SetStateAction<string[]>>

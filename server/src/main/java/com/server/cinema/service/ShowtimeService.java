@@ -1,6 +1,7 @@
 package com.server.cinema.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,13 @@ public class ShowtimeService {
                 .stream()
                 .map(ShowtimeService::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public void updateUnavailableSeats(final int showtimeId, final List<String> newUnavailableSeats) {
+        final Showtime showtime = showtimeRepository.findById(showtimeId).orElseThrow();
+        final Set<String> unavailableSeats = showtime.getUnavailableSeats();
+        unavailableSeats.addAll(newUnavailableSeats);
+        showtimeRepository.save(showtime);
     }
 
     public void updateShowtimes(final int movieId, Iterable<String> dateTimes) {

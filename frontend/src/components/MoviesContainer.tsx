@@ -4,12 +4,14 @@ import Link from "next/link"
 import Image from "next/image"
 import ReactPlayer from "react-player"
 import Cancel from "@public/cancel-icon.svg"
-import MovieComponent, { MovieType } from "./Movie"
+import MovieComponent from "./Movie"
 import { useEffect, useRef, useState } from "react"
+import { Movie } from "@/lib/Types"
+import PageFacade from "@/lib/PageFacade"
 
 type Props = {
   heading: string
-  movies: MovieType[]
+  movies: Movie[]
 }
 
 export default function MoviesContainer({ heading, movies }: Readonly<Props>) {
@@ -73,7 +75,7 @@ export default function MoviesContainer({ heading, movies }: Readonly<Props>) {
           </h2>
           {load && <ReactPlayer url={movieURL} playing={playMovie} />}
           <Link
-            href={`/theaters-and-times?movieId=${movieId}`}
+            href={PageFacade.movieShowtime(movieId)}
             className="bg-dark-jade text-white font-semibold py-2 px-6 w-max text-lg rounded-md self-center hover:scale-105 transition-transform duration-300"
           >
             Book Tickets

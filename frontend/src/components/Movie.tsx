@@ -2,6 +2,7 @@ import Image from "next/image"
 import PlayCircle from "@public/play-circle-icon.svg"
 import Link from "next/link"
 import { Movie } from "@/lib/Types"
+import PageFacade from "@/lib/PageFacade"
 
 type Props = {
   movie: Movie
@@ -18,7 +19,7 @@ export default function MovieComponent({
         <button className="absolute left-1 top-1" onClick={handleTrailerClick}>
           <Image src={PlayCircle} alt="Play Circle" />
         </button>
-        <Link href={`/theaters-and-times?movieId=${movie.id}`}>
+        <Link href={PageFacade.movieShowtime(movie.id)}>
           <Image
             src={movie.imageLink}
             alt={movie.title}

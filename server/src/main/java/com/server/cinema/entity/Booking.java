@@ -31,9 +31,8 @@ public class Booking {
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
-    @ManyToOne
-    @JoinColumn(name = "showtime_id", nullable = false)
-    private Showtime showtime;
+    @Column(columnDefinition = "DATETIME", nullable = false)
+    private String dateTime;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)

@@ -13,6 +13,7 @@ import {
   destoryTransaction,
   getCustomer
 } from "@/lib/Authentication"
+import PageFacade from "@/lib/PageFacade"
 
 const TheatersAndTimes = () => {
   const router = useRouter()
@@ -131,7 +132,7 @@ const TheatersAndTimes = () => {
                           showtimeId: showtime.id
                         } as const
                         await createTransaction(transaction)
-                        router.push("/ticket-summary")
+                        router.push(PageFacade.TICKET_SUMMARY)
                       }}
                     >
                       {new Date(

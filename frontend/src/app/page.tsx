@@ -10,37 +10,21 @@ import APIFacade from "@/lib/APIFacade"
 import { Movie } from "@/lib/Types"
 import { destoryTransaction } from "@/lib/Authentication"
 
-const CATEGORIES = [
-  "Animation",
-  "Action",
-  "Adventure",
-  "Biography",
-  "Comedy",
-  "Drama",
-  "Family",
-  "History",
-  "Horror",
-  "Mystery",
-  "Sci-Fi",
-  "Thriller"
-]
-
 const Home = () => {
   const [movies, setMovies] = useState<Movie[]>([])
   const [filterType, setFilterType] = useState("All")
+  const [categories, setCategories] = useState<string[]>([])
 
   useEffect(() => {
-    const fetchMovies = async () => {
+    const fetchInformation = async () => {
       const movies = await APIFacade.getAllMovies()
+      const categories = await APIFacade.getAllCategories()
       setMovies(movies)
+      setCategories(categories)
     }
-    fetchMovies()
+    fetchInformation()
     destoryTransaction()
   }, [])
-
-  const formatFilterType = (s: string) => {
-    return s.toUpperCase().replace("-", "_")
-  }
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -57,7 +41,7 @@ const Home = () => {
             <option>All</option>
             <option>Now Playing</option>
             <option>Coming Soon</option>
-            {CATEGORIES.map(category => (
+            {categories.map(category => (
               <option key={category}>{category}</option>
             ))}
           </select>
@@ -76,11 +60,11 @@ const Home = () => {
             movies={movies.filter(movie => movie.status === "COMING_SOON")}
           />
         )}
-        {CATEGORIES.includes(filterType) && (
+        {categories.includes(filterType) && (
           <MoviesContainer
             heading={filterType}
             movies={movies.filter(movie =>
-              movie.categories.includes(formatFilterType(filterType))
+              movie.categories.includes(filterType)
             )}
           />
         )}

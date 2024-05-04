@@ -29,6 +29,10 @@ export default class APIFacade {
     return await APIMovieFacade.getAllMovies()
   }
 
+  public static async getAllCategories() {
+    return await APIMovieFacade.getAllCategories()
+  }
+
   public static async getMovieById(movieId: number) {
     return await APIMovieFacade.getMovieById(movieId)
   }
@@ -47,6 +51,13 @@ export default class APIFacade {
 
   public static async getShowtimesByMovieId(movieId: number) {
     return await APIShowtimeFacade.getShowtimesByMovieId(movieId)
+  }
+
+  public static async updateUnavilableSeats(
+    showtimeId: number,
+    unavailableSeats: string[]
+  ) {
+    await APIShowtimeFacade.updateUnavailableSeats(showtimeId, unavailableSeats)
   }
 
   public static async updateMovieShowtimes(
@@ -255,6 +266,12 @@ class APIMovieFacade {
     return data
   }
 
+  public static async getAllCategories() {
+    const response = await fetch(`${this.MOVIE_URL}/categories`)
+    const data: string[] = await response.json()
+    return data
+  }
+
   public static async getMovieById(movieId: number) {
     const response = await fetch(`${this.MOVIE_URL}/${movieId}`)
     const data: Movie = await response.json()
@@ -288,6 +305,16 @@ class APIShowtimeFacade {
     const response = await fetch(`${this.SHOWTIME_URL}/movies/${movieId}`)
     const data: Showtime[] = await response.json()
     return data
+  }
+
+  public static async updateUnavailableSeats(
+    showtimeId: number,
+    unavailableSeats: string[]
+  ) {
+    await fetch(
+      `${this.SHOWTIME_URL}/update-unavailable-seats/${showtimeId}`,
+      RequestInitHandler.putRequestInitWithBody(unavailableSeats)
+    )
   }
 
   public static async updateMovieShowtimes(

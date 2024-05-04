@@ -14,6 +14,5 @@ public record CheckoutBookingDTO(
         String cardType,
         String expirationDate,
         String billingAddress,
-        String lastFourDigits,
-        String bookingDate) {
+        String lastFourDigits) {
 }

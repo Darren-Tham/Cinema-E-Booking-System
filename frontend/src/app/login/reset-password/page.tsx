@@ -3,6 +3,7 @@
 import HomeNavbar from "@/components/HomeNavbar"
 import APIFacade from "@/lib/APIFacade"
 import FormHandler from "@/lib/FormHandler"
+import PageFacade from "@/lib/PageFacade"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
@@ -66,7 +67,7 @@ const ResetPassword = () => {
   const handleResetPassword = async () => {
     if (!isValidForm()) return
     await APIFacade.updateCustomerPassword(form.customerId, form.password)
-    router.push("./reset-password-confirmation")
+    router.push(PageFacade.RESET_PASSWORD_CONFIRMATION)
   }
 
   return loadRef.current ? (
@@ -143,7 +144,7 @@ const ResetPassword = () => {
           </button>
           <div className="flex justify-center">
             <p className="p-redirection"></p>
-            <Link href="./login-page" className="link-redirection">
+            <Link href={PageFacade.LOGIN_PAGE} className="link-redirection">
               Back To Login
             </Link>
           </div>

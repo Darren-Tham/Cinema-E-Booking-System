@@ -5,9 +5,9 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import APIFacade from "@/lib/APIFacade"
-import { Customer } from "@/lib/Types"
 import FormHandler from "@/lib/FormHandler"
 import { createAdmin, createCustomer } from "@/lib/Authentication"
+import PageFacade from "@/lib/PageFacade"
 
 type Form = {
   email: string
@@ -43,7 +43,7 @@ const Login = () => {
     const admin = await APIFacade.getAdmin(form.email, form.password)
     if (admin === undefined) return false
     await createAdmin(form.rememberMe)
-    router.push("/admin-view")
+    router.push(PageFacade.ADMIN_VIEW)
     return true
   }
 
@@ -55,12 +55,10 @@ const Login = () => {
     }
 
     if (customer.status === "INACTIVE") {
-      router.push(
-        `/registration/registration-verification-code?id=${customer.id}`
-      )
+      router.push(PageFacade.registrationVerificationCode(customer.id))
     } else {
       createCustomer(customer, form.rememberMe)
-      router.push("/")
+      router.push(PageFacade.HOME)
     }
   }
 
@@ -105,7 +103,7 @@ const Login = () => {
               }
             />
             <Link
-              href="./forgot-password"
+              href={PageFacade.FORGOT_PASSWORD}
               className="text-bright-jade font-semibold w-max hover:scale-105 transition-transform duration-300"
             >
               Forgot Password?
@@ -136,7 +134,7 @@ const Login = () => {
           <div className="flex justify-center">
             <p className="p-redirection">Don&apos;t Have An Account?</p>
             <Link
-              href="/registration/registration-page"
+              href={PageFacade.REGISTRATION_PAGE}
               className="link-redirection"
             >
               Register Here

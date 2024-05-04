@@ -2,7 +2,6 @@
 import AccountField from "@/components/AccountField"
 import SearchIcon from "@public/search-icon.svg"
 import Image from "next/image"
-import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import useAdmin from "@/hooks/useAdmin"
 
 const SuspendUser = () => {

@@ -1,6 +1,8 @@
 "use client"
+
 import Link from "next/link"
 import useAdmin from "@/hooks/useAdmin"
+import PageFacade from "@/lib/PageFacade"
 
 const AdminView = () => {
   const isAdmin = useAdmin()
@@ -15,16 +17,16 @@ const AdminView = () => {
       <div className="h-screen bg-black flex flex-col justify-center items-center">
         <h1 className={h1Styles}>Admin Portal</h1>
         <div className="bg-teal-950 p-16 rounded-lg flex flex-col gap-6 items-center w-1/4">
-          <Link href="/admin-view/manage-movies" className={buttonStyles}>
+          <Link href={PageFacade.MANAGE_MOVIES} className={buttonStyles}>
             Manage Movies
           </Link>
-          <Link href="/admin-view/suspend-user" className={buttonStyles}>
+          <Link href={PageFacade.SUSPEND_USER} className={buttonStyles}>
             Manage Users
           </Link>
-          <Link href="/admin-view/manage-promotions" className={buttonStyles}>
+          <Link href={PageFacade.MANAGE_PROMOTIONS} className={buttonStyles}>
             Manage Promotions
           </Link>
-          <Link href="/" className={buttonStyles}>
+          <Link href={PageFacade.HOME} className={buttonStyles}>
             Back To Home
           </Link>
         </div>

@@ -1,11 +1,11 @@
 "use client"
 
-import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import MovieRatings from "@/components/option/MovieRatings"
 import MovieStatuses from "@/components/option/MovieStatuses"
 import useAdmin from "@/hooks/useAdmin"
 import APIFacade from "@/lib/APIFacade"
 import FormHandler from "@/lib/FormHandler"
+import PageFacade from "@/lib/PageFacade"
 import { NewMovie } from "@/lib/Types"
 import Link from "next/link"
 import { FormEvent, useState } from "react"
@@ -26,9 +26,9 @@ const AddMovie = () => {
     producers: [],
     synopsis: "",
     ratingCode: "",
-    adultTicketPrice: -1,
-    childTicketPrice: -1,
-    seniorTicketPrice: -1
+    adultTicketPrice: 0,
+    childTicketPrice: 0,
+    seniorTicketPrice: 0
   })
   const isAdmin = useAdmin()
   const labelStyles = "text-white font-semibold text-lg"
@@ -125,7 +125,7 @@ const AddMovie = () => {
     isAdmin && (
       <div className="flex flex-col p-8 gap-10 justify-center items-center">
         <Link
-          href="/admin-view/manage-movies"
+          href={PageFacade.MANAGE_MOVIES}
           className="bg-jade px-4 py-2 text-white font-bold scale-transition rounded-md self-start"
         >
           Back To Manage Movies
@@ -262,6 +262,51 @@ const AddMovie = () => {
               value={form.castMembers}
               onChange={e =>
                 FormHandler.updateFormArray(e, "castMembers", form, setForm)
+              }
+            />
+          </div>
+          <div className={divStyles}>
+            <p className={labelStyles}>Adult Ticket Price</p>
+            <input
+              className={inputStyles}
+              value={form.adultTicketPrice}
+              onChange={e =>
+                FormHandler.updateFormPrice(
+                  e,
+                  "adultTicketPrice",
+                  form,
+                  setForm
+                )
+              }
+            />
+          </div>
+          <div className={divStyles}>
+            <p className={labelStyles}>Child Ticket Price</p>
+            <input
+              className={inputStyles}
+              value={form.childTicketPrice}
+              onChange={e =>
+                FormHandler.updateFormPrice(
+                  e,
+                  "childTicketPrice",
+                  form,
+                  setForm
+                )
+              }
+            />
+          </div>
+          <div className={divStyles}>
+            <p className={labelStyles}>Senior Ticket Price</p>
+            <input
+              className={inputStyles}
+              value={form.seniorTicketPrice}
+              onChange={e =>
+                FormHandler.updateFormPrice(
+                  e,
+                  "seniorTicketPrice",
+                  form,
+                  setForm
+                )
               }
             />
           </div>

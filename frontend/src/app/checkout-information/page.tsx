@@ -14,6 +14,8 @@ import {
 } from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
+import PageFacade from "@/lib/PageFacade"
 
 type Form = {
   cardType: string
@@ -24,7 +26,7 @@ type Form = {
   promotion: string
 }
 
-const CheckoutInfo = () => {
+const CheckoutInformation = () => {
   const isCustomer = useCustomer()
   const router = useRouter()
   const [transaction, setTransaction] = useState<Transaction>()
@@ -103,7 +105,7 @@ const CheckoutInfo = () => {
     }
   }
 
-  const handleNextClick = async () => {
+  const handleCheckoutClick = async () => {
     if (!isValidForm()) return
 
     if (
@@ -133,8 +135,12 @@ const CheckoutInfo = () => {
     } as const
 
     const bookingId = await APIFacade.addBooking(booking)
+    await APIFacade.updateUnavilableSeats(
+      transaction.showtimeId,
+      transaction.seats
+    )
     await updateTransaction({ bookingId })
-    router.push("/order-confirmation")
+    router.push(PageFacade.ORDER_CONFIRMATION)
   }
 
   const applyPromotion = async () => {
@@ -189,8 +195,14 @@ const CheckoutInfo = () => {
   return (
     isCustomer &&
     transaction?.total && (
-      <div className="grid place-items-center bg-black min-h-screen p-8">
-        <div className="flex gap-10">
+      <div className="flex flex-col min-h-screen p-10 gap-8">
+        <Link
+          href={PageFacade.SEATS}
+          className="bg-jade px-4 py-2 text-white font-bold scale-transition rounded-md self-start"
+        >
+          Back to Seats Page
+        </Link>
+        <div className="flex gap-10 self-center justify-self-center">
           <div className="flex flex-col bg-dark-jade rounded gap-4 p-8">
             {cards.length !== 0 && (
               <div className="flex flex-col gap-4">
@@ -352,7 +364,7 @@ const CheckoutInfo = () => {
             <button
               //   href="/order-confirmation"
               className="action-button w-full text-center"
-              onClick={handleNextClick}
+              onClick={handleCheckoutClick}
             >
               Checkout
             </button>
@@ -363,4 +375,4 @@ const CheckoutInfo = () => {
   )
 }
 
-export default CheckoutInfo
+export default CheckoutInformation

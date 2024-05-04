@@ -7,8 +7,9 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { destroyCustomer, getCustomer } from "@/lib/Authentication"
+import PageFacade from "@/lib/PageFacade"
 
-export default function UserNavbar() {
+const UserNavbar = () => {
   const router = useRouter()
   const [isAdmin, setIsAdmin] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -33,7 +34,7 @@ export default function UserNavbar() {
     <nav className="w-full p-4 flex justify-between px-10">
       <div className="flex gap-5 items-center">
         <Link
-          href="/"
+          href={PageFacade.HOME}
           className="font-bold text-[#2CC295] text-2xl scale-transition"
         >
           Cinema E-Booking System
@@ -61,14 +62,14 @@ export default function UserNavbar() {
       <div className="flex gap-3 items-center">
         {isLoggedIn ? (
           <>
-            <Link href="/edit-profile" className="scale-transition">
+            <Link href={PageFacade.EDIT_PROFILE} className="scale-transition">
               <Image src={ProfileIcon} alt="Profile" width={45} />
             </Link>
             <p className="text-[#2CC295] font-semibold text-lg mr-4">
               Hello, {displayName}
             </p>
             {isAdmin && (
-              <Link href="/admin-view">
+              <Link href={PageFacade.ADMIN_VIEW}>
                 <button className="back-button text-[#2CC295] border-[#2CC295]">
                   Admin Portal
                 </button>
@@ -76,8 +77,8 @@ export default function UserNavbar() {
             )}
             {!isAdmin && (
               <Link
+                href={PageFacade.ORDER_HISTORY}
                 className="action-button border-[3px]"
-                href="/order-history"
               >
                 Order History
               </Link>
@@ -95,15 +96,12 @@ export default function UserNavbar() {
         ) : (
           <>
             <Link
-              href="/login/login-page"
+              href={PageFacade.LOGIN_PAGE}
               className="action-button border-[3px]"
             >
               Login
             </Link>
-            <Link
-              href="/registration/registration-page"
-              className="back-button"
-            >
+            <Link href={PageFacade.REGISTRATION_PAGE} className="back-button">
               Register
             </Link>
           </>
@@ -112,3 +110,5 @@ export default function UserNavbar() {
     </nav>
   )
 }
+
+export default UserNavbar

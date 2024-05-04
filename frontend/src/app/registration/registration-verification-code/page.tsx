@@ -3,6 +3,7 @@
 import HomeNavbar from "@/components/HomeNavbar"
 import APIFacade from "@/lib/APIFacade"
 import FormHandler from "@/lib/FormHandler"
+import PageFacade from "@/lib/PageFacade"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 
@@ -46,7 +47,7 @@ const RegistrationVerificationCode = () => {
     }
 
     await APIFacade.updateCustomerStatusToActive(form.customerId)
-    router.push("./registration-confirmation")
+    router.push(PageFacade.REGISTRATION_CONFIRMATION)
   }
 
   return loadRef.current ? (

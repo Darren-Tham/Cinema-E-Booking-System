@@ -36,6 +36,12 @@ public class ShowtimeController {
         return showtimeService.getShowtimesByMovieId(movieId);
     }
 
+    @PutMapping("/update-unavailable-seats/{showtimeId}")
+    public void updateUnavailableSeats(@PathVariable final int showtimeId,
+            @RequestBody final List<String> unavailableSeats) {
+        showtimeService.updateUnavailableSeats(showtimeId, unavailableSeats);
+    }
+
     @PutMapping("/movies/{movieId}")
     public void updateShowtimes(@PathVariable final int movieId, @RequestBody List<String> dateTimes) {
         showtimeService.updateShowtimes(movieId, dateTimes);

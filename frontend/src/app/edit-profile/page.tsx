@@ -10,10 +10,10 @@ import HomeAddressInput from "./home-address/HomeAddressInput"
 import CardsInput from "./card/CardsInput"
 import PasswordInput from "./PasswordInput"
 import PromotionButton from "./PromotionButton"
-import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import { Customer } from "@/lib/Types"
 import { getCustomer } from "@/lib/Authentication"
 import useCustomer from "@/hooks/useCustomer"
+import PageFacade from "@/lib/PageFacade"
 
 const EditProfile = () => {
   const isCustomer = useCustomer()
@@ -91,7 +91,7 @@ const EditProfile = () => {
           </div>
           <PromotionButton customer={customer} />
           <Link
-            href="/"
+            href={PageFacade.HOME}
             className={`${jadeBoxStyles} w-full hover:scale-[1.015] transition-transform duration-300 text-center`}
           >
             Back Home

@@ -28,6 +28,21 @@ export default class FormHandler {
     setForm({ ...form, [key]: e.target.value.split(",") })
   }
 
+  public static updateFormPrice<T>(
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    key: string,
+    form: T,
+    setForm: Dispatch<SetStateAction<T>>
+  ) {
+    const { value } = e.target
+    if (value.includes(".") && value.indexOf(".") !== value.lastIndexOf(".")) {
+      return
+    }
+    if (/^\d*(?:\.\d?\d?)?$/.test(value)) {
+      this.updateForm(e, key, form, setForm)
+    }
+  }
+
   public static updateFormOnlyNumbers<T>(
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     key: string,

@@ -1,6 +1,7 @@
 package com.server.cinema.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -47,6 +48,11 @@ public class MovieController {
     public List<MovieDTO> getSearchedMovies(
             @PathVariable final String query) {
         return movieService.getSearchedMovies(query);
+    }
+
+    @GetMapping("/categories")
+    public Set<String> getAllCategories() {
+        return movieService.getAllCategories();
     }
 
     @PutMapping("/update")

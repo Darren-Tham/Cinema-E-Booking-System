@@ -1,4 +1,5 @@
 import HomeNavbar from "@/components/HomeNavbar"
+import PageFacade from "@/lib/PageFacade"
 import Link from "next/link"
 
 const ResetPasswordConfirmation = () => {
@@ -12,7 +13,7 @@ const ResetPasswordConfirmation = () => {
             page and sign in.
           </p>
           <Link
-            href="./login-page"
+            href={PageFacade.LOGIN_PAGE}
             className="bg-jade block text-lg rounded-sm font-bold text-white w-full p-2 hover:scale-105 transition-transform duration-300"
           >
             Login

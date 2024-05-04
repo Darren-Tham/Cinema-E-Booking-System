@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import APIFacade from "@/lib/APIFacade"
 import { Movie } from "@/lib/Types"
 import useAdmin from "@/hooks/useAdmin"
+import PageFacade from "@/lib/PageFacade"
 
 const ManageMovies = () => {
   const [movies, setMovies] = useState<Movie[]>([])
@@ -31,7 +31,7 @@ const ManageMovies = () => {
               className="bg-jade p-2 flex flex-col justify-end"
             >
               <div className="relative">
-                <Link href={`./edit-movie?movieId=${movie.id}`}>
+                <Link href={PageFacade.editMovie(movie.id)}>
                   <Image
                     src={movie.imageLink}
                     alt={movie.title}
@@ -53,9 +53,9 @@ const ManageMovies = () => {
 
   return (
     isAdmin && (
-      <div className="flex flex-col bg-black h-screen items-center gap-8 p-8">
+      <div className="flex flex-col h-screen items-center gap-8 p-8">
         <Link
-          href="/admin-view"
+          href={PageFacade.ADMIN_VIEW}
           className="bg-jade px-4 py-2 text-white font-bold scale-transition rounded-md self-start"
         >
           Back To Admin View
@@ -71,8 +71,8 @@ const ManageMovies = () => {
         )}
         <div className="flex gap-5">
           <Link
-            href="./add-movie"
-            className="text-white w-max font-bold text-lg bg-jade px-10 py-3 rounded-md scale-transition "
+            href={PageFacade.ADD_MOVIE}
+            className="text-white w-max font-bold text-lg bg-jade px-10 py-3 rounded-md scale-transition mb-8"
           >
             Add Movie
           </Link>

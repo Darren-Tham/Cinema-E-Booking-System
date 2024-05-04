@@ -7,6 +7,7 @@ import APIFacade from "@/lib/APIFacade"
 import { useRouter } from "next/navigation"
 import States from "@/components/option/States"
 import FormHandler from "@/lib/FormHandler"
+import PageFacade from "@/lib/PageFacade"
 
 type Props = {
   form: Form
@@ -86,7 +87,7 @@ const HomeAddressInformationFormComponent = ({
       await addHomeAddress(customerId)
     }
 
-    router.push(`./registration-verification-code?id=${customerId}`)
+    router.push(PageFacade.registrationVerificationCode(customerId))
   }
 
   return (

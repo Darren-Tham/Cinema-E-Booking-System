@@ -143,7 +143,6 @@ export type CheckoutBooking = {
   expirationDate: string
   billingAddress: string
   lastFourDigits: string
-  bookingDate: string
 }
 
 export type Ticket = {

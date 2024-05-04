@@ -117,7 +117,7 @@ public class BookingService {
 
         booking.setMovie(movie);
         booking.setCustomer(customer);
-        booking.setShowtime(showtime);
+        booking.setDateTime(showtime.getDateTime());
         booking.setTickets(tickets);
         booking.setSeats(checkoutBookingDTO.seats());
         booking.setTotal(checkoutBookingDTO.total());
@@ -138,7 +138,7 @@ public class BookingService {
                 booking.getId(),
                 movie.getTitle(),
                 movie.getImageLink(),
-                booking.getShowtime().getDateTime(),
+                booking.getDateTime(),
                 booking.getSeats(),
                 booking.getTotal(),
                 booking.getCardType(),

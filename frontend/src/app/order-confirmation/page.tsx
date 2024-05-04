@@ -25,7 +25,7 @@ const OrderConfirmation = () => {
       const tickets = await APIFacade.getTicketsByBookingId(
         transaction.bookingId
       )
-      console.log(booking)
+
       setBooking(booking)
       setTickets(tickets)
     }

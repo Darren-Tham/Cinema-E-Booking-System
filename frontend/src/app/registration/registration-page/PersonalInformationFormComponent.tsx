@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Dispatch, SetStateAction } from "react"
 import { Form } from "./page"
 import FormHandler from "@/lib/FormHandler"
+import PageFacade from "@/lib/PageFacade"
 
 type Props = {
   form: Form
@@ -132,7 +133,7 @@ const PersonalInformationFormComponent = ({
           Already Have An Account?
         </p>
         <Link
-          href="/login/login-page"
+          href={PageFacade.LOGIN_PAGE}
           className="inline-block font-semibold text-bright-jade hover:scale-[1.075] transition-transform duration-300"
         >
           Log In

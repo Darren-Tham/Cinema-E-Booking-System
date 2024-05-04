@@ -2,6 +2,7 @@
 
 import HomeNavbar from "@/components/HomeNavbar"
 import APIFacade from "@/lib/APIFacade"
+import PageFacade from "@/lib/PageFacade"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useRef } from "react"
@@ -18,7 +19,7 @@ const ForgotPassword = () => {
         "The email inputted is not associated with any account in our system. Please enter a new email address or create a new account."
       )
     } else {
-      router.push(`./reset-password?id=${customerId}`)
+      router.push(PageFacade.resetPassword(customerId))
     }
   }
 
@@ -42,7 +43,7 @@ const ForgotPassword = () => {
           </button>
           <div className="flex justify-center">
             <p className="p-redirection"></p>
-            <Link href="./login-page" className="link-redirection">
+            <Link href={PageFacade.LOGIN_PAGE} className="link-redirection">
               Back To Login
             </Link>
           </div>

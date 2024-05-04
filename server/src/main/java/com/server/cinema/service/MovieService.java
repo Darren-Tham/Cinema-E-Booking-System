@@ -1,6 +1,8 @@
 package com.server.cinema.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class MovieService {
         movie.setCastMembers(newMovieDTO.castMembers());
         movie.setProducers(newMovieDTO.producers());
         movie.setDirectors(newMovieDTO.directors());
+        movie.setAdultTicketPrice(newMovieDTO.adultTicketPrice());
+        movie.setChildTicketPrice(newMovieDTO.childTicketPrice());
+        movie.setSeniorTicketPrice(newMovieDTO.seniorTicketPrice());
         movieRepository.save(movie);
     }
 
@@ -42,6 +47,17 @@ public class MovieService {
                 .findById(movieId)
                 .map(MovieService::toDTO)
                 .orElseThrow();
+    }
+
+    public Set<String> getAllCategories() {
+        final Set<String> categories = new HashSet<>();
+        movieRepository
+                .findAll()
+                .stream()
+                .forEach((final Movie movie) -> movie
+                        .getCategories()
+                        .forEach(categories::add));
+        return categories;
     }
 
     public List<MovieDTO> getAllMovies() {
@@ -73,6 +89,9 @@ public class MovieService {
         movie.setDirectors(movieDTO.directors());
         movie.setProducers(movieDTO.producers());
         movie.setCastMembers(movieDTO.castMembers());
+        movie.setAdultTicketPrice(movieDTO.adultTicketPrice());
+        movie.setChildTicketPrice(movieDTO.childTicketPrice());
+        movie.setSeniorTicketPrice(movieDTO.seniorTicketPrice());
         movieRepository.save(movie);
     }
 

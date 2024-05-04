@@ -1,7 +1,5 @@
-import MovieBanner from "@public/movie-banner.png"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { MovieType } from "@/components/Movie"
 
 export default function MainMovieBanner() {
   const [movies, setMovies] = useState([])

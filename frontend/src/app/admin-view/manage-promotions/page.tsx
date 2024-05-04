@@ -1,12 +1,12 @@
 "use client"
 
 import { FormEvent, useState } from "react"
-import UnauthorizedScreen from "@/components/UnauthorizedScreen"
 import { Email, Promotion } from "@/lib/Types"
 import APIFacade from "@/lib/APIFacade"
 import FormHandler from "@/lib/FormHandler"
 import Link from "next/link"
 import useAdmin from "@/hooks/useAdmin"
+import PageFacade from "@/lib/PageFacade"
 
 const ManagePromotions = () => {
   const [form, setForm] = useState<Promotion>({
@@ -184,7 +184,7 @@ const ManagePromotions = () => {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <Link
-                href="/admin-view"
+                href={PageFacade.ADMIN_VIEW}
                 className="bg-jade px-4 py-2 text-white font-bold hover:scale-[1.015] transition-transform duration-300 rounded text-center"
               >
                 Back To Admin View
