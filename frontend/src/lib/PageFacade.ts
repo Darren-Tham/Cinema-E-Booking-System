@@ -19,7 +19,7 @@ export default class PageFacade {
   public static readonly REGISTRATION_PAGE = "/registration/registration-page"
   private static readonly REGISTRATION_VERIFICATION_CODE =
     "/registration/registration-verification-code"
-  public static readonly SEARCH = ""
+  private static readonly SEARCH = "/search"
   public static readonly SEATS = "/seats"
   private static readonly MOVIE_SHOWTIME = "/movie-showtime"
   public static readonly TICKET_SUMMARY = "/ticket-summary"
@@ -39,5 +39,9 @@ export default class PageFacade {
 
   public static movieShowtime(movieId: number) {
     return `${this.MOVIE_SHOWTIME}?movieId=${movieId}`
+  }
+
+  public static search(query: string) {
+    return `${this.SEARCH}/${query}`
   }
 }

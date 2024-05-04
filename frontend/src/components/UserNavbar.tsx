@@ -53,7 +53,7 @@ const UserNavbar = () => {
               }
               let query = e.currentTarget.value.trim()
               if (query !== "") {
-                router.push(`/search/${query}`)
+                router.push(PageFacade.search(query))
               }
             }}
           />
