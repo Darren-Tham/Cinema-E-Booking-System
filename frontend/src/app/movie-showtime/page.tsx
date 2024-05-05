@@ -74,7 +74,8 @@ const TheatersAndTimes = () => {
                 <p className="text-white font-bold text-xl">{movie.title}</p>
                 <p className="text-white ml-2">
                   {" "}
-                  | {movie.ratingCode.replace("_", "-")}
+                  {movie.ratingCode !== null &&
+                    "| " + movie.ratingCode?.replace("_", "-")}
                 </p>
               </div>
               <p className="text-white">

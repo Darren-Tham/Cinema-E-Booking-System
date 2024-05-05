@@ -45,7 +45,8 @@ const EditMovie = () => {
   useEffect(() => {
     const fetchMovie = async (movieId: number) => {
       const movie = await APIFacade.getMovieById(movieId)
-      movie.ratingCode = movie.ratingCode.replace("_", "-")
+      movie.ratingCode =
+        movie.ratingCode === null ? "" : movie.ratingCode.replace("_", "-")
       movie.status = movie.status
         .split("_")
         .map(token => titleCase(token))
