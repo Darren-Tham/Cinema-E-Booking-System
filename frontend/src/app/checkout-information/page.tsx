@@ -9,6 +9,7 @@ import useCustomer from "@/hooks/useCustomer"
 import {
   CheckoutBooking,
   CheckoutCard,
+  Email,
   ProfileCard,
   Transaction
 } from "@/lib/Types"
@@ -105,6 +106,68 @@ const CheckoutInformation = () => {
     }
   }
 
+  const sendEmail = async (bookingId: number, customerId: number) => {
+    const formatExpirationDate = (expirationDate: string) => {
+      const [year, month] = expirationDate.split("-")
+      return `${month}/${year}`
+    }
+    const booking = await APIFacade.getBookingById(bookingId)
+    const tickets = await APIFacade.getTicketsByBookingId(bookingId)
+    const receiverEmail = await APIFacade.getCustomerEmailById(customerId)
+    let text = `Your order is confirmed. Here are the details to your booking.
+
+Booking Information
+Booking Id: ${booking.bookingId}
+Booking Date: ${new Date(
+      booking.bookingDate.replace(" ", "T")
+    ).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    })}
+Movie: ${booking.movieTitle}
+Show Date: ${new Date(booking.dateTime.replace(" ", "T")).toLocaleDateString(
+      "en-US",
+      {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long",
+        hour: "numeric",
+        minute: "numeric"
+      }
+    )}
+Location: UGA Theatre
+Seats: ${booking.seats.join(", ")}
+Total: $${booking.total.toFixed(2)}
+
+Card Information
+Card Type: ${booking.cardType}
+Card Number: Ending in ${booking.lastFourDigits}
+Expiration Date: ${formatExpirationDate(booking.expirationDate)}
+Billing Address: ${booking.billingAddress}
+
+Ticket Information
+`
+
+    for (const ticket of tickets) {
+      text += `
+Ticket Id: ${ticket.ticketId}
+Ticket Type: ${ticket.ticketType}
+Price: ${ticket.price}
+`
+    }
+
+    text +=
+      "\nWe look forward to welcoming you to our cinema and providing you with an unforgettable movie experience."
+    const email: Email = {
+      receiverEmail,
+      subject: "Cinema E-Booking System Order Confirmation",
+      text
+    }
+    await APIFacade.sendEmail(email)
+  }
+
   const handleCheckoutClick = async () => {
     if (!isValidForm()) return
 
@@ -139,6 +202,7 @@ const CheckoutInformation = () => {
       transaction.showtimeId,
       transaction.seats
     )
+    await sendEmail(bookingId, transaction.customerId)
     await updateTransaction({ bookingId })
     router.push(PageFacade.ORDER_CONFIRMATION)
   }

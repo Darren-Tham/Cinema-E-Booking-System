@@ -125,7 +125,10 @@ const TheatersAndTimes = () => {
                       className="text-white bg-jade font-semibold p-2 rounded-sm"
                       onClick={async () => {
                         const customer = await getCustomer()
-                        if (customer === undefined) return
+                        if (customer === undefined) {
+                          router.push(PageFacade.LOGIN_PAGE)
+                          return
+                        }
                         const transaction: Transaction = {
                           movieId: movie.id,
                           customerId: customer.id,

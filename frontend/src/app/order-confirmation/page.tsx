@@ -14,7 +14,7 @@ const OrderConfirmation = () => {
   const pStyles = "text-xl font-semibold text-white"
 
   useEffect(() => {
-    const getInformation = async () => {
+    const fetchInformation = async () => {
       const transaction = await getTransaction()
 
       if (transaction?.bookingId === undefined) {
@@ -29,7 +29,7 @@ const OrderConfirmation = () => {
       setBooking(booking)
       setTickets(tickets)
     }
-    getInformation()
+    fetchInformation()
   }, [])
 
   const formatExpirationDate = (expirationDate: string) => {
@@ -72,7 +72,7 @@ const OrderConfirmation = () => {
                 <b>Movie:</b> {booking.movieTitle}
               </p>
               <p className={pStyles}>
-                <b>Date:</b>{" "}
+                <b>Show Date:</b>{" "}
                 {new Date(
                   booking.dateTime.replace(" ", "T")
                 ).toLocaleDateString("en-US", {
