@@ -27,6 +27,12 @@ const LastNameInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
 
   const updateLastName = async () => {
     const updatedLastName = inputRef.current.value.trim()
+
+    if (updatedLastName === "") {
+      alert("Last name cannot be empty.")
+      return
+    }
+
     if (updatedLastName === lastName) {
       alert("The updated last name is the same as the current last name!")
       return

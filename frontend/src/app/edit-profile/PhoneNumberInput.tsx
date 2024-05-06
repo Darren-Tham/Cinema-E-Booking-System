@@ -32,6 +32,11 @@ const PhoneNumberInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
   }, [customer])
 
   const changePhoneNumber = async () => {
+    if (form.phoneNumber === "") {
+      alert("Phone number cannot be empty.")
+      return
+    }
+
     if (form.phoneNumber === phoneNumber) {
       alert(
         "The updated phone number should not be the same as the current phone number!"

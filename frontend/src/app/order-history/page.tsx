@@ -47,7 +47,7 @@ const OrderHistory = () => {
           </h1>
           <div className="text-white font-semibold flex items-center gap-1 bg-jade p-3 text-lg rounded-sm self-end">
             <Image src={FilterIcon} alt="Filter Icon" width={25} />
-            <h1 className="text-emerald-100">Filter Movies</h1>
+            <h1 className="text-emerald-100">Filter Bookings</h1>
             <select
               className="ml-2 bg-light-jade p-2 text-sm rounded-sm"
               onClick={e => {

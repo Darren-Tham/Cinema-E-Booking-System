@@ -25,8 +25,13 @@ const PasswordInput = ({ customer, setDialogOpen }: Readonly<Props>) => {
   const dialogRef = useRef<HTMLDialogElement>(null!)
 
   const passwordConfirmed = async () => {
+    if (form.currentPassword === "") {
+      alert("Current password cannot be empty.")
+      return
+    }
+
     if (form.newPassword === "") {
-      alert("Password cannot be empty.")
+      alert("New password cannot be empty.")
       return false
     }
 
