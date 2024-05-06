@@ -49,7 +49,8 @@ public class ShowtimeService {
 
     public void updateShowtimes(final int movieId, Iterable<String> dateTimes) {
         final Movie movie = movieRepository.findById(movieId).orElseThrow();
-        showtimeRepository.deleteAll();
+        final List<Showtime> previousShowTimes = showtimeRepository.findByMovieId(movieId);
+        showtimeRepository.deleteAll(previousShowTimes);
         for (final String dateTime : dateTimes) {
             final Showtime showTime = new Showtime();
             showTime.setDateTime(dateTime);
